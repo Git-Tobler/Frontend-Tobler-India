@@ -1,15 +1,20 @@
 import Container from '../common/Container.jsx'
-import { STATS } from '../../constants/siteConfig.js'
+import { STATS } from '../../data/site.js'
 
+/* Homepage stat row. Light and green rather than the previous dark band — on
+   the restyled page a full-width near-black strip directly under the hero
+   photograph read as a footer and cut the page in half. */
 function StatsSection() {
   return (
-    <section className="bg-tobler-heading py-14 md:py-16">
+    <section className="border-b border-shopify-border bg-white py-16 md:py-20">
       <Container>
-        <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/10">
-          {STATS.map((stat, idx) => (
-            <div key={stat.label} className={`px-5 md:px-8 ${idx === 0 ? 'pl-0' : ''}`}>
-              <p className="figure-mono text-4xl md:text-5xl font-bold text-white mb-2">{stat.value}</p>
-              <p className="label-mono text-white/45 leading-snug normal-case tracking-normal text-[11px]">
+        <div className="grid gap-12 sm:grid-cols-3 sm:gap-8">
+          {STATS.map((stat) => (
+            <div key={stat.label} className="text-center">
+              <p className="font-display text-5xl font-bold tracking-tight text-shopify-green md:text-6xl">
+                {stat.value}
+              </p>
+              <p className="mx-auto mt-3 max-w-[16rem] text-sm normal-case leading-relaxed text-shopify-muted">
                 {stat.label}
               </p>
             </div>

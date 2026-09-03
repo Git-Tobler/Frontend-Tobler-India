@@ -5,7 +5,7 @@
 
 :root {
   /* Layout */
-  --gutter: clamp(16px, 1.5vw, 28px);
+  --gutter: 16px;
 
   /* Container Widths */
   --w-content: 1520px;
@@ -13,6 +13,18 @@
 
   /* Typography */
   --w-prose: 48rem;
+
+  /* Brand colors — mirror tailwind.config.js's `theme.extend.colors.tobler`
+     exactly. Plain CSS (gradients, scrollbar/focus pseudo-elements) can't
+     read the Tailwind config directly, so these are duplicated by hand;
+     keep both in sync when a brand color changes. */
+  --tobler-blue: #1B4E90;
+  --tobler-blue-dark: #123A6F;
+  --tobler-bg-dark: #0A2240;
+  --tobler-gold: #F7E500;
+  --tobler-heading: #14181A;
+  --tobler-body: #4A4F55;
+  --tobler-bg-light: #F1F5F9;
 }
 
 @layer components {
@@ -42,39 +54,52 @@
 }
 @media (max-width:640px){
   :root{
-    --gutter:16px;
+    --gutter:20px;
   }
 }
 
 @media (min-width:641px) and (max-width:1024px){
   :root{
-    --gutter:20px;
+    --gutter:28px;
   }
 }
 
 @media (min-width:1025px){
   :root{
-    --gutter:24px;
+    --gutter:40px;
   }
 }
 
 @media (min-width:1600px){
   :root{
-    --gutter:28px;
+    --gutter:48px;
   }
 }
 
+html,
 body {
-  font-family: 'Inter', system-ui, sans-serif;
+  height: 100%;
+}
+
+body {
+  font-family: 'Avenir LT W01_45 Book1475508', Arial, sans-serif;
   font-weight: 400;
   font-size: 1rem;
-  line-height: 1.75;
-  color: rgb(0, 0, 0);
+  line-height: 1.7;
+  color: var(--tobler-body);
   background: #fff;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing:black;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 h1,
@@ -83,11 +108,11 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Sora', system-ui, sans-serif;
+  font-family: 'Avenir LT W01_45 Book1475508', Arial, sans-serif;
   font-weight: 700;
   letter-spacing: -0.035em;
   line-height: 1.05;
-  color: #111111;
+  color: var(--tobler-heading);
 }
 
 * {
@@ -124,7 +149,7 @@ main {
      rows, footer meta. The one "technical drawing" typographic voice used
      throughout the site alongside the display headline face. */
   .label-mono {
-    font-family: '"JetBrains Mono"', ui-monospace, monospace;
+    font-family: 'Avenir LT W01_45 Book1475508', Arial, sans-serif;
     font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.12em;
@@ -134,7 +159,7 @@ main {
   /* Large tabular-numeral figures — stat counters, timeline years, index
      numbers (01/02/03). Tabular nums keep stacked figures aligned. */
   .figure-mono {
-    font-family: '"JetBrains Mono"', ui-monospace, monospace;
+    font-family: 'Avenir LT W01_45 Book1475508', Arial, sans-serif;
     font-variant-numeric: tabular-nums;
   }
 
@@ -191,12 +216,12 @@ main {
      Always paired with white/near-white text. */
   .bg-blueprint {
     position: relative;
-    background-color: #1b4890;
+    background-color: var(--tobler-blue);
     background-image:
-      radial-gradient(ellipse 60% 50% at 82% 8%, rgba(187, 177, 90, 0.16), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 82% 8%, rgba(247, 229, 0, 0.10), transparent 60%),
       repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 1px, transparent 1px, transparent 44px),
       repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 1px, transparent 1px, transparent 44px),
-      linear-gradient(155deg, #0b2038 0%, #123c63 45%, #1a4b7a 100%);
+      linear-gradient(155deg, var(--tobler-bg-dark) 0%, var(--tobler-blue-dark) 45%, var(--tobler-blue) 100%);
     background-repeat: no-repeat, repeat, repeat, no-repeat;
   }
 
@@ -214,7 +239,7 @@ button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 2px solid #1b4890;
+  outline: 2px solid var(--tobler-blue);
   outline-offset: 2px;
 }
 
@@ -234,9 +259,62 @@ select:focus-visible {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #f4f6f7;
+  background: #ffffff;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1b4890;
+  background: var(--tobler-blue);
   border-radius: 8px;
+}
+
+/* ==========================================================================
+   STUDIO LANDING TYPE + MOTION (About page)
+   ========================================================================== */
+
+/* PP Neue Montreal is hotlink-protected at the Webflow CDN (403 on this
+   origin), so the body face falls through to the site's own Inter stack.
+   Self-host the licensed .otf under /public and add the @font-face here to
+   switch it on. */
+
+/* Drop PPMondwest-Regular.woff2 into /public to enable the licensed face;
+   until then the serif fallback carries the same accent role. */
+@font-face {
+  font-family: 'PP Mondwest';
+  src: url('/PPMondwest-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+.font-montreal {
+  font-family: 'Avenir LT W01_45 Book1475508', Arial, sans-serif;
+}
+.font-mondwest {
+  font-family: 'Avenir LT W01_45 Book1475508', Arial, sans-serif;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 10s linear infinite;
+}
+@media (min-width: 768px) {
+  .animate-marquee { animation-duration: 30s; }
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+/* Mouse-trail thumbnail on the partner panel: snaps in, then fades and
+   shrinks away over its full lifetime. */
+@keyframes trailFade {
+  0% { opacity: 0; transform: var(--trail-transform) scale(0.7); }
+  12% { opacity: 1; transform: var(--trail-transform) scale(1); }
+  100% { opacity: 0; transform: var(--trail-transform) scale(0.6); }
 }

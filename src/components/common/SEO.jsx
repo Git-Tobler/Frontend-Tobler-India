@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { SITE } from '../../constants/siteConfig.js'
+import { SITE } from '../../data/site.js'
 
 function setMeta(name, content, attr = 'name') {
   if (!content) return
@@ -12,7 +12,7 @@ function setMeta(name, content, attr = 'name') {
   el.setAttribute('content', content)
 }
 
-function SEO({ title, description, path = '' }) {
+function SEO({ title, description, path = '', structuredData }) {
   useEffect(() => {
     const fullTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} | Swiss Engineered Formwork & Scaffolding`
     document.title = fullTitle
@@ -35,6 +35,20 @@ function SEO({ title, description, path = '' }) {
     }
     canonical.setAttribute('href', `https://www.toblerindia.com${path}`)
   }, [title, description, path])
+
+  useEffect(() => {
+    if (!structuredData || structuredData.length === 0) return undefined
+
+    const nodes = structuredData.map((schema) => {
+      const script = document.createElement('script')
+      script.type = 'application/ld+json'
+      script.text = JSON.stringify(schema)
+      document.head.appendChild(script)
+      return script
+    })
+
+    return () => nodes.forEach((node) => node.remove())
+  }, [structuredData])
 
   return null
 }

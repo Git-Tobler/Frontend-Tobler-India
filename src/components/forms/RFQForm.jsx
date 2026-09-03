@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { CheckCircle2, Loader2 } from 'lucide-react'
 import FormField from './FormField.jsx'
 import Button from '../common/Button.jsx'
-import { sendRFQRequest } from '../../services/emailService.js'
-import { isValidEmail } from '../../utils/helpers.js'
-import { PRODUCT_CATEGORIES } from '../../constants/products.js'
+import { sendRFQRequest } from '../../lib/email.js'
+import { isValidEmail, isValidPhone } from '../../lib/helpers.js'
+import { PRODUCT_SUBCATEGORIES } from '../../data/products/index.js'
 
 const initialState = {
   name: '',
@@ -33,6 +33,7 @@ function RFQForm() {
     if (!values.name.trim()) nextErrors.name = 'Name is required'
     if (!values.company.trim()) nextErrors.company = 'Company name is required'
     if (!isValidEmail(values.email)) nextErrors.email = 'Enter a valid email address'
+    if (values.phone.trim() && !isValidPhone(values.phone)) nextErrors.phone = 'Enter a valid phone number'
     if (!values.productCategory) nextErrors.productCategory = 'Select a product category'
     setErrors(nextErrors)
     return Object.keys(nextErrors).length === 0
@@ -108,6 +109,7 @@ function RFQForm() {
           type="tel"
           value={values.phone}
           onChange={handleChange}
+          error={errors.phone}
           placeholder="+91 00000 00000"
         />
       </div>
@@ -120,7 +122,7 @@ function RFQForm() {
           value={values.productCategory}
           onChange={handleChange}
           error={errors.productCategory}
-          options={PRODUCT_CATEGORIES.map((p) => p.name)}
+          options={PRODUCT_SUBCATEGORIES.map((s) => s.name)}
         />
         <FormField
           label="Project Location"

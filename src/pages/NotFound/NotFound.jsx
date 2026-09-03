@@ -10,9 +10,9 @@ function NotFound() {
       <section className="min-h-[80vh] flex items-center py-24">
         <Container className="text-center max-w-lg mx-auto">
           <div className="w-16 h-16 border border-tobler-heading/15 flex items-center justify-center mx-auto mb-8">
-            <Compass size={26} className="text-tobler-gold" strokeWidth={1.5} />
+            <Compass size={26} aria-hidden="true" className="text-tobler-blue" strokeWidth={1.5} />
           </div>
-          <p className="label-mono text-tobler-gold mb-3">
+          <p className="label-mono text-tobler-blue mb-3">
             Error 404
           </p>
           <h1 className="text-h3 mb-4">This Page Couldn&rsquo;t Be Found</h1>

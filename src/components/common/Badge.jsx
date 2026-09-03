@@ -1,7 +1,7 @@
 function Badge({ children, variant = 'blue', className = '' }) {
   const variants = {
     blue: 'bg-tobler-blue/10 text-tobler-blue',
-    gold: 'bg-tobler-gold/15 text-tobler-gold-dark',
+    gold: 'bg-tobler-gold/20 text-tobler-gold-deep',
     light: 'bg-white/15 text-white',
     outline: 'border border-tobler-border text-tobler-body',
   }

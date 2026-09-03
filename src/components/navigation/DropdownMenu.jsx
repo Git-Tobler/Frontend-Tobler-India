@@ -14,21 +14,22 @@ function DropdownMenu({ item, scrolled }) {
     timeoutRef.current = setTimeout(() => setOpen(false), 120)
   }
 
-  const linkColor = scrolled ? 'text-tobler-heading' : 'text-white'
-
   return (
-    <div className="relative" onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
+    <div className="relative group" onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
       <NavLink
         to={item.path}
         className={({ isActive }) =>
-          `flex items-center gap-1.5 py-2 label-mono transition-colors duration-200 ${linkColor} hover:text-tobler-gold ${
-            isActive ? 'text-tobler-gold' : ''
+          `flex items-center gap-1.5 px-3 py-2 text-sm font-medium transition-all duration-200 ${
+            isActive ? 'text-white' : 'text-white/70 hover:text-white'
           }`
         }
       >
         {item.label}
         <ChevronDown size={14} className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
       </NavLink>
+      <span className={`absolute bottom-1 left-3 right-3 h-0.5 bg-tobler-gold transition-all duration-200 origin-left ${
+        open ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+      }`} />
 
       <div
         className={`absolute left-1/2 -translate-x-1/2 top-full pt-3 transition-all duration-200 ease-premium ${
@@ -43,8 +44,8 @@ function DropdownMenu({ item, scrolled }) {
               className={({ isActive }) =>
                 `block px-4 py-2.5 rounded-sm text-sm font-medium transition-colors duration-150 ${
                   isActive
-                    ? 'bg-tobler-heading/5 text-tobler-gold'
-                    : 'text-tobler-heading hover:bg-tobler-bg-light hover:text-tobler-gold'
+                    ? 'bg-tobler-blue/5 text-tobler-blue'
+                    : 'text-tobler-heading hover:bg-tobler-bg-light hover:text-tobler-blue'
                 }`
               }
             >

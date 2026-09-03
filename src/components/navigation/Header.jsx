@@ -1,79 +1,89 @@
 import { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Menu } from 'lucide-react'
-import { NAV_LINKS } from '../../constants/navigation.js'
-import DropdownMenu from './DropdownMenu.jsx'
+import { Menu, Search } from 'lucide-react'
+import { NAV_LINKS } from '../../data/navigation.js'
 import MobileMenu from './MobileMenu.jsx'
-import Button from '../common/Button.jsx'
-import Container from '../common/Container.jsx'
+import SearchModal from '../common/SearchModal.jsx'
+import CountrySwitcher from './CountrySwitcher.jsx'
 import toblerLogo from '../../assets/brand/tobler-logo.svg'
 
 function Header() {
-  const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 24)
-    handleScroll()
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        setSearchOpen(true)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
-
-  const linkColor = scrolled ? 'text-tobler-heading' : 'text-white'
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-premium ${
-          scrolled ? 'bg-white/97 backdrop-blur-md shadow-soft py-3 border-b border-tobler-border' : 'bg-transparent py-6'
-        }`}
-      >
-        <Container className="flex items-center justify-between">
-          <NavLink to="/" className="flex items-center gap-2.5 shrink-0">
-            <span className="bg-white px-2 py-1 shadow-sm">
-              <img src={toblerLogo} alt="Tobler" className="h-8 w-auto" />
-            </span>
-            
+      <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
+        <div className="px-6 sm:px-7 md:px-10 lg:px-10 xl:px-12 py-4 flex items-center justify-between">
+          {/* Logo */}
+          <NavLink to="/" className="flex-shrink-0">
+            <img src={toblerLogo} alt="Tobler" className="h-12 w-auto" />
           </NavLink>
 
-          <nav className="hidden lg:flex items-center gap-7">
-            {NAV_LINKS.map((item) =>
-              item.children ? (
-                <DropdownMenu key={item.label} item={item} scrolled={scrolled} />
-              ) : (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  className={({ isActive }) =>
-                    `label-mono transition-colors duration-200 ${linkColor} hover:text-tobler-gold ${
-                      isActive ? 'text-tobler-gold' : ''
-                    }`
-                  }
-                >
-                  {item.label}
-                </NavLink>
-              )
-            )}
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-8">
+            {NAV_LINKS.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  `text-sm font-medium transition-colors ${
+                    isActive ? 'text-tobler-blue' : 'text-gray-700 hover:text-tobler-blue'
+                  }`
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
           </nav>
 
-          <div className="hidden lg:flex items-center gap-3">
-            <Button to="/contact" variant={scrolled ? 'primary' : 'accent'} size="sm">
-              Request a Quote
-            </Button>
-          </div>
+          {/* Right side: Search, Country Switcher, Login, Mobile Menu */}
+          <div className="flex items-center gap-4 lg:gap-6">
+            {/* Search icon */}
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="hidden lg:flex p-2 text-gray-700 hover:text-tobler-blue transition-colors group relative"
+              aria-label="Search"
+              title="Press Cmd+K to search"
+            >
+              <Search size={20} />
+            </button>
 
-          <button
-            className={`lg:hidden p-2 border transition-colors ${
-              scrolled ? 'text-tobler-heading border-tobler-border' : 'text-white border-white/30'
-            }`}
-            onClick={() => setMobileOpen(true)}
-            aria-label="Open menu"
-          >
-            <Menu size={22} />
-          </button>
-        </Container>
+            {/* Country switcher */}
+            <div className="hidden lg:block [&_button]:text-gray-700 [&_button]:hover:text-tobler-blue">
+              <CountrySwitcher />
+            </div>
+
+            {/* Login button */}
+            <button className="hidden lg:block px-4 py-2 text-sm font-medium text-gray-700 hover:text-tobler-blue transition-colors">
+              Login
+            </button>
+
+            {/* Mobile menu trigger */}
+            <button
+              className="lg:hidden p-2 text-gray-700 hover:text-tobler-blue transition-colors"
+              onClick={() => setMobileOpen(true)}
+              aria-label="Open menu"
+            >
+              <Menu size={24} />
+            </button>
+          </div>
+        </div>
       </header>
+
       <MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   )
 }

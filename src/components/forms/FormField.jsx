@@ -19,9 +19,9 @@ function FormField({
       </label>
 
       {as === 'textarea' ? (
-        <textarea id={name} name={name} rows={5} className={baseClasses} {...rest} />
+        <textarea id={name} name={name} rows={5} required={required} className={baseClasses} {...rest} />
       ) : as === 'select' ? (
-        <select id={name} name={name} className={baseClasses} {...rest}>
+        <select id={name} name={name} required={required} className={baseClasses} {...rest}>
           <option value="">Select an option</option>
           {options.map((opt) => (
             <option key={opt} value={opt}>
@@ -30,7 +30,7 @@ function FormField({
           ))}
         </select>
       ) : (
-        <input id={name} name={name} type={type} className={baseClasses} {...rest} />
+        <input id={name} name={name} type={type} required={required} className={baseClasses} {...rest} />
       )}
 
       {error && <span className="text-xs text-tobler-error">{error}</span>}

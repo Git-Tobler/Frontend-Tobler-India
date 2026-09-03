@@ -1,12 +1,14 @@
 import { useState } from 'react'
-import { MapPin, Phone, Mail, Briefcase, Linkedin, Facebook, Instagram, Youtube } from 'lucide-react'
+import { MapPin, Phone, Mail, Briefcase, Linkedin, Share2, Instagram, Youtube } from 'lucide-react'
 import SEO from '../../components/common/SEO.jsx'
 import PageHero from '../../components/layout/PageHero.jsx'
 import Container from '../../components/common/Container.jsx'
+import Button from '../../components/common/Button.jsx'
 import ContactForm from '../../components/forms/ContactForm.jsx'
 import RFQForm from '../../components/forms/RFQForm.jsx'
 import DownloadCard from '../../components/ui/DownloadCard.jsx'
-import { SITE } from '../../constants/siteConfig.js'
+import { SITE } from '../../data/site.js'
+import { MEDIA } from '../../data/media-map.js'
 
 const TABS = [
   { id: 'contact', label: 'General Enquiry' },
@@ -26,7 +28,7 @@ function Contact() {
         path="/contact"
       />
       <PageHero
-        eyebrow="Contact Us"
+        imageId={MEDIA.contactPageHero}
         title="Let's Discuss Your Next Project"
         description="Whether you need a quotation, technical guidance, or general information, our team is ready to help."
         breadcrumbItems={[{ label: 'Contact' }]}
@@ -40,18 +42,18 @@ function Contact() {
                 <h3 className="text-base mb-5">Office Information</h3>
                 <ul className="space-y-4 text-sm">
                   <li className="flex items-start gap-3">
-                    <MapPin size={18} className="text-tobler-gold shrink-0 mt-0.5" />
+                    <MapPin size={18} className="text-tobler-blue shrink-0 mt-0.5" />
                     <span className="text-tobler-body">{SITE.address}</span>
                   </li>
                   <li className="flex items-center gap-3">
-                    <Phone size={18} className="text-tobler-gold shrink-0" />
-                    <a href={`tel:${SITE.phone}`} className="text-tobler-body hover:text-tobler-gold">
+                    <Phone size={18} className="text-tobler-blue shrink-0" />
+                    <a href={`tel:${SITE.phone}`} className="text-tobler-body hover:text-tobler-blue">
                       {SITE.phone}
                     </a>
                   </li>
                   <li className="flex items-center gap-3">
-                    <Mail size={18} className="text-tobler-gold shrink-0" />
-                    <a href={`mailto:${SITE.email}`} className="text-tobler-body hover:text-tobler-gold">
+                    <Mail size={18} className="text-tobler-blue shrink-0" />
+                    <a href={`mailto:${SITE.email}`} className="text-tobler-body hover:text-tobler-blue">
                       {SITE.email}
                     </a>
                   </li>
@@ -60,7 +62,7 @@ function Contact() {
 
               <div className="p-7 rounded-card border border-tobler-border bg-white">
                 <h3 className="text-base mb-4 flex items-center gap-2">
-                  <Briefcase size={18} className="text-tobler-gold" />
+                  <Briefcase size={18} className="text-tobler-blue" />
                   Careers
                 </h3>
                 <p className="text-sm text-tobler-body leading-relaxed mb-4">
@@ -79,33 +81,39 @@ function Contact() {
 
               <div className="flex items-center gap-3">
                 {[
-                  { icon: Linkedin, href: SITE.social.linkedin },
-                  { icon: Facebook, href: SITE.social.facebook },
-                  { icon: Instagram, href: SITE.social.instagram },
-                  { icon: Youtube, href: SITE.social.youtube },
-                ].map(({ icon: Icon, href }, idx) => (
+                  { icon: Linkedin, href: SITE.social.linkedin, label: 'LinkedIn' },
+                  { icon: Share2, href: SITE.social.pinterest, label: 'Pinterest' },
+                  { icon: Instagram, href: SITE.social.instagram, label: 'Instagram' },
+                  { icon: Youtube, href: SITE.social.youtube, label: 'YouTube' },
+                ].map(({ icon: Icon, href, label }) => (
                   <a
-                    key={idx}
+                    key={label}
                     href={href}
                     target="_blank"
-                    rel="noreferrer"
-                    className="w-10 h-10 flex items-center justify-center border border-tobler-border text-tobler-heading hover:bg-tobler-gold hover:border-tobler-gold hover:text-white transition-colors duration-200"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="w-10 h-10 flex items-center justify-center border border-tobler-border text-tobler-heading hover:bg-tobler-blue hover:border-tobler-blue hover:text-white transition-colors duration-200"
                   >
-                    <Icon size={17} />
+                    <Icon size={17} aria-hidden="true" />
                   </a>
                 ))}
               </div>
             </div>
 
             <div>
-              <div className="flex border-b border-tobler-border mb-8">
+              <div role="tablist" aria-label="Contact options" className="flex border-b border-tobler-border mb-8">
                 {TABS.map((tab) => (
                   <button
                     key={tab.id}
+                    id={`tab-${tab.id}`}
+                    role="tab"
+                    type="button"
+                    aria-selected={activeTab === tab.id}
+                    aria-controls={`panel-${tab.id}`}
                     onClick={() => setActiveTab(tab.id)}
                     className={`px-6 py-3 text-sm font-semibold border-b-2 transition-colors duration-200 -mb-px ${
                       activeTab === tab.id
-                        ? 'border-tobler-gold text-tobler-gold'
+                        ? 'border-tobler-blue text-tobler-blue'
                         : 'border-transparent text-tobler-body hover:text-tobler-heading'
                     }`}
                   >
@@ -113,7 +121,9 @@ function Contact() {
                   </button>
                 ))}
               </div>
-              {activeTab === 'contact' ? <ContactForm /> : <RFQForm />}
+              <div id={`panel-${activeTab}`} role="tabpanel" aria-labelledby={`tab-${activeTab}`}>
+                {activeTab === 'contact' ? <ContactForm /> : <RFQForm />}
+              </div>
             </div>
           </div>
         </Container>

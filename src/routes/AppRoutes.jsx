@@ -1,19 +1,5 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
-
-import Home from '../pages/Home/Home.jsx'
-
-import About from '../pages/About/About.jsx'
-
-import Industries from '../pages/Industries/Industries.jsx'
-import IndustryDetail from '../pages/Industries/IndustryDetail.jsx'
-
-import Products from '../pages/Products/Products.jsx'
-import ProductDetail from '../pages/Products/ProductDetail.jsx'
-
-import Projects from '../pages/Projects/Projects.jsx'
-import ProjectDetail from '../pages/Projects/ProjectDetail.jsx'
-
-import Contact from '../pages/Contact/Contact.jsx'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
+import App from '../App.jsx'
 import NotFound from '../pages/NotFound/NotFound.jsx'
 
 /* Every /about/* sub-page used to be its own thin route (hero + one content
@@ -30,30 +16,59 @@ const ABOUT_REDIRECTS = [
   'certifications',
 ]
 
-function AppRoutes() {
-  return (
-    <Routes>
-      <Route path="/" element={<Home />} />
+// Data-router code splitting: the module resolves to a route's `Component`
+// on demand instead of wrapping every page in its own Suspense boundary.
+const lazyPage = (importer) => ({
+  lazy: () => importer().then((module) => ({ Component: module.default })),
+})
 
-      <Route path="/about" element={<About />} />
-      {ABOUT_REDIRECTS.map((slug) => (
-        <Route key={slug} path={`/about/${slug}`} element={<Navigate to={`/about#${slug}`} replace />} />
-      ))}
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    errorElement: <NotFound />,
+    children: [
+      { index: true, ...lazyPage(() => import('../pages/Home/Home.jsx')) },
 
-      <Route path="/industries" element={<Industries />} />
-      <Route path="/industries/:slug" element={<IndustryDetail />} />
+      { path: 'about', ...lazyPage(() => import('../pages/About/About.jsx')) },
+      ...ABOUT_REDIRECTS.map((slug) => ({
+        path: `about/${slug}`,
+        element: <Navigate to={`/about#${slug}`} replace />,
+      })),
 
-      <Route path="/products" element={<Products />} />
-      <Route path="/products/:slug" element={<ProductDetail />} />
+      { path: 'manufacturing', ...lazyPage(() => import('../pages/Manufacturing/Manufacturing.jsx')) },
 
-      <Route path="/projects" element={<Projects />} />
-      <Route path="/projects/:slug" element={<ProjectDetail />} />
+      { path: 'products', ...lazyPage(() => import('../pages/Products/ProductsPage.jsx')) },
+      { path: 'products/:family', ...lazyPage(() => import('../pages/Products/ProductFamilyPage.jsx')) },
+      {
+        path: 'products/:family/:product',
+        ...lazyPage(() => import('../pages/Products/ProductFamilyPage.jsx')),
+      },
 
-      <Route path="/contact" element={<Contact />} />
+      { path: 'projects', ...lazyPage(() => import('../pages/Projects/Projects.jsx')) },
+      // Same component as /projects — the slug opens a drawer over the grid.
+      { path: 'projects/:slug', ...lazyPage(() => import('../pages/Projects/Projects.jsx')) },
 
-      <Route path="*" element={<NotFound />} />
-    </Routes>
-  )
-}
+      { path: 'contact', ...lazyPage(() => import('../pages/Contact/Contact.jsx')) },
 
-export default AppRoutes
+      { path: 'careers', ...lazyPage(() => import('../pages/Careers/Careers.jsx')) },
+
+      /* Footer Pages */
+      { path: 'privacy-policy', ...lazyPage(() => import('../pages/PrivacyPolicy/PrivacyPolicy.jsx')) },
+      { path: 'cookies-policy', ...lazyPage(() => import('../pages/CookiesPolicy/CookiesPolicy.jsx')) },
+      { path: 'cookie-preferences', ...lazyPage(() => import('../pages/CookiesPolicy/CookiePreferencesPage.jsx')) },
+      { path: 'terms-conditions', ...lazyPage(() => import('../pages/TermsConditions/TermsConditions.jsx')) },
+      { path: 'faq', ...lazyPage(() => import('../pages/FAQ/FAQ.jsx')) },
+      { path: 'testimonials', ...lazyPage(() => import('../pages/Testimonials/Testimonials.jsx')) },
+      { path: 'news-media', ...lazyPage(() => import('../pages/NewsMedia/NewsMedia.jsx')) },
+      { path: 'download-brochures', ...lazyPage(() => import('../pages/Downloads/Downloads.jsx')) },
+      { path: 'certifications', ...lazyPage(() => import('../pages/Certifications/Certifications.jsx')) },
+      { path: 'exhibitions', ...lazyPage(() => import('../pages/Exhibitions/Exhibitions.jsx')) },
+      { path: 'blogs', ...lazyPage(() => import('../pages/Blogs/Blogs.jsx')) },
+
+      { path: '*', element: <NotFound /> },
+    ],
+  },
+])
+
+export default router

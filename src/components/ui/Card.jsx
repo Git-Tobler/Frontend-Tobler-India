@@ -7,7 +7,7 @@ function Card({ children, className = '', hover = true }) {
         hover ? 'hover:shadow-card hover:-translate-y-1 hover:border-tobler-heading/30' : ''
       } ${className}`}
     >
-      {hover && <CornerMarks className="text-tobler-gold" />}
+      {hover && <CornerMarks className="text-tobler-blue" />}
       {children}
     </div>
   )

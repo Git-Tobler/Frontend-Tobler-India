@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { CheckCircle2, Loader2 } from 'lucide-react'
 import FormField from './FormField.jsx'
 import Button from '../common/Button.jsx'
-import { sendContactMessage } from '../../services/emailService.js'
-import { isValidEmail } from '../../utils/helpers.js'
+import { sendContactMessage } from '../../lib/email.js'
+import { isValidEmail, isValidPhone } from '../../lib/helpers.js'
 
 const initialState = { name: '', email: '', phone: '', subject: '', message: '' }
 
@@ -21,6 +21,7 @@ function ContactForm() {
     const nextErrors = {}
     if (!values.name.trim()) nextErrors.name = 'Name is required'
     if (!isValidEmail(values.email)) nextErrors.email = 'Enter a valid email address'
+    if (values.phone.trim() && !isValidPhone(values.phone)) nextErrors.phone = 'Enter a valid phone number'
     if (!values.message.trim()) nextErrors.message = 'Please add a short message'
     setErrors(nextErrors)
     return Object.keys(nextErrors).length === 0
@@ -86,6 +87,7 @@ function ContactForm() {
           type="tel"
           value={values.phone}
           onChange={handleChange}
+          error={errors.phone}
           placeholder="+91 00000 00000"
         />
         <FormField
