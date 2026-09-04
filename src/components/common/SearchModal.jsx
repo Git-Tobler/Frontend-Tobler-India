@@ -1,47 +1,14 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, X, ChevronRight } from 'lucide-react'
+import { Search, X, ChevronRight, Sparkles } from 'lucide-react'
+import { SEARCH_ENTRIES, SUGGESTED_SEARCHES } from '../../data/searchIndex.js'
+import { ANSWER_CARDS } from '../../lib/answerCards.js'
+import { searchEntries, matchAnswerCards } from '../../lib/search.js'
 
-const SEARCH_INDEX = [
-  // Pages
-  { id: 'home', title: 'Home', path: '/', category: 'Pages', description: 'Welcome to Tobler India' },
-  { id: 'about', title: 'About Us', path: '/about', category: 'Pages', description: 'Learn about Tobler\'s story' },
-  { id: 'products', title: 'Products', path: '/products', category: 'Pages', description: 'Browse our product portfolio' },
-  { id: 'manufacturing', title: 'Manufacturing', path: '/manufacturing', category: 'Pages', description: 'Our manufacturing excellence' },
-  { id: 'projects', title: 'Projects', path: '/projects', category: 'Pages', description: 'View our completed projects' },
-  { id: 'contact', title: 'Contact', path: '/contact', category: 'Pages', description: 'Get in touch with us' },
-  { id: 'careers', title: 'Careers', path: '/careers', category: 'Pages', description: 'Join our team' },
-
-  // About Sections
-  { id: 'our-story', title: 'Our Story', path: '/about#our-story', category: 'About', description: 'The history of Tobler' },
-  { id: 'swiss-engineering', title: 'Swiss Engineering', path: '/about#swiss-engineering', category: 'About', description: 'Engineering excellence' },
-  { id: 'india-presence', title: 'India Presence', path: '/about#india-presence', category: 'About', description: 'Tobler in India' },
-  { id: 'philosophy', title: 'Philosophy', path: '/about#philosophy', category: 'About', description: 'Our core beliefs' },
-  { id: 'values', title: 'Values', path: '/about#values', category: 'About', description: 'What we stand for' },
-  { id: 'leadership', title: 'Team Members', path: '/about#leadership', category: 'About', description: 'Meet our leaders' },
-  { id: 'timeline', title: 'Timeline', path: '/about#timeline', category: 'About', description: 'Tobler\'s journey' },
-  { id: 'certifications', title: 'Certifications', path: '/about#certifications', category: 'About', description: 'Quality & certifications' },
-
-  // Products
-  { id: 'scaffolding', title: 'Scaffolding Systems', path: '/products/scaffolding-systems', category: 'Products', description: 'Advanced scaffolding solutions' },
-  { id: 'formwork', title: 'Formwork Systems', path: '/products/formwork-systems', category: 'Products', description: 'Premium formwork systems' },
-
-  // Manufacturing Sections
-  { id: 'manufacturing-overview', title: 'Manufacturing Overview', path: '/manufacturing', category: 'Manufacturing', description: 'Production facilities' },
-  { id: 'production-facility', title: 'Production Facility', path: '/manufacturing#facility', category: 'Manufacturing', description: 'Our state-of-the-art facility' },
-  { id: 'quality-control', title: 'Quality Control', path: '/manufacturing#quality', category: 'Manufacturing', description: 'Quality assurance process' },
-  { id: 'process', title: 'Manufacturing Process', path: '/manufacturing#process', category: 'Manufacturing', description: 'How we manufacture' },
-
-  // Other Pages
-  { id: 'faq', title: 'FAQs', path: '/faq', category: 'Resources', description: 'Frequently asked questions' },
-  { id: 'testimonials', title: 'Testimonials', path: '/testimonials', category: 'Resources', description: 'Customer testimonials' },
-  { id: 'news-media', title: 'News & Media', path: '/news-media', category: 'Resources', description: 'Latest news and media' },
-  { id: 'downloads', title: 'Downloads', path: '/download-brochures', category: 'Resources', description: 'Download brochures & resources' },
-]
+const RESULT_LIMIT = 20
 
 export default function SearchModal({ isOpen, onClose }) {
   const [query, setQuery] = useState('')
-  const [results, setResults] = useState([])
   const [selectedIndex, setSelectedIndex] = useState(0)
   const inputRef = useRef(null)
   const navigate = useNavigate()
@@ -49,27 +16,37 @@ export default function SearchModal({ isOpen, onClose }) {
   useEffect(() => {
     if (isOpen) {
       inputRef.current?.focus()
+    } else {
+      // Reset so re-opening the modal never shows the previous search's
+      // stale results for a beat before the input re-focuses.
+      setQuery('')
+      setSelectedIndex(0)
     }
   }, [isOpen])
 
+  const results = useMemo(
+    () => (query.trim() ? searchEntries(SEARCH_ENTRIES, query, { limit: RESULT_LIMIT }) : []),
+    [query]
+  )
+
+  const answerCard = useMemo(() => {
+    if (!query.trim()) return null
+    return matchAnswerCards(ANSWER_CARDS, query)[0] || null
+  }, [query])
+
   useEffect(() => {
-    if (!query.trim()) {
-      setResults([])
-      setSelectedIndex(0)
-      return
-    }
-
-    const query_lower = query.toLowerCase()
-    const filtered = SEARCH_INDEX.filter(
-      (item) =>
-        item.title.toLowerCase().includes(query_lower) ||
-        item.description.toLowerCase().includes(query_lower) ||
-        item.category.toLowerCase().includes(query_lower)
-    )
-
-    setResults(filtered)
     setSelectedIndex(0)
   }, [query])
+
+  const goTo = (path) => {
+    // FAQ deep-links carry `?q=` so the FAQ page can pre-filter and expand
+    // the matching question — everywhere else a plain path (with an
+    // optional #hash) is enough.
+    const [pathname, hash] = path.split('#')
+    navigate(pathname.includes('?') ? pathname : hash ? `${pathname}#${hash}` : pathname)
+    onClose()
+    setQuery('')
+  }
 
   const handleKeyDown = (e) => {
     if (e.key === 'Escape') {
@@ -80,17 +57,13 @@ export default function SearchModal({ isOpen, onClose }) {
     } else if (e.key === 'ArrowUp') {
       e.preventDefault()
       setSelectedIndex((prev) => Math.max(prev - 1, 0))
-    } else if (e.key === 'Enter' && results[selectedIndex]) {
-      navigate(results[selectedIndex].path)
-      onClose()
-      setQuery('')
+    } else if (e.key === 'Enter') {
+      if (results[selectedIndex]) {
+        goTo(results[selectedIndex].path)
+      } else if (answerCard) {
+        goTo(answerCard.ctaPath)
+      }
     }
-  }
-
-  const handleResultClick = (path) => {
-    navigate(path)
-    onClose()
-    setQuery('')
   }
 
   if (!isOpen) return null
@@ -105,7 +78,7 @@ export default function SearchModal({ isOpen, onClose }) {
             <input
               ref={inputRef}
               type="text"
-              placeholder="Search pages, products, resources..."
+              placeholder="Search products, projects, FAQs, careers..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -123,39 +96,88 @@ export default function SearchModal({ isOpen, onClose }) {
           {/* Results or Empty State */}
           <div className="max-h-[calc(100vh-300px)] overflow-y-auto">
             {query.trim() === '' ? (
-              <div className="px-6 py-12 text-center">
-                <Search size={48} className="mx-auto text-tobler-border mb-4" />
-                <p className="text-tobler-muted">Start typing to search...</p>
+              <div className="px-6 py-10">
+                <p className="text-xs font-semibold uppercase tracking-wide text-tobler-muted mb-3">
+                  Popular searches
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {SUGGESTED_SEARCHES.map((suggestion) => (
+                    <button
+                      key={suggestion}
+                      onClick={() => setQuery(suggestion)}
+                      className="px-3 py-1.5 text-sm rounded-full border border-tobler-border text-tobler-body hover:border-tobler-blue hover:text-tobler-blue transition-colors"
+                    >
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
               </div>
-            ) : results.length === 0 ? (
+            ) : results.length === 0 && !answerCard ? (
               <div className="px-6 py-12 text-center">
-                <p className="text-tobler-muted">No results found for "{query}"</p>
+                <p className="text-tobler-muted mb-4">No results found for &quot;{query}&quot;</p>
+                <button
+                  onClick={() => goTo('/contact')}
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-tobler-blue hover:text-tobler-blue-dark"
+                >
+                  Ask our team directly <ChevronRight size={16} />
+                </button>
               </div>
             ) : (
-              <div className="divide-y divide-tobler-border-light">
-                {results.map((result, idx) => (
-                  <button
-                    key={result.id}
-                    onClick={() => handleResultClick(result.path)}
-                    className={`w-full px-6 py-4 flex items-start justify-between transition-colors duration-200 ${
-                      idx === selectedIndex
-                        ? 'bg-tobler-bg-light'
-                        : 'hover:bg-tobler-bg-light/50'
-                    }`}
-                  >
-                    <div className="text-left flex-1">
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-base font-semibold text-tobler-heading">{result.title}</h3>
-                        <span className="px-2 py-1 text-xs font-medium text-tobler-blue bg-tobler-blue/10 rounded-full">
-                          {result.category}
-                        </span>
-                      </div>
-                      <p className="text-sm text-tobler-muted mt-1">{result.description}</p>
+              <>
+                {answerCard && (
+                  <div className="px-6 pt-5 pb-4 bg-tobler-blue/5 border-b border-tobler-border-light">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Sparkles size={16} className="text-tobler-gold-deep" />
+                      <h3 className="text-sm font-semibold text-tobler-heading">{answerCard.title}</h3>
                     </div>
-                    <ChevronRight size={20} className="text-tobler-muted ml-4 flex-shrink-0 mt-0.5" />
-                  </button>
-                ))}
-              </div>
+                    <dl className="space-y-1.5 mb-3">
+                      {answerCard.lines.map((line, i) => (
+                        <div key={i} className="text-sm text-tobler-body">
+                          {line.label && <span className="font-medium text-tobler-heading">{line.label}: </span>}
+                          <span>{line.value}</span>
+                        </div>
+                      ))}
+                    </dl>
+                    <button
+                      onClick={() => goTo(answerCard.ctaPath)}
+                      className="inline-flex items-center gap-1 text-sm font-medium text-tobler-blue hover:text-tobler-blue-dark"
+                    >
+                      {answerCard.ctaLabel} <ChevronRight size={14} />
+                    </button>
+                  </div>
+                )}
+
+                {results.length > 0 && (
+                  <div className="divide-y divide-tobler-border-light">
+                    {results.map((result, idx) => (
+                      <button
+                        key={result.id}
+                        onClick={() => goTo(result.path)}
+                        onMouseEnter={() => setSelectedIndex(idx)}
+                        className={`w-full px-6 py-4 flex items-start justify-between transition-colors duration-200 ${
+                          idx === selectedIndex ? 'bg-tobler-bg-light' : 'hover:bg-tobler-bg-light/50'
+                        }`}
+                      >
+                        <div className="text-left flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <h3 className="text-base font-semibold text-tobler-heading">{result.title}</h3>
+                            <span className="px-2 py-1 text-xs font-medium text-tobler-blue bg-tobler-blue/10 rounded-full">
+                              {result.category}
+                            </span>
+                          </div>
+                          {result.subtitle && (
+                            <p className="text-xs text-tobler-muted mt-1">{result.subtitle}</p>
+                          )}
+                          {result.description && (
+                            <p className="text-sm text-tobler-body mt-1 line-clamp-2">{result.description}</p>
+                          )}
+                        </div>
+                        <ChevronRight size={20} className="text-tobler-muted ml-4 flex-shrink-0 mt-0.5" />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </>
             )}
           </div>
 

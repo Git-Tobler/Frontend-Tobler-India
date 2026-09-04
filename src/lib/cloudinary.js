@@ -86,15 +86,19 @@ const clipStart = (publicId) => CLIP_START[publicId] ?? 1
 // `crop: 'limit'` by default so a clip is never upscaled or re-framed — the
 // production footage is natively 480x848, and stretching it to a wide box would
 // show as soft, badly-cropped video.
-export function cldVideo(publicId, { w = 720, h, crop = 'limit' } = {}) {
+// `quality` maps straight onto Cloudinary's q_ parameter — 'auto' for the
+// portrait process clips, 'auto:best' where one clip carries a whole band and
+// compression artifacts would be the first thing a visitor sees.
+export function cldVideo(publicId, { w = 720, h, crop = 'limit', quality = 'auto' } = {}) {
   if (!CLOUD || !publicId) return null
   const box = params(`c_${crop}`, `w_${w}`, h && `h_${h}`)
   const start = `so_${clipStart(publicId)}`
+  const q = `q_${quality}`
   return {
-    poster: build('video', publicId, params('f_jpg', 'q_auto', box, start)),
+    poster: build('video', publicId, params('f_jpg', q, box, start)),
     sources: [
-      { src: build('video', publicId, params('f_webm', 'q_auto', box, 'ac_none', start)), type: 'video/webm' },
-      { src: build('video', publicId, params('f_mp4', 'q_auto', box, 'ac_none', start)), type: 'video/mp4' },
+      { src: build('video', publicId, params('f_webm', q, box, 'ac_none', start)), type: 'video/webm' },
+      { src: build('video', publicId, params('f_mp4', q, box, 'ac_none', start)), type: 'video/mp4' },
     ],
   }
 }

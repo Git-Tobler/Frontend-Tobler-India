@@ -30,7 +30,6 @@ function Contact() {
       <PageHero
         imageId={MEDIA.contactPageHero}
         title="Let's Discuss Your Next Project"
-        description="Whether you need a quotation, technical guidance, or general information, our team is ready to help."
         breadcrumbItems={[{ label: 'Contact' }]}
       />
 

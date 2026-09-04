@@ -57,7 +57,7 @@ function ProductsPage() {
         </Container>
       </section>
 
-      <section className="py-24 md:py-30">
+      <section id="industries" className="py-24 md:py-30 scroll-mt-28">
         <Container>
           <SectionTitle
             align="center"

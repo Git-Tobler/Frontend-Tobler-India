@@ -1,6 +1,7 @@
 import { Outlet, useNavigation } from 'react-router-dom'
 import MainLayout from './layouts/MainLayout.jsx'
 import ScrollToTop from './components/layout/ScrollToTop.jsx'
+import ScrollIndicator from './components/common/ScrollIndicator.jsx'
 import { FooterProvider } from './contexts/FooterContext.jsx'
 
 function PageLoader() {
@@ -18,6 +19,7 @@ function App() {
     <FooterProvider>
       <MainLayout>
         <ScrollToTop />
+        <ScrollIndicator />
         {navigation.state === 'loading' ? <PageLoader /> : <Outlet />}
       </MainLayout>
     </FooterProvider>

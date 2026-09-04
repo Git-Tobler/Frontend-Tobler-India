@@ -193,9 +193,9 @@ export default {
 
         /* Homepage geometry — opt-in, so inner pages keep their 4–6px edges. */
         pill: '999px',
-        'card-lg': '27px',
-        'card-xl': '37px',
-        'img-lg': '21px',
+        'card-lg': '0px',
+        'card-xl': '0px',
+        'img-lg': '0px',
       },
       
          /*SHADOWS*/

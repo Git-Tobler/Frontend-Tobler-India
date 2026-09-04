@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { ArrowUpRight } from 'lucide-react'
-import CornerMarks from '../ui/CornerMarks.jsx'
 import ResponsiveImage from '../ui/ResponsiveImage.jsx'
 import { familyPath } from '../../data/products/index.js'
 
@@ -25,7 +24,6 @@ function ProductFamilyCard({ family }) {
         </div>
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-tobler-heading via-tobler-heading/50 to-transparent group-hover:from-tobler-blue-dark transition-colors duration-300" />
-      <CornerMarks always className="text-white/25" />
 
       <div className="relative z-10">
         <p className="label-mono text-white/70 mb-3">{family.subcategories.length} Product Lines</p>

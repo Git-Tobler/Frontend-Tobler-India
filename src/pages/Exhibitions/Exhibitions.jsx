@@ -3,14 +3,11 @@ import PageHero from '../../components/layout/PageHero.jsx'
 import MediaBand from '../../components/ui/MediaBand.jsx'
 import Container from '../../components/common/Container.jsx'
 import ResponsiveImage from '../../components/ui/ResponsiveImage.jsx'
-import { Calendar, MapPin, Zap, ExternalLink, X, ChevronLeft, ChevronRight } from 'lucide-react'
-import { useState, useEffect } from 'react'
-import { cldImage } from '../../lib/cloudinary.js'
+import { Calendar, MapPin, Zap, ExternalLink } from 'lucide-react'
+import { useState } from 'react'
 import { MEDIA } from '../../data/media-map.js'
 
 function Exhibitions() {
-  /* Index into the flattened gallery list, so the arrows and the counter walk
-     the same sequence the thumbnails were clicked from. null = closed. */
   const [lightboxIndex, setLightboxIndex] = useState(null)
 
   const exhibitions = [
@@ -137,40 +134,11 @@ function Exhibitions() {
     },
   ]
 
-  /* One flat sequence in the same order the galleries render, so the lightbox
-     can walk from the last photo of one event into the first of the next. */
-  const galleryImages = exhibitions.filter((e) => e.images).flatMap((e) => e.images)
-  const lightboxImage = lightboxIndex === null ? null : galleryImages[lightboxIndex]
-  const imageCount = galleryImages.length
-
-  const openLightbox = (imageId) => setLightboxIndex(galleryImages.findIndex((img) => img.id === imageId))
-  const closeLightbox = () => setLightboxIndex(null)
-  const showPrev = () => setLightboxIndex((i) => (i - 1 + imageCount) % imageCount)
-  const showNext = () => setLightboxIndex((i) => (i + 1) % imageCount)
-
-  useEffect(() => {
-    if (lightboxIndex === null) return
-
-    const onKeyDown = (e) => {
-      if (e.key === 'Escape') setLightboxIndex(null)
-      else if (e.key === 'ArrowLeft') setLightboxIndex((i) => (i - 1 + imageCount) % imageCount)
-      else if (e.key === 'ArrowRight') setLightboxIndex((i) => (i + 1) % imageCount)
-    }
-
-    // The page behind the overlay would otherwise scroll under the photo.
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    window.addEventListener('keydown', onKeyDown)
-    return () => {
-      document.body.style.overflow = previousOverflow
-      window.removeEventListener('keydown', onKeyDown)
-    }
-  }, [lightboxIndex, imageCount])
 
   const ExhibitionCard = ({ exhibition }) => {
     const isComplete = exhibition.boothNumber && !exhibition.boothNumber.includes('[') && exhibition.status === 'upcoming'
-    const isPending = exhibition.status === 'pending' || (exhibition.boothNumber && exhibition.boothNumber.includes('['))
-    const isPast = exhibition.status === 'past'
+    const isPending = exhibition.status === 'pending' || (exhibition.boothNumber && exhibition.boothNumber.includes('[') && exhibition.status !== 'Concluded')
+    const isPast = exhibition.status === 'past' || exhibition.status === 'Concluded'
     return (
       <div className={`p-8 rounded-card border transition-all ${
         isPast
@@ -270,9 +238,9 @@ function Exhibitions() {
             Schedule Visit <ExternalLink size={14} />
           </a>
         )}
-        {exhibition.images && (
+        {exhibition.images && exhibition.images.length > 0 && (
           <a
-            href="#past-events"
+            href={`#event-gallery-${exhibition.id}`}
             className="inline-flex items-center gap-2 text-sm font-medium text-tobler-blue hover:text-tobler-blue/80 transition-colors"
           >
             View Photos <ExternalLink size={14} />
@@ -328,19 +296,18 @@ function Exhibitions() {
           </div>
 
           {/* Past Events Section */}
-          {galleryImages.length > 0 && (
+          {exhibitions.some((e) => e.images) && (
             <div id="past-events" className="mt-20 pt-16 border-t border-tobler-border scroll-mt-28">
               <h2 className="text-2xl font-semibold text-tobler-heading mb-8">Event Galleries</h2>
               {exhibitions.map((event) => event.images ? (
-                <div key={event.id} className="mb-16">
+                <div key={event.id} id={`event-gallery-${event.id}`} className="mb-16 scroll-mt-24">
                   <h3 className="text-xl font-semibold text-tobler-heading mb-6">{event.name} - {event.dates}</h3>
                   <p className="text-sm text-tobler-body mb-8">{event.description}</p>
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {event.images.map((img, idx) => (
                       <div
                         key={idx}
-                        className="relative overflow-hidden rounded-card border border-tobler-border shadow-soft hover:shadow-card transition-all cursor-pointer"
-                        onClick={() => openLightbox(img.id)}
+                        className="relative overflow-hidden rounded-card border border-tobler-border shadow-soft hover:shadow-card transition-all"
                       >
                         <ResponsiveImage
                           publicId={img.id}
@@ -376,52 +343,6 @@ function Exhibitions() {
         </Container>
       </section>
 
-      {/* Full-screen photo viewer. `c_limit` instead of the site-wide `c_fill`
-          so the whole frame shows rather than an auto-cropped box. */}
-      {lightboxImage && (
-        <div
-          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4 md:p-12"
-          role="dialog"
-          aria-modal="true"
-          aria-label={lightboxImage.alt}
-          onClick={closeLightbox}
-        >
-          <button
-            onClick={closeLightbox}
-            className="absolute top-4 right-4 p-2 text-white/80 hover:text-white transition-colors"
-            aria-label="Close"
-          >
-            <X size={28} />
-          </button>
-
-          <button
-            onClick={(e) => { e.stopPropagation(); showPrev() }}
-            className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 p-2 text-white/80 hover:text-white transition-colors"
-            aria-label="Previous image"
-          >
-            <ChevronLeft size={36} />
-          </button>
-
-          <img
-            src={cldImage(lightboxImage.id, { w: 2400, crop: 'limit' })}
-            alt={lightboxImage.alt}
-            className="max-w-full max-h-full object-contain"
-            onClick={(e) => e.stopPropagation()}
-          />
-
-          <button
-            onClick={(e) => { e.stopPropagation(); showNext() }}
-            className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 p-2 text-white/80 hover:text-white transition-colors"
-            aria-label="Next image"
-          >
-            <ChevronRight size={36} />
-          </button>
-
-          <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm text-white/70">
-            {lightboxIndex + 1} / {imageCount}
-          </p>
-        </div>
-      )}
     </>
   )
 }

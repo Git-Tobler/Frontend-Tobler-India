@@ -28,7 +28,6 @@ function EngineeringManufacturingSection() {
         <div className="mb-16 grid gap-5 lg:grid-cols-12">
           <VideoPanel
             publicId={MEDIA.productionVideo}
-            label="Series production — integral console"
             className="mx-auto w-full max-w-[300px] rounded-img-lg lg:col-span-3 lg:mx-0"
           />
           <ResponsiveImage

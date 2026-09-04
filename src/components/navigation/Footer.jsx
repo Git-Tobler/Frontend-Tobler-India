@@ -35,9 +35,9 @@ function Footer() {
       {/* Gold accent line */}
       <div className="h-1 bg-tobler-gold" />
 
-      <Container className="py-20">
+      <Container className="py-12">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 pb-16 border-b border-white/10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-12 border-b border-white/10">
           {/* Brand Section */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-6">
@@ -76,7 +76,7 @@ function Footer() {
           <FooterColumn title="Solutions" links={FOOTER_LINKS.solutions} />
           <FooterColumn title="Resources" links={FOOTER_LINKS.resources} />
 
-          {/* Contact Section */}
+          {/* Contact Section with Swiss Logo */}
           <div className="flex flex-col">
             <h6 className="text-white font-semibold mb-6 text-sm uppercase tracking-wider">Contact</h6>
             <ul className="space-y-5 flex flex-col">
@@ -96,50 +96,49 @@ function Footer() {
                   {SITE.email}
                 </a>
               </li>
-            </ul>
 
-            {/* Swiss Engineer Logo */}
-            <img
-              src={cldImage(MEDIA.swissEngineer, { w: 360 })}
-              alt="Swiss Engineer"
-              className="h-24 w-auto object-contain mt-8"
-              loading="lazy"
-            />
+              {/* Swiss Engineer Logo — sits directly under the email line */}
+              <li className="pt-2">
+                <img
+                  src={cldImage(MEDIA.swissEngineer, { w: 480, crop: 'scale', trim: true })}
+                  alt="Swiss Engineering, Swiss Technology"
+                  className="w-full max-w-[240px] h-auto object-contain"
+                  loading="lazy"
+                />
+              </li>
+            </ul>
           </div>
         </div>
-
-        
-
       </Container>
 
       {/* Bottom Footer on White Ribbon */}
-      <div className="bg-white py-6">
+      <div className="bg-white py-4">
         <Container>
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <p className="text-xs text-tobler-body">
+            <p className="text-xs text-tobler-heading font-medium">
               © {new Date().getFullYear()} Tobler India Pvt. Ltd. All Rights Reserved.
             </p>
 
             <div className="flex items-center gap-6 flex-wrap justify-center md:justify-end">
-              <NavLink to="/privacy-policy" className="text-xs text-tobler-body hover:text-tobler-blue transition-colors">
+              <NavLink to="/privacy-policy" className="text-xs font-medium text-tobler-heading hover:text-tobler-blue transition-colors">
                 Privacy Policy
               </NavLink>
               <span className="w-1 h-1 bg-tobler-border" />
-              <NavLink to="/terms-conditions" className="text-xs text-tobler-body hover:text-tobler-blue transition-colors">
+              <NavLink to="/terms-conditions" className="text-xs font-medium text-tobler-heading hover:text-tobler-blue transition-colors">
                 Terms & Conditions
               </NavLink>
               <span className="w-1 h-1 bg-tobler-border" />
-              <NavLink to="/cookies-policy" className="text-xs text-tobler-body hover:text-tobler-blue transition-colors">
+              <NavLink to="/cookies-policy" className="text-xs font-medium text-tobler-heading hover:text-tobler-blue transition-colors">
                 Cookie Policy
               </NavLink>
               <span className="w-1 h-1 bg-tobler-border" />
-              <button className="text-xs text-tobler-body hover:text-tobler-blue transition-colors">
+              <button className="text-xs font-medium text-tobler-heading hover:text-tobler-blue transition-colors">
                 Cookie Preferences
               </button>
               <span className="w-1 h-1 bg-tobler-border" />
               <button
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="text-xs font-semibold text-tobler-blue hover:text-tobler-gold transition-colors border border-tobler-blue px-3 py-1.5 rounded"
+                className="text-xs font-semibold text-tobler-blue hover:text-tobler-black transition-colors border border-tobler-blue px-3 py-1.5 rounded"
               >
                 Back to Top
               </button>

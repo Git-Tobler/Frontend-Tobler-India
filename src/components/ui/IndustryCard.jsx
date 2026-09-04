@@ -1,4 +1,3 @@
-import CornerMarks from './CornerMarks.jsx'
 import ResponsiveImage from './ResponsiveImage.jsx'
 
 /* `soft` only changes the frame — the dark photo treatment inside stays, since
@@ -26,7 +25,6 @@ function IndustryCard({ industry, soft = false }) {
         </div>
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-tobler-heading via-tobler-heading/45 to-transparent group-hover:from-tobler-blue-dark transition-colors duration-300" />
-      <CornerMarks always className="text-white/25" />
       <div className="relative z-10">
         <h3 className="text-xl text-white mb-3">{industry.name}</h3>
         <p className="text-white/65 text-sm leading-relaxed normal-case">{industry.summary}</p>

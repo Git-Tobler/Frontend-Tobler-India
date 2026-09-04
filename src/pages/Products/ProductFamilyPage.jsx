@@ -205,9 +205,7 @@ function ProductFamilyPage() {
       {!openSubcategory && family.videoId && (
         <section className="py-16 md:py-24">
           <Container>
-            <div className="grid lg:grid-cols-[1fr_auto] gap-10 items-center">
-
-              <h2 className="text-h3 max-w-xl">{family.tagline}</h2>
+            <div className="flex justify-center">
               <VideoPanel
                 publicId={family.videoId}
                 label={family.videoLabel}

@@ -29,7 +29,6 @@ function ProductDrawer({ open, family, subcategory, product, relatedProducts = [
       contentKey={product?.slug}
       eyebrow={product ? `${family.name} — ${subcategory.name}` : undefined}
       title={product?.name}
-      fullScreenDesktop
       footer={
         <Button to="/contact#rfq" size="lg" className="w-full justify-center">
           Request a Quote

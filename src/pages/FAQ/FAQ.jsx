@@ -1,98 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import SEO from '../../components/common/SEO.jsx'
 import Container from '../../components/common/Container.jsx'
 import { HelpCircle, ChevronDown, Search } from 'lucide-react'
+import { SITE_FAQS } from '../../data/faqs.js'
 
 function FAQ() {
-  const [expandedId, setExpandedId] = useState(null)
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchParams] = useSearchParams()
+  // Arriving from the search modal with `?q=<question>` — pre-fill the box
+  // and expand the matching question so the answer is right there, instead
+  // of landing on the page and making someone search again.
+  const initialQuery = searchParams.get('q') || ''
+  const [expandedId, setExpandedId] = useState(
+    () => SITE_FAQS.find((f) => f.question === initialQuery)?.id ?? null
+  )
+  const [searchTerm, setSearchTerm] = useState(initialQuery)
 
-  const faqs = [
-    {
-      id: 'q1',
-      category: 'Products & Services',
-      question: 'What types of scaffolding and formwork systems do you offer?',
-      answer:
-        'We provide a comprehensive range of Swiss-engineered scaffolding and formwork systems, including modular metal scaffolding, ring-lock systems, frame scaffolding, and specialized formwork solutions. All products are manufactured to ISO standards and suited for India\'s demanding construction requirements.',
-    },
-    {
-      id: 'q2',
-      category: 'Products & Services',
-      question: 'Do you provide installation and safety training?',
-      answer:
-        'Yes, we offer comprehensive installation support and safety training programs. Our technical team can assist with site assessments, installation supervision, and worker training to ensure optimal safety and efficiency on your construction projects.',
-    },
-    {
-      id: 'q3',
-      category: 'Products & Services',
-      question: 'Can I rent instead of purchasing scaffolding?',
-      answer:
-        '[CONTENT TO BE ADDED] Please contact our team at info@gezu-impex.nl to discuss rental options and pricing that may be available for your project duration.',
-    },
-    {
-      id: 'q4',
-      category: 'Ordering & Delivery',
-      question: 'What is your typical lead time for orders?',
-      answer:
-        '[CONTENT TO BE ADDED] Our standard lead time depends on product availability and order size. Contact our sales team for specific timelines and expedited delivery options.',
-    },
-    {
-      id: 'q5',
-      category: 'Ordering & Delivery',
-      question: 'Do you deliver across India?',
-      answer:
-        'Yes, we deliver across India with a well-established logistics network. Delivery times vary based on location and order size. Contact us for a quote and delivery schedule for your specific location.',
-    },
-    {
-      id: 'q6',
-      category: 'Ordering & Delivery',
-      question: 'What is your minimum order quantity?',
-      answer:
-        '[CONTENT TO BE ADDED] MOQ varies based on product type and customization requirements. Please reach out to our team to discuss quantities for your specific project needs.',
-    },
-    {
-      id: 'q7',
-      category: 'Quality & Certifications',
-      question: 'What quality standards do your products meet?',
-      answer:
-        'All our products meet ISO 9001:2015 quality management standards and comply with Indian building codes. We also maintain certifications from international bodies ensuring Swiss engineering excellence combined with local suitability.',
-    },
-    {
-      id: 'q8',
-      category: 'Quality & Certifications',
-      question: 'Are your products tested for safety?',
-      answer:
-        'Absolutely. Every product undergoes rigorous testing including load testing, material inspection, and safety compliance verification before dispatch. Documentation and test certificates are provided with each shipment.',
-    },
-    {
-      id: 'q9',
-      category: 'Technical Support',
-      question: 'Do you provide technical consultation for project planning?',
-      answer:
-        'Yes, our engineering team provides free technical consultation. We can help with load calculations, system selection, and project-specific recommendations. Schedule a consultation on our platform or contact us directly.',
-    },
-    {
-      id: 'q10',
-      category: 'Technical Support',
-      question: 'What warranty do you provide?',
-      answer:
-        '[CONTENT TO BE ADDED] Our standard warranty covers manufacturing defects. Contact our support team for detailed warranty information applicable to your purchase.',
-    },
-    {
-      id: 'q11',
-      category: 'Account & Partnerships',
-      question: 'Can construction companies become dealers or resellers?',
-      answer:
-        '[CONTENT TO BE ADDED] We welcome partnership inquiries from established construction companies and suppliers. Contact our business development team at info@gezu-impex.nl to explore dealer opportunities.',
-    },
-    {
-      id: 'q12',
-      category: 'Account & Partnerships',
-      question: 'Do you offer bulk pricing for large projects?',
-      answer:
-        'Yes, we provide competitive bulk pricing for large-scale projects. Contact our sales team with your project requirements for a customized quotation.',
-    },
-  ]
+  useEffect(() => {
+    const q = searchParams.get('q')
+    if (q) {
+      setSearchTerm(q)
+      setExpandedId(SITE_FAQS.find((f) => f.question === q)?.id ?? null)
+    }
+  }, [searchParams])
+
+  const faqs = SITE_FAQS
 
   const categories = [...new Set(faqs.map((faq) => faq.category))]
 
@@ -195,7 +127,7 @@ function FAQ() {
               ) : (
                 <div className="text-center py-12">
                   <HelpCircle size={40} className="text-tobler-body/30 mx-auto mb-3" />
-                  <p className="text-tobler-body mb-2">No FAQs found for "{searchTerm}"</p>
+                  <p className="text-tobler-body mb-2">No FAQs found for &quot;{searchTerm}&quot;</p>
                   <p className="text-sm text-tobler-body/60">
                     Try different keywords or contact our team for help.
                   </p>
@@ -205,7 +137,7 @@ function FAQ() {
 
             {/* Still Need Help */}
             <div className="mt-16 p-8 rounded-card bg-gradient-to-br from-tobler-blue/5 to-tobler-blue/10 border border-tobler-blue/20">
-              <h3 className="font-semibold text-tobler-heading mb-2">Didn't find your answer?</h3>
+              <h3 className="font-semibold text-tobler-heading mb-2">Didn&apos;t find your answer?</h3>
               <p className="text-sm text-tobler-body mb-4">
                 Our technical team is ready to help with any questions or specific concerns about your project.
               </p>

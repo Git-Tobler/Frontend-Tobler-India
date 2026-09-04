@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom'
-import { MapPin, Calendar, Layers } from 'lucide-react'
+import { MapPin, Layers } from 'lucide-react'
 import SEO from '../../components/common/SEO.jsx'
 import PageHero from '../../components/layout/PageHero.jsx'
 import Container from '../../components/common/Container.jsx'
@@ -8,7 +8,7 @@ import Badge from '../../components/common/Badge.jsx'
 import ResponsiveImage from '../../components/ui/ResponsiveImage.jsx'
 import NotFound from '../NotFound/NotFound.jsx'
 import ReadMore from '../../components/ui/ReadMore.jsx'
-import { getProjectBySlug, PROJECTS, projectStatusLabel } from '../../data/projects.js'
+import { getProjectBySlug, PROJECTS } from '../../data/projects.js'
 import { INDUSTRY_ICONS, DEFAULT_ICON } from '../../data/icons.js'
 
 function ProjectDetail() {
@@ -41,7 +41,6 @@ function ProjectDetail() {
               alt={project.name}
               icon={INDUSTRY_ICONS[project.industry] || DEFAULT_ICON}
               iconSize={72}
-              label={projectStatusLabel(project)}
               className="aspect-video rounded-card"
             />
 
@@ -52,10 +51,6 @@ function ProjectDetail() {
               <div className="flex items-center gap-3 text-tobler-body">
                 <MapPin size={18} className="text-tobler-blue shrink-0" />
                 {project.location}
-              </div>
-              <div className="flex items-center gap-3 text-tobler-body">
-                <Calendar size={18} className="text-tobler-blue shrink-0" />
-                {projectStatusLabel(project)}
               </div>
               <div>
                 <h3 className="font-semibold text-tobler-heading mb-3 flex items-center gap-2">

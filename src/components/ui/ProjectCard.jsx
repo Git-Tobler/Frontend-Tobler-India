@@ -3,7 +3,6 @@ import { MapPin, ArrowRight } from 'lucide-react'
 import Badge from '../common/Badge.jsx'
 import ResponsiveImage from './ResponsiveImage.jsx'
 import { INDUSTRY_ICONS, DEFAULT_ICON } from '../../data/icons.js'
-import { projectStatusLabel } from '../../data/projects.js'
 
 /* `soft` switches to the homepage's rounded/green language; the Projects index
    keeps the default sharp-cornered treatment. */
@@ -40,9 +39,6 @@ function ProjectCard({ project, soft = false }) {
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-tobler-heading/70 to-transparent"
         />
-        <span className="absolute bottom-3 right-4 figure-mono text-sm text-white">
-          {project.status === 'ongoing' ? projectStatusLabel(project) : project.year}
-        </span>
         <div className="absolute top-4 left-4">
           <Badge variant="light" className="backdrop-blur-sm">
             {project.industry}

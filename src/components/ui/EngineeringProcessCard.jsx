@@ -23,10 +23,7 @@ function EngineeringProcessCard({ step }) {
         </p>
       </div>
 
-      <div className="mt-7 flex items-center gap-2 text-sm font-medium text-shopify-green">
-        <span className="h-2 w-2 rounded-pill bg-shopify-green" />
-        <span>Precision by design</span>
-      </div>
+      
     </div>
   )
 }

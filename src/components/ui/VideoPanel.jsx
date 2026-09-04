@@ -36,7 +36,8 @@ function VideoPanel({
   shouldPlay = true,
   aspect = 'aspect-[9/16]',
   width = 720,
-  marks = true,
+  quality = 'auto',
+  marks = false,
   priority = false,
   fill = false,
   fit = 'cover',
@@ -44,7 +45,7 @@ function VideoPanel({
   const [play, setPlay] = useState(false)
   const ref = useRef(null)
   const videoRef = useRef(null)
-  const media = cldVideo(publicId, { w: width })
+  const media = cldVideo(publicId, { w: width, quality })
 
   useEffect(() => {
     if (priority) {

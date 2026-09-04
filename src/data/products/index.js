@@ -486,11 +486,8 @@ export const PRODUCT_FAMILIES = [
     slug: 'formwork-systems',
     name: 'Formwork Systems',
     tagline: 'Aluminium and steel formwork engineered in Switzerland, manufactured in India.',
-    summary:
-      'Monolithic, handset, deck-slab and protection-screen systems for fast, precise, repeatable concrete cycles — from single-pour high-rise cores to crane-free residential walls.',
     headline: 'Built for Precision. Made for Speed.',
-    intro:
-      'Our formwork systems are engineered for accurate, repeatable concrete cycles — from single-pour high-rise cores to crane-free residential walls.',
+  
     heroImageId: MEDIA.formworkThumbnail,
    
     subcategories: [
@@ -676,7 +673,7 @@ export const PRODUCT_FAMILIES = [
       },
       {
         slug: 'slab-formwork',
-        name: 'Deck Slab Formwork',
+        name: 'Alu Deck Slab Formwork',
         summary: 'Lightweight aluminium deck panels for slab pours, mounted from below by a single worker without a crane.',
         imageId: MEDIA.deckSlabFormwork,
         faqs: [

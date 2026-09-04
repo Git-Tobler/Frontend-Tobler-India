@@ -5,15 +5,6 @@ import VideoPanel from '../ui/VideoPanel.jsx'
 import ReadMore from '../ui/ReadMore.jsx'
 import { MEDIA } from '../../data/media-map.js'
 
-/* Video showcase — three production clips showing manufacturing capabilities in
-   parallel. Videos auto-play when in viewport, with subtle scaling on hover. No
-   sound, respects prefers-reduced-motion.
-
-   The tiles are 9:16 frames because most of the library is 480x848 portrait.
-   A landscape source in a 9:16 frame loses about two thirds of its width to
-   the crop — which is what happened the last time one sat in this row — so a
-   clip that isn't portrait sets `fit: 'contain'` and letterboxes inside the
-   tile instead of being cut down to a narrow strip. */
 const VIDEOS = [
   {
     id: MEDIA.laserCuttingVideo,
@@ -45,7 +36,7 @@ function VideoShowcaseSection() {
           align="center"
           size="display"
           title="Manufacturing in Motion"
-          description="See the precision and automation behind every Tobler system — from Swiss-engineered tooling to final quality checks."
+          description="See the precision and automation behind every Tobler system,  from Swiss-engineered tooling to final quality checks."
         />
 
         <div className="mt-20 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">

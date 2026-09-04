@@ -5,85 +5,13 @@ import Container from '../../components/common/Container.jsx'
 import { Calendar, User, Tag, ArrowRight, Search } from 'lucide-react'
 import { useState } from 'react'
 import { MEDIA } from '../../data/media-map.js'
+import { BLOG_POSTS } from '../../data/blog.js'
 
 function Blogs() {
   const [selectedTag, setSelectedTag] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
 
-  const blogPosts = [
-    {
-      id: 1,
-      title: 'The Complete Guide to Scaffolding Safety: Best Practices & Compliance',
-      excerpt: 'Learn essential safety protocols and compliance requirements for scaffolding systems in Indian construction projects.',
-      author: '[Author Name]',
-      date: 'August 2026',
-      category: 'Safety',
-      tags: ['Safety', 'Compliance', 'Construction'],
-      readTime: '8 min read',
-      image: '🛡️',
-      featured: true,
-    },
-    {
-      id: 2,
-      title: 'Swiss Engineering in India: How Precision Meets Local Demands',
-      excerpt: '[Content to be added] - Explores how Swiss manufacturing standards are adapted for Indian construction challenges.',
-      author: '[Author Name]',
-      date: 'July 2026',
-      category: 'Industry Insights',
-      tags: ['Engineering', 'Manufacturing', 'Innovation'],
-      readTime: '7 min read',
-      image: '🇨🇭',
-      featured: false,
-    },
-    {
-      id: 3,
-      title: 'Formwork Systems: Choosing the Right Solution for Your Project',
-      excerpt: '[Content to be added] - A detailed comparison guide for different formwork systems and their applications.',
-      author: '[Author Name]',
-      date: 'June 2026',
-      category: 'Product Guide',
-      tags: ['Formwork', 'Product Selection', 'Project Planning'],
-      readTime: '10 min read',
-      image: '📐',
-      featured: true,
-    },
-    {
-      id: 4,
-      title: 'Reducing Construction Timelines: The Impact of Modern Scaffolding',
-      excerpt: '[Content to be added] - Data-driven insights on how modern scaffolding solutions accelerate project timelines.',
-      author: '[Author Name]',
-      date: 'May 2026',
-      category: 'Industry Insights',
-      tags: ['Efficiency', 'Construction', 'Technology'],
-      readTime: '6 min read',
-      image: '⏱️',
-      featured: false,
-    },
-    {
-      id: 5,
-      title: 'Sustainability in Construction: Tobler\'s Eco-Friendly Initiatives',
-      excerpt: '[Content to be added] - Discover how sustainable manufacturing practices reduce environmental impact.',
-      author: '[Author Name]',
-      date: 'April 2026',
-      category: 'Sustainability',
-      tags: ['Sustainability', 'Environment', 'Manufacturing'],
-      readTime: '7 min read',
-      image: '🌱',
-      featured: false,
-    },
-    {
-      id: 6,
-      title: '[Blog Post Title]',
-      excerpt: '[Blog content to be added]',
-      author: '[Author Name]',
-      date: '[Date]',
-      category: '[Category]',
-      tags: ['[Tags to be added]'],
-      readTime: '[Read time]',
-      image: '📝',
-      featured: false,
-    },
-  ]
+  const blogPosts = BLOG_POSTS
 
   const allTags = [...new Set(blogPosts.flatMap(post => post.tags))]
   const categories = [...new Set(blogPosts.map(post => post.category))]

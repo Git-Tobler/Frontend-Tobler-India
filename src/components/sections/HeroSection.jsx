@@ -9,19 +9,24 @@ const HEADLINE_ENDINGS = ['Swiss Engineering for Better Construction', 'Safer, S
 function HeroSection() {
   return (
     <section className="relative -mt-20 flex min-h-[100svh] items-stretch overflow-hidden border-t-[8px] border-white sm:border-t-[10px] lg:-mt-24 lg:border-t-[12px]">
+      {/* No brightness filter here — the old 848x480 welding clip needed a
+          1.18x lift, but the banner footage is properly exposed and carries
+          its own darkened lower edge for the headline to sit on. */}
       <VideoPanel
         publicId={MEDIA.heroVideo}
         fill
         priority
         marks={false}
-        width={1280}
-        mediaClassName="[filter:brightness(1.18)_saturate(1.05)]"
+        width={1920}
+        quality="auto:best"
       />
 
       {/* Stretched by the section rather than sized with `h-full`: the section has
           only a min-height, so a percentage height here has nothing definite to
-          resolve against and the column would collapse to its content. */}
-      <div className="relative z-10 mx-auto flex w-full max-w-[1480px] flex-col">
+          resolve against and the column would collapse to its content. Left-hung
+          rather than mx-auto centered — the headline belongs on the left edge,
+          and centering the 1480px cap left a dead margin there on wide screens. */}
+      <div className="relative z-10 flex w-full max-w-[1480px] flex-col">
         {/* Headline on the left, standfirst on the right, both hung off the same
             bottom baseline. `items-end` is what keeps the standfirst still while
             the rotating headline changes line count above it. */}

@@ -1,4 +1,3 @@
-import { Crosshair, ShieldCheck, Cog, Globe, MapPin, Factory, Headphones, Wrench } from 'lucide-react'
 import { useInViewAnimation } from '../../hooks/useInViewAnimation.js'
 import swissEngineering from '../../assets/images/Swiss engineering 1.png'
 import indiaPresence from '../../assets/images/Indian presence.png'
@@ -30,10 +29,10 @@ const BANDS = [
     position: '50% 50%',
     copy: 'Swiss engineering is the foundation of everything we do. Every Tobler system is designed with a focus on precision, structural performance, and practical functionality to help construction professionals achieve safer, faster, and more efficient project execution. It is this engineering philosophy that has earned Tobler the trust of customers across more than 80 countries.',
     points: [
-      { icon: Crosshair, label: ['Engineered', 'for precision'] },
-      { icon: ShieldCheck, label: ['Structural', 'performance'] },
-      { icon: Cog, label: ['Practical', 'functionality'] },
-      { icon: Globe, label: ['Trusted in', '80+ countries'] },
+      { number: 1, label: ['Engineered', 'for precision'] },
+      { number: 2, label: ['Structural', 'performance'] },
+      { number: 3, label: ['Practical', 'functionality'] },
+      { number: 4, label: ['Trusted in', '80+ countries'] },
     ],
   },
   {
@@ -45,10 +44,10 @@ const BANDS = [
     flip: true,
     copy: "India is one of the world's fastest-growing construction markets, and Tobler is proud to support its progress through local manufacturing and engineering expertise. Backed by advanced production facilities in Ludhiana and Mumbai, we deliver Swiss engineered scaffolding and formwork systems with responsive technical support and dependable service across India.",
     points: [
-      { icon: MapPin, label: ['Made for', 'India'] },
-      { icon: Factory, label: ['Local manufacturing', 'in Ludhiana & Mumbai'] },
-      { icon: Headphones, label: ['Responsive', 'technical support'] },
-      { icon: Wrench, label: ['Dependable service', 'across India'] },
+      { number: 1, label: ['Made for', 'India'] },
+      { number: 2, label: ['Local manufacturing', 'in Ludhiana & Mumbai'] },
+      { number: 3, label: ['Responsive', 'technical support'] },
+      { number: 4, label: ['Dependable service', 'across India'] },
     ],
   },
 ]
@@ -150,14 +149,23 @@ function Band({ band, rise, at, order }) {
             className={`mt-10 grid grid-cols-2 gap-y-8 border-t border-tobler-border pt-8 sm:grid-cols-4 ${rise}`}
             style={at(order + 0.35)}
           >
-            {points.map(({ icon: Icon, label }, i) => (
+            {points.map(({ icon: Icon, number, label }, i) => (
               <div
                 key={label.join(' ')}
                 className={`px-2 text-center sm:px-3 ${
                   i % 2 === 1 ? 'border-l border-tobler-border' : ''
                 } ${i === 0 ? 'sm:border-l-0' : 'sm:border-l sm:border-tobler-border'}`}
               >
-                <Icon className="mx-auto h-7 w-7 text-tobler-blue" aria-hidden="true" />
+                {Icon ? (
+                  <Icon className="mx-auto h-7 w-7 text-tobler-blue" aria-hidden="true" />
+                ) : (
+                  <span
+                    className="mx-auto flex h-7 w-7 items-center justify-center text-lg font-semibold text-tobler-blue"
+                    aria-hidden="true"
+                  >
+                    {number}
+                  </span>
+                )}
                 <p className="label-mono mt-3 text-[0.62rem] leading-[1.5] text-tobler-heading">
                   {label[0]}
                   <span className="block">{label[1]}</span>

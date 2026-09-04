@@ -84,7 +84,7 @@ function SidePanel({ open, onClose, eyebrow, title, footer, contentKey, children
           top-0 right-0 h-full w-full
           ${fullScreenDesktop
             ? 'md:inset-0 md:rounded-none md:overflow-hidden'
-            : 'md:top-1/2 md:left-1/2 md:right-auto md:h-auto md:w-[calc(100%-4rem)] md:max-w-[700px] md:max-h-[90vh] md:rounded-card md:overflow-hidden'} ${
+            : 'md:top-1/2 md:left-1/2 md:right-auto md:h-auto md:w-[calc(100%-4rem)] md:max-w-[1700px] md:max-h-[95vh] md:rounded-card md:overflow-hidden'} ${
           open
             ? fullScreenDesktop
               ? 'translate-x-0'

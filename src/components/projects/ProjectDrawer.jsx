@@ -1,10 +1,9 @@
-import { MapPin, Calendar, Layers } from 'lucide-react'
+import { MapPin, Layers } from 'lucide-react'
 import Button from '../common/Button.jsx'
 import Badge from '../common/Badge.jsx'
 import SidePanel from '../ui/SidePanel.jsx'
 import ResponsiveImage from '../ui/ResponsiveImage.jsx'
 import VideoPanel from '../ui/VideoPanel.jsx'
-import { projectStatusLabel } from '../../data/projects.js'
 import { INDUSTRY_ICONS, DEFAULT_ICON } from '../../data/icons.js'
 
 /* Half-screen project detail panel, opened from a card's Read More instead of
@@ -17,7 +16,6 @@ function ProjectDrawer({ open, project, onClose }) {
       contentKey={project?.slug}
       eyebrow={project?.location}
       title={project?.name}
-      fullScreenDesktop
       footer={
         <Button to="/contact#rfq" size="lg" className="w-full justify-center">
           Discuss a Similar Project
@@ -31,7 +29,6 @@ function ProjectDrawer({ open, project, onClose }) {
             alt=""
             icon={INDUSTRY_ICONS[project.industry] || DEFAULT_ICON}
             iconSize={64}
-            label={projectStatusLabel(project)}
             className="aspect-video rounded-card"
             displayWidth={1040}
           />
@@ -67,10 +64,6 @@ function ProjectDrawer({ open, project, onClose }) {
             <div className="flex items-center gap-3 text-tobler-body">
               <MapPin size={18} className="text-tobler-blue shrink-0" aria-hidden="true" />
               {project.location}
-            </div>
-            <div className="flex items-center gap-3 text-tobler-body">
-              <Calendar size={18} className="text-tobler-blue shrink-0" aria-hidden="true" />
-              {projectStatusLabel(project)}
             </div>
           </section>
 

@@ -30,12 +30,12 @@ export const MEDIA = {
   // portrait frame — never stretched across a full-width band.
   productionVideo: 'tobler/projects/7-berflug-fertigungsstationen-integralkonsole-20230617-serienfertigung-mato-pro-integralkonsole-swiss-quality',
 
-  // Homepage hero footage. Same asset as weldingRobotVideo, aliased so the hero
-  // can be re-pointed without disturbing the Manufacturing carousel. This is the
-  // only 848x480 LANDSCAPE clip in the library — every other production video is
-  // 480x848 portrait — which is why it can sit in a wide 16:9 hero frame at its
-  // native aspect while the rest cannot.
-  heroVideo: 'website_video_3_ut8wkz',
+  // Homepage hero footage. The 2026 banner cut — natively 4072x2036 landscape,
+  // by far the sharpest clip in the library, so the hero delivers it at 1920
+  // with q_auto:best instead of the 720-wide default the portrait clips get.
+  // Opens on a white fade, so the shared 1s clip start in lib/cloudinary.js
+  // matters here the same way it did for the old website_video_3 hero.
+  heroVideo: 'website_banner_video_1_czu7zd',
 
   // Process-matched clips for the Manufacturing "Facility" capability carousel —
   // picked by filename content (schweissroboter = welding robot, bohrzentrum =
@@ -54,9 +54,9 @@ export const MEDIA = {
   // lower-case w in "Laser welding". Cutting and robotic welding are 480x848
   // portrait like the rest of the library; laser welding is the exception at
   // 1920x1080 landscape, which is why it carries its own aspect below.
-  laserCuttingVideo: 'Laser Cutting',
+  laserCuttingVideo: 'Laser Cutting5555',
   laserWeldingVideo: 'Laser welding',
-  roboticWeldingVideo: 'Robotic Welding',
+  roboticWeldingVideo: 'robotic_welding_g0ujsn',
 
   // Exhibition and event photography — used in galleries and team showcases
   eventPhoto1: 'tobler/event/dsc-6806',
@@ -93,7 +93,7 @@ export const MEDIA = {
 
   // Hero section corner image. Full path, not the bare `swiss-engineer-1` this
   // used to carry — that id 404s, so the homepage hero shipped a broken <img>.
-  swissEngineer: 'tobler/misc/swiss-engineer-1',
+  swissEngineer: 'Untitled_design_9_panavf',
 
   /* ------------------------------------------------------------------------
      DRONE / AERIAL — live towers wrapped in Tobler-blue safety screens.
@@ -212,5 +212,5 @@ export const MEDIA = {
   mato8Detail: 'Screenshot_2026-08-31_143905_gzdxaz',
 
   /* Contact page hero image */
-  contactPageHero: 'ChatGPT_Image_Sep_2_2026_03_39_31_PM_sninpt',
+  contactPageHero: 'contactushero',
 }

@@ -112,7 +112,7 @@ function AnimatedHeroGallery() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="text-center md:text-right"
+              className="text-center md:text-left"
             >
               <motion.h2
                 className="text-4xl md:text-5xl font-semibold text-white mb-4"
@@ -124,7 +124,7 @@ function AnimatedHeroGallery() {
               </motion.h2>
 
               <motion.p
-                className="text-base md:text-lg text-tobler-muted mb-6 leading-relaxed max-w-md ml-auto"
+                className="text-base md:text-lg text-tobler-muted mb-6 leading-relaxed max-w-md mx-auto md:mx-0"
                 animate={{ opacity: 0.8 }}
               >
                 Swiss engineering standards, Indian manufacturing excellence. Every detail matters in
@@ -137,7 +137,7 @@ function AnimatedHeroGallery() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3 }}
-                className="flex flex-col md:flex-row gap-4 justify-center md:justify-end"
+                className="flex flex-col md:flex-row gap-4 justify-center md:justify-start"
               >
                 <Link to="/contact" className="px-8 py-3 bg-tobler-gold text-tobler-heading font-semibold rounded-lg hover:shadow-lg transition-all inline-block text-center">
                   Get Started
