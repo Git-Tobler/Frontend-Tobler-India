@@ -90,7 +90,7 @@ export const CAPABILITIES = [
       'Every load-bearing part is galvanised for site life in Indian conditions — coastal humidity, monsoon exposure and repeated reuse.',
     media: {
       images: [MEDIA.panelStacks, MEDIA.panelYard, MEDIA.warehouse],
-      video: MEDIA.packagingVideo,
+      video: 'WhatsApp_Video_2026-09-10_at_5.54.00_PM_lqjeru',
       imageDuration: 1400,
       videoDuration: 5000,
     },

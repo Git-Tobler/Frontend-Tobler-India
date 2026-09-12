@@ -10,9 +10,9 @@ import { useInViewAnimation } from '../../hooks/useInViewAnimation.js'
 
    Voice is the site's own technical-drawing idiom rather than anything new:
    `figure-mono` index numerals (the utility is documented for exactly this),
-   `dim-line` eyebrow rules, square corners — the same decision WhoWeAre made
-   when it dropped its rounded card — and gold used as rules and numerals
-   only, which is the dosage the colour tokens call for.
+   square corners — the same decision WhoWeAre made when it dropped its
+   rounded card — and gold used as rules and numerals only, which is the
+   dosage the colour tokens call for.
 
    Note `gold-deep` on the light half. The token file is explicit that #F7E500
    is "never body text on white"; #6E6300 is the only readable yellow at small
@@ -47,13 +47,8 @@ function OurPhilosophy() {
             below runs in two columns, and a centred stack above an asymmetric
             block leaves the section without a spine. */}
         <div className="max-w-2xl">
-          <p className={`dim-line label-mono text-tobler-blue ${rise}`} style={at(0.05)}>
-            <span>Our philosophy</span>
-            <span className="dim-line-rule" />
-          </p>
-
           <h2
-            className={`mt-6 text-[34px] font-semibold leading-[1.05] tracking-tight text-tobler-heading md:text-[46px] ${rise}`}
+            className={`text-[34px] font-semibold leading-[1.05] tracking-tight text-tobler-heading md:text-[46px] ${rise}`}
             style={at(0.1)}
           >
             What drives

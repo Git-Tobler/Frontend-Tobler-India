@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Linkedin, Facebook, Instagram, Youtube, Phone, Mail, MapPin, ArrowRight } from 'lucide-react'
 import Container from '../common/Container.jsx'
+import CookiePreferences from '../common/CookiePreferences.jsx'
 import { FOOTER_LINKS } from '../../data/navigation.js'
 import { COUNTRY_GROUPS } from '../../data/countries.js'
 import { SITE } from '../../data/site.js'
@@ -30,6 +32,16 @@ function FooterColumn({ title, links }) {
 }
 
 function Footer() {
+  const [showPreferences, setShowPreferences] = useState(false)
+
+  const handleSavePreferences = (prefs) => {
+    const finalPrefs = {
+      ...prefs,
+      timestamp: new Date().toISOString(),
+    }
+    localStorage.setItem('cookieConsent', JSON.stringify(finalPrefs))
+  }
+
   return (
     <footer className="bg-black relative mt-auto">
       {/* Gold accent line */}
@@ -132,7 +144,10 @@ function Footer() {
                 Cookie Policy
               </NavLink>
               <span className="w-1 h-1 bg-tobler-border" />
-              <button className="text-xs font-medium text-tobler-heading hover:text-tobler-blue transition-colors">
+              <button
+                onClick={() => setShowPreferences(true)}
+                className="text-xs font-medium text-tobler-heading hover:text-tobler-blue transition-colors"
+              >
                 Cookie Preferences
               </button>
               <span className="w-1 h-1 bg-tobler-border" />
@@ -146,6 +161,12 @@ function Footer() {
           </div>
         </Container>
       </div>
+
+      <CookiePreferences
+        isOpen={showPreferences}
+        onClose={() => setShowPreferences(false)}
+        onSave={handleSavePreferences}
+      />
     </footer>
   )
 }

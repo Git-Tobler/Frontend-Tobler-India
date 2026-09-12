@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { BadgePlus, Factory, Globe, ShieldCheck } from 'lucide-react'
 import { useInViewAnimation } from '../../hooks/useInViewAnimation.js'
-import scaffoldNode from '../../assets/images/who-we-are-1.png'
+import scaffoldNode from '../../assets/images/Swiss engineering 1.png'
 import towerAtSunset from '../../assets/images/who-we-are-2.png'
 
 /* The About page opener — the dark "Who We Are" band.
@@ -10,9 +10,9 @@ import towerAtSunset from '../../assets/images/who-we-are-2.png'
    brand palette: the blueprint navy (#0A2240 -> #1B4E90) with the logo yellow
    as the only accent, the same pairing PageHero and the CTA bands use.
 
-   The copy is the About hero's own copy — eyebrow, headline, the story
-   paragraphs, the standards line and both calls to action — moved in here
-   rather than duplicated, so the page still opens with one statement.
+   The copy is the About hero's own copy — headline, the story paragraphs,
+   the standards line and both calls to action — moved in here rather than
+   duplicated, so the page still opens with one statement.
 
    Geometry: the photography sits in an absolutely-positioned panel on the
    right, skewed -10deg so every edge in the band runs on the same diagonal,
@@ -128,11 +128,6 @@ function WhoWeAre() {
 
         <div className="relative mx-auto max-w-content px-6 py-10 md:px-10 md:py-12 lg:px-12 lg:py-14">
           <div className="lg:max-w-[52%]">
-            <p className={`dim-line label-mono text-tobler-gold ${rise}`} style={at(0.05)}>
-              <span>We are</span>
-              
-            </p>
-
             {/* `text-white` is not inherited here — the base layer colours every
               heading with the near-black ink token. */}
             {/* Sized off the studio page's own headline scale rather than the

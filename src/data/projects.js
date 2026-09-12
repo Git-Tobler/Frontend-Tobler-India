@@ -3,8 +3,12 @@ import { MEDIA } from './media-map.js'
 export const PROJECTS = [
   {
     slug: 'mehta-legend-thane',
-    imageId: MEDIA.mehtalLegendThane,
-    gallery: [MEDIA.mehtalLegendThane, MEDIA.mehtalLegendThane1],
+    /* The one place this project's pictures live. Paste a Cloudinary key on any
+       line below and it changes everywhere the project appears. */
+    media: {
+      main: MEDIA.mehtalLegendThane,
+      gallery: [MEDIA.mehtalLegendThane1],
+    },
     name: 'Mehta Legend Project, Thane',
     location: 'Kalwa, Thane, Maharashtra, INDIA',
     industry: 'Residential Construction',
@@ -15,8 +19,12 @@ export const PROJECTS = [
   },
   {
     slug: 'palika-infratech',
-    imageId: 'tobler/site/image-6',
-    gallery: ['palika-infratech', 'palika-infratech1'],
+    /* The one place this project's pictures live. Paste a Cloudinary key on any
+       line below and it changes everywhere the project appears. */
+    media: {
+      main: 'tobler/site/image-6',
+      gallery: ['palika-infratech', 'palika-infratech1'],
+    },
     name: 'Palika Infratech LLP',
     location: 'Kalyan, Thane, Maharashtra, INDIA',
     industry: 'Residential Construction',
@@ -27,8 +35,12 @@ export const PROJECTS = [
   },
   {
     slug: 'ritu-samruddhi-thane',
-    imageId: 'tobler/site/image-5',
-    gallery: ['ritu-samruddhi-thane', 'ritu-samruddhi-thane1', 'ritu-samruddhi-thane2', 'ritu-samruddhi-thane3', 'ritu-samruddhi-thane4', 'ritu-samruddhi-thane5', 'ritu-samruddhi-thane6'],
+    /* The one place this project's pictures live. Paste a Cloudinary key on any
+       line below and it changes everywhere the project appears. */
+    media: {
+      main: 'tobler/site/image-5',
+      gallery: ['ritu-samruddhi-thane', 'ritu-samruddhi-thane1', 'ritu-samruddhi-thane2', 'ritu-samruddhi-thane3', 'ritu-samruddhi-thane4', 'ritu-samruddhi-thane5', 'ritu-samruddhi-thane6'],
+    },
     name: 'Ritu Samruddhi, Thane',
     location: 'Thane, Maharashtra, INDIA',
     industry: 'Residential Construction',
@@ -39,8 +51,12 @@ export const PROJECTS = [
   },
   {
     slug: 'suryacon-amayra-sky-city',
-    imageId: MEDIA.towerAerial,
-    gallery: ['Suryacon Amayra Sky City', 'Suryacon Amayra Sky City1', 'Suryacon Amayra Sky City2', 'Suryacon Amayra Sky City3', 'Suryacon Amayra Sky City4', 'Suryacon Amayra Sky City5', 'Suryacon Amayra Sky City6', 'Suryacon Amayra Sky City7', 'Suryacon Amayra Sky City8', 'Suryacon Amayra Sky City9', 'Suryacon Amayra Sky City10', 'Suryacon Amayra Sky City11', 'Suryacon Amayra Sky City12', 'Suryacon Amayra Sky City13'],
+    /* The one place this project's pictures live. Paste a Cloudinary key on any
+       line below and it changes everywhere the project appears. */
+    media: {
+      main: MEDIA.towerAerial,
+      gallery: ['Suryacon Amayra Sky City', 'Suryacon Amayra Sky City1', 'Suryacon Amayra Sky City2', 'Suryacon Amayra Sky City3', 'Suryacon Amayra Sky City4', 'Suryacon Amayra Sky City5', 'Suryacon Amayra Sky City6', 'Suryacon Amayra Sky City7', 'Suryacon Amayra Sky City8', 'Suryacon Amayra Sky City9', 'Suryacon Amayra Sky City10', 'Suryacon Amayra Sky City11', 'Suryacon Amayra Sky City12', 'Suryacon Amayra Sky City13'],
+    },
     name: 'Suryacon Amayra Sky City',
     location: 'Kharar, Chandigarh, Punjab, INDIA',
     industry: 'Residential Construction',
@@ -51,9 +67,13 @@ export const PROJECTS = [
   },
   {
     slug: 'suryacon-opus-site-tower 08',
-    imageId: MEDIA.suryaconOpusTower,
-    gallery: [MEDIA.suryaconOpusTower3, MEDIA.suryaconOpusTower1, MEDIA.suryaconOpusTower],
-    videos: [MEDIA.suryaconOpusTowerVideo2, MEDIA.suryaconOpusTowerVideo1, MEDIA.suryaconOpusTowerVideo3],
+    /* The one place this project's pictures live. Paste a Cloudinary key on any
+       line below and it changes everywhere the project appears. */
+    media: {
+      main: MEDIA.suryaconOpusTower,
+      gallery: [MEDIA.suryaconOpusTower3, MEDIA.suryaconOpusTower1],
+      video: [MEDIA.suryaconOpusTowerVideo2, MEDIA.suryaconOpusTowerVideo1, MEDIA.suryaconOpusTowerVideo3],
+    },
     name: 'Suryacon Opus Site Tower 08',
     location: 'Chandigarh, Punjab, India',
     industry: 'Residential Construction',

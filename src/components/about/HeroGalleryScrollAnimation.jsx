@@ -163,8 +163,7 @@ function HeroGalleryScrollAnimation() {
           transition={{ duration: 0.8 }}
           className="mb-16 md:mb-24 text-center"
         >
-          <span className="label-mono text-tobler-blue text-sm">OUR JOURNEY</span>
-          <h2 className="text-4xl md:text-5xl font-semibold text-tobler-heading mt-4 mb-6">
+          <h2 className="text-4xl md:text-5xl font-semibold text-tobler-heading mb-6">
             Decades of <span className="text-tobler-gold">precision</span> and <span className="text-tobler-gold">innovation</span>
           </h2>
           <p className="text-lg text-tobler-body max-w-2xl mx-auto leading-relaxed">

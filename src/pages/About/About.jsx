@@ -77,11 +77,11 @@ function About() {
 
       <WhoWeAre />
       <EngineeringPresence />
+      <Leadership />
       <AnimatedHeroGallery />
       <OurPhilosophy />
       <StudioMarquee />
       <ValuesCarousel />
-      <Leadership />
       <Timeline />
 
       <PartnerSection />

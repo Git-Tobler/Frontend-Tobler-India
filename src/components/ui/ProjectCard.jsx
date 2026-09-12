@@ -3,6 +3,7 @@ import { MapPin, ArrowRight } from 'lucide-react'
 import Badge from '../common/Badge.jsx'
 import ResponsiveImage from './ResponsiveImage.jsx'
 import { INDUSTRY_ICONS, DEFAULT_ICON } from '../../data/icons.js'
+import { mainImage } from '../../lib/media.js'
 
 /* `soft` switches to the homepage's rounded/green language; the Projects index
    keeps the default sharp-cornered treatment. */
@@ -18,7 +19,7 @@ function ProjectCard({ project, soft = false }) {
     >
       <div className="h-52 relative">
         <ResponsiveImage
-          publicId={project.imageId}
+          publicId={mainImage(project)}
           alt=""
           icon={INDUSTRY_ICONS[project.industry] || DEFAULT_ICON}
           className="h-full"

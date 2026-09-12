@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import ResponsiveImage from '../ui/ResponsiveImage.jsx'
+import { mainImage } from '../../lib/media.js'
 
 /* One product in a subcategory grid.
 
-   `product.imageId` is the frame; `fallbackImageId` is the parent
+   The frame is the product's `media.main`; `fallbackImageId` is the parent
    subcategory's, so a product added without its own photo still lands on the
    system's shot rather than dropping the whole tile back to the blueprint
    placeholder. The model still prints as an id-plate over the image, which is
@@ -16,7 +17,7 @@ function ProductTile({ to, product, icon, fallbackImageId, className = '' }) {
       className={`group flex flex-col h-full bg-white border border-tobler-border rounded-card overflow-hidden transition-all duration-300 ease-premium hover:shadow-elevated hover:-translate-y-1 hover:border-tobler-heading/30 ${className}`}
     >
       <ResponsiveImage
-        publicId={product.imageId || fallbackImageId}
+        publicId={mainImage(product) || fallbackImageId}
         icon={icon}
         label={product.model}
         alt=""

@@ -32,7 +32,7 @@ function SubcategoryPage() {
         structuredData={[buildBreadcrumbSchema(breadcrumbItems)]}
       />
       <PageHero
-        eyebrow={category.name}
+        
         title={subcategory.name}
         description={subcategory.summary}
         breadcrumbItems={breadcrumbItems}
@@ -48,7 +48,7 @@ function SubcategoryPage() {
                   to={`/products/${category.slug}/${subcategory.slug}/${product.slug}`}
                   imageId={product.imageId || subcategory.imageId}
                   icon={PRODUCT_ICONS[category.slug] || DEFAULT_ICON}
-                  eyebrow={product.model}
+                
                   title={product.name}
                   summary={product.summary}
                   className="h-full"

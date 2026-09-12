@@ -38,8 +38,7 @@ export const PRODUCT_ICONS = {
   'cuplock-scaffolding': Building2,
   'mobile-scaffolding': MoveUp,
   'scaffolding-accessories': Wrench,
-  'light-duty-props': Warehouse,
-  'heavy-duty-props': TrendingUp,
+  'low-heavy-duty-props': TrendingUp,
 
   // Formwork subcategories
   'monolithic-formwork': LayoutGrid,

@@ -31,7 +31,6 @@ function PageHero({
   title,
   description,
   subtitle,
-  eyebrow,
   breadcrumbItems = [],
   imageId,
   videoId,
@@ -73,8 +72,6 @@ function PageHero({
         <div className="mb-8">
           <Breadcrumb items={breadcrumbItems} light />
         </div>
-
-        {eyebrow && <p className="label-mono mb-4 text-tobler-gold">{eyebrow}</p>}
 
         <h1 className="text-h1 max-w-3xl text-white">{title}</h1>
 

@@ -25,7 +25,7 @@ function Header() {
   return (
     <>
       <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
-        <div className="px-6 sm:px-7 md:px-10 lg:px-10 xl:px-12 py-4 flex items-center justify-between">
+        <div className="container-content py-4 flex items-center justify-between">
           {/* Logo */}
           <NavLink to="/" className="flex-shrink-0">
             <img src={toblerLogo} alt="Tobler" className="h-12 w-auto" />

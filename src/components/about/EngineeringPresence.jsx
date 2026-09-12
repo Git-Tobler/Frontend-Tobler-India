@@ -14,14 +14,13 @@ import indiaPresence from '../../assets/images/Indian presence.png'
    the second band leans the opposite way and reads as a pair with the first.
 
    The accent is the logo yellow as a hairline along the diagonal and a rule
-   under the eyebrow — the dosage the colour tokens call for. The reference
+   above the heading — the dosage the colour tokens call for. The reference
    this was built from used orange throughout; that is not a brand colour
    here, so it maps to navy and gold. */
 
 const BANDS = [
   {
     id: 'swiss-engineering',
-    eyebrow: 'Swiss Engineering',
     title: ['Precision that', 'builds confidence'],
     image: swissEngineering,
     // The node detail is centre-right in frame; the panel is a tall slice, so
@@ -37,7 +36,6 @@ const BANDS = [
   },
   {
     id: 'india-presence',
-    eyebrow: 'India Presence',
     title: ['Built for', "India's growth"],
     image: indiaPresence,
     position: '50% 45%',
@@ -90,7 +88,7 @@ function Photo({ src, position, flip }) {
 }
 
 function Band({ band, rise, at, order }) {
-  const { id, eyebrow, title, image, position, copy, points, flip } = band
+  const { id, title, image, position, copy, points, flip } = band
 
   return (
     <section id={id} className="scroll-mt-28">
@@ -104,10 +102,7 @@ function Band({ band, rise, at, order }) {
             flip ? 'lg:ml-auto lg:pl-14' : 'lg:pr-14'
           }`}
         >
-          <p className={`label-mono text-tobler-blue ${rise}`} style={at(order + 0.05)}>
-            {eyebrow}
-          </p>
-          <span className={`mt-3 block h-0.5 w-10 bg-tobler-gold ${rise}`} style={at(order + 0.1)} />
+          <span className={`block h-0.5 w-10 bg-tobler-gold ${rise}`} style={at(order + 0.1)} />
 
           <h2
             className={`mt-6 text-[32px] font-semibold leading-[1.05] tracking-tight text-tobler-heading md:text-[42px] ${rise}`}

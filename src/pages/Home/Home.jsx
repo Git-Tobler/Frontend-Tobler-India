@@ -40,6 +40,32 @@ function Home() {
           <div className="mb-14 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <SectionTitle
               size="display"
+              title="Real Projects. Real Engineering Impact."
+            />
+            <Button
+              to="/projects"
+              variant="shopify-outline"
+              shape="pill"
+              size="lg"
+              icon={false}
+              className="shrink-0"
+            >
+              View all projects
+            </Button>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {PROJECTS.slice(0, 3).map((project) => (
+              <ProjectCard key={project.slug} project={project} soft />
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section className="bg-white py-24 md:py-30">
+        <Container>
+          <div className="mb-14 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <SectionTitle
+              size="display"
               title="Systems Engineered for All Stages of Construction"
               description="From facade access to high-rise climbing formwork, all Tobler systems are built for reliability under real site conditions."
             />
@@ -54,8 +80,13 @@ function Home() {
               View all products
             </Button>
           </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {PRODUCT_SUBCATEGORIES.slice(0, 3).map((subcategory) => (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              PRODUCT_SUBCATEGORIES.find(s => s.slug === 'all-in-one-scaffolding'),
+              PRODUCT_SUBCATEGORIES.find(s => s.slug === 'monolithic-formwork'),
+              PRODUCT_SUBCATEGORIES.find(s => s.slug === 'climbing-systems'),
+              PRODUCT_SUBCATEGORIES.find(s => s.slug === 'mobile-scaffolding'),
+            ].map((subcategory) => (
               <ProductCard
                 key={subcategory.slug}
                 soft
@@ -97,35 +128,8 @@ function Home() {
         </Container>
       </section>
 
-      {/* Dark photo mosaic between the industries and projects grids — the only
-          break in the light card rhythm on the lower half of the page. */}
+      {/* Dark photo mosaic — the only break in the light card rhythm. */}
       <SiteMosaicSection />
-
-      <section className="bg-white py-24 md:py-30">
-        <Container>
-          <div className="mb-14 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <SectionTitle
-              size="display"
-              title="Real Projects. Real Engineering Impact."
-            />
-            <Button
-              to="/projects"
-              variant="shopify-outline"
-              shape="pill"
-              size="lg"
-              icon={false}
-              className="shrink-0"
-            >
-              View all projects
-            </Button>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {PROJECTS.slice(0, 3).map((project) => (
-              <ProjectCard key={project.slug} project={project} soft />
-            ))}
-          </div>
-        </Container>
-      </section>
 
       <CTASection soft />
     </>

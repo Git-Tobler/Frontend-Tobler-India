@@ -16,7 +16,7 @@ export const NAV_LINKS = [
     label: 'Solutions',
     path: '/products',
     children: [
-      { label: 'All Products', path: '/products' },
+      { label: 'All Solutions', path: '/products' },
       { label: 'Scaffolding Systems', path: '/products/scaffolding-systems' },
       { label: 'Formwork Systems', path: '/products/formwork-systems' },
       { label: 'Download Brochures', path: '/download-brochures' },

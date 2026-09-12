@@ -12,9 +12,6 @@ function NotFound() {
           <div className="w-16 h-16 border border-tobler-heading/15 flex items-center justify-center mx-auto mb-8">
             <Compass size={26} aria-hidden="true" className="text-tobler-blue" strokeWidth={1.5} />
           </div>
-          <p className="label-mono text-tobler-blue mb-3">
-            Error 404
-          </p>
           <h1 className="text-h3 mb-4">This Page Couldn&rsquo;t Be Found</h1>
           <p className="text-tobler-body leading-relaxed mb-10">
             The page you&rsquo;re looking for may have been moved or no longer exists. Let&rsquo;s get you

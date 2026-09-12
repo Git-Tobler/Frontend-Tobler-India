@@ -44,15 +44,15 @@ function ProductGallery({ product, icon }) {
       )}
 
       {images.length > 0 && (
-        <div className="relative">
+        <div className="relative" style={{ aspectRatio: '1920/945' }}>
           <ResponsiveImage
             publicId={currentImage}
             icon={icon}
             label={product.model}
             iconSize={56}
             alt=""
-            className={hasGallery && images.length > 1 ? "w-full h-auto rounded-img" : "aspect-[16/9] rounded-img"}
-            displayWidth={1040}
+            className="w-full h-full rounded-img"
+            displayWidth={1920}
           />
 
           {hasGallery && images.length > 1 && (

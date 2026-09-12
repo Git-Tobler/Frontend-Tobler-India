@@ -51,7 +51,7 @@ function CookieConsent() {
   return (
     <>
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-lg">
-        <div className="max-w-[1480px] mx-auto px-6 lg:px-10 py-6">
+        <div className="container-content py-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex-1">
               <p className="text-gray-900 font-medium mb-1">We use cookies</p>

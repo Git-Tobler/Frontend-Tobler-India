@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useInViewAnimation } from '../../hooks/useInViewAnimation.js'
 import { cldImage } from '../../lib/cloudinary.js'
 import { PROJECTS } from '../../data/projects.js'
+import { mainImage } from '../../lib/media.js'
 
 /* Project showcase: name and one line offset to the left, full-bleed image
    underneath. Each row observes itself, so they fade in as the visitor reaches
@@ -28,7 +29,7 @@ function ProjectRow({ project }) {
       </div>
 
       <img
-        src={cldImage(project.imageId, { w: 1280 })}
+        src={cldImage(mainImage(project), { w: 1280 })}
         alt={project.name}
         loading="lazy"
         decoding="async"

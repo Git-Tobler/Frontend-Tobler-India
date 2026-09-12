@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import SEO from '../../components/common/SEO.jsx'
 import Container from '../../components/common/Container.jsx'
-import { Clock, FileText, AlertCircle } from 'lucide-react'
+import { Clock, FileText } from 'lucide-react'
 import { useFooter } from '../../contexts/FooterContext.jsx'
 
 function TermsConditions() {

@@ -8,7 +8,7 @@ import ResponsiveImage from './ResponsiveImage.jsx'
 
    `soft` switches to the homepage's rounded/green language. Off by default so
    the Products pages keep their sharp-cornered navy treatment. */
-function ProductCard({ to, image, imageId, icon, eyebrow, title, summary, soft = false, className = '' }) {
+function ProductCard({ to, image, imageId, icon, title, summary, soft = false, className = '' }) {
   const shell = soft
     ? 'border-shopify-border rounded-card-lg hover:shadow-raised hover:border-shopify-green-line'
     : 'border-tobler-border rounded-card hover:shadow-elevated hover:border-tobler-heading/30'
@@ -22,7 +22,6 @@ function ProductCard({ to, image, imageId, icon, eyebrow, title, summary, soft =
         publicId={imageId}
         src={image}
         icon={icon}
-        label={eyebrow}
         className="h-48"
         alt=""
         displayWidth={520}

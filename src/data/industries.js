@@ -37,7 +37,7 @@ export const INDUSTRIES = [
       'Modular shoring towers for rapid deployment',
       'Finish-grade formwork panels for architectural concrete',
     ],
-    relatedProducts: ['slab-formwork', 'heavy-duty-props'],
+    relatedProducts: ['slab-formwork', 'low-heavy-duty-props'],
   },
   {
     slug: 'residential-construction',
@@ -75,7 +75,7 @@ export const INDUSTRIES = [
       'Bridge deck and pier formwork systems',
       'Engineering support for complex geometries',
     ],
-    relatedProducts: ['heavy-duty-props', 'climbing-systems'],
+    relatedProducts: ['low-heavy-duty-props', 'climbing-systems'],
   },
   {
     slug: 'industrial-facilities',
@@ -94,7 +94,7 @@ export const INDUSTRIES = [
       'Heavy-duty facade scaffolding for tall industrial sheds',
       'Custom-engineered access solutions for plant shutdowns',
     ],
-    relatedProducts: ['all-in-one-scaffolding', 'heavy-duty-props'],
+    relatedProducts: ['all-in-one-scaffolding', 'low-heavy-duty-props'],
   },
 ]
 

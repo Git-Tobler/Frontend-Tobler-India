@@ -30,19 +30,27 @@ export const MEDIA = {
   // portrait frame — never stretched across a full-width band.
   productionVideo: 'tobler/projects/7-berflug-fertigungsstationen-integralkonsole-20230617-serienfertigung-mato-pro-integralkonsole-swiss-quality',
 
-  // Homepage hero footage. The 2026 banner cut — natively 4072x2036 landscape,
-  // by far the sharpest clip in the library, so the hero delivers it at 1920
-  // with q_auto:best instead of the 720-wide default the portrait clips get.
-  // Opens on a white fade, so the shared 1s clip start in lib/cloudinary.js
-  // matters here the same way it did for the old website_video_3 hero.
-  heroVideo: 'website_banner_video_1_czu7zd',
+  // Homepage hero footage. The 2026 website banner cut — 4072x2036 landscape,
+  // 32s, flying over live high-rise sites. Same native size as the DJI_0008
+  // drone clip it replaces, so the hero still delivers it at 1920 with
+  // q_auto:best rather than the 720-wide default the portrait clips get; that
+  // lands at ~18MB webm, slightly under the 26MB the previous cut shipped.
+  //
+  // Where it differs from DJI_0008 is exposure. Long stretches of this clip are
+  // bare, near-white concrete deck filling the entire frame, so the headline
+  // cannot sit on the footage alone the way it could on the old cut's darkened
+  // lower edge — HeroSection carries its own navy scrim instead.
+  //
+  // Frame 0 is clean here (no white fade), so the shared 1s clip start in
+  // lib/cloudinary.js costs a beat of the opening wide rather than saving it.
+  heroVideo: 'website_banner_video_2_1_1_qpiulb',
 
   // Process-matched clips for the Manufacturing "Facility" capability carousel —
   // picked by filename content (schweissroboter = welding robot, bohrzentrum =
   // drilling center) rather than assigned arbitrarily.
   weldingRobotVideo: 'tobler/projects/2-20230218-serienfertigung-mato-3-stiel-t-rkei-schweissroboter-assymetrisch',
   drillingCenterVideo: 'tobler/projects/6-bohrzentrum-20230525-serienfertigung-mato-pro-einschubrohr',
-  packagingVideo: 'tobler/projects/8-verpackung-20230617-serienfertigung-mato-2-bordbretthalter-und-folienverpackung-bordbretter',
+  packagingVideo: 'WhatsApp_Video_2026-09-10_at_5.54.00_PM_lqjeru',
 
   // Portrait replacement for the homepage video showcase now that the welding
   // clip leads the hero. "diverse einzelteilesequenzen" = various individual-part
@@ -104,7 +112,7 @@ export const MEDIA = {
      ------------------------------------------------------------------------ */
   towerAerial: 'safety_net_6_mfqpr2',       // Daylight, tower + crane, Tobler screens
   towerAerialTop: 'safety_net_2_totvmy',    // Looking down the tower onto the slab
-  towerAerialNight: 'safety_net_8_k6tvjo',  // Lit floors after dark
+  towerAerialNight: 'safety_net_8_k6tvjo', 
 
   /* 4K landscape footage (3840x2160) over live Indian sites. Every other clip
      in the library is 480x848 portrait, so these are the only videos that can
@@ -203,6 +211,30 @@ export const MEDIA = {
   residentialIndustry: 'Residential_Construction_vkv7rv',
   commercialIndustry: 'Commercial_Construction_ascofh',
   highRiseIndustry: 'High_Rise_building_ftr8r9',
+
+  /* ------------------------------------------------------------------------
+     EVENT SOLUTIONS — stage decks, grandstands, truss, FOH/PA towers.
+
+     Every slot below is empty and waiting for a Cloudinary public id. Paste one
+     in and it appears on the Event Solutions product page immediately; a slot
+     left null falls back to the blueprint placeholder, so they can be filled in
+     one asset at a time. The four `showcase` frames are positional — each pairs
+     with the matching `details` block in data/products/index.js, so keep them
+     in this order.
+     ------------------------------------------------------------------------ */
+  eventSolutions: null,        // Thumbnail — card tile on the family grid + gallery lead
+  eventSolutionsVideo: null,   // Clip; leads the product gallery when set
+  eventSolutionsBand: null,    // Wide full-bleed "in use" band under the showcase
+
+  eventStageDeck: null,        // Showcase 1 — Event Stage Decks
+  modularGrandstands: null,    // Showcase 2 — Modular Grandstands & Seating
+  aluminiumTruss: null,        // Showcase 3 — Aluminium Truss Systems
+  fohTowers: null,             // Showcase 4 — FOH & Specialist Towers
+
+  eventGallery1: null,         // Extra gallery stills, in display order
+  eventGallery2: null,
+  eventGallery3: null,
+  eventGallery4: null,
 
   /* Product family solution page thumbnails */
   scaffoldingThumbnail: 'Scaffolding_Thumbnail_ty6nmw',

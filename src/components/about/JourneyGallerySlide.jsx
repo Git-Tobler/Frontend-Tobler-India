@@ -85,8 +85,7 @@ function JourneyGallerySlide() {
           viewport={{ once: true }}
           className="mb-20 text-center"
         >
-          <span className="label-mono text-tobler-blue text-sm">OUR EVOLUTION</span>
-          <h2 className="text-4xl md:text-5xl font-semibold text-tobler-heading mt-4">
+          <h2 className="text-4xl md:text-5xl font-semibold text-tobler-heading">
             Three Decades of <span className="text-tobler-gold">Engineering Excellence</span>
           </h2>
         </motion.div>

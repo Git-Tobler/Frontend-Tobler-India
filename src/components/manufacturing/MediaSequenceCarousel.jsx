@@ -139,7 +139,7 @@ function MediaSequenceCarousel({ items = [], activeIndex = 0, onIndexChange }) {
   }
 
   return (
-    <div className="group relative min-h-[600px] w-full overflow-hidden rounded-[14px] bg-tobler-bg-dark sm:min-h-[700px] lg:min-h-[800px]">
+    <div className="group relative min-h-[300px] w-full overflow-hidden rounded-[14px] bg-tobler-bg-dark sm:min-h-[320px] lg:min-h-[380px]">
       <AnimatePresence mode="wait">
         {/* IMAGE LAYER — crossfades between the 3 stills, then holds while
             imageOpacity fades it into the video during CROSSFADE. */}

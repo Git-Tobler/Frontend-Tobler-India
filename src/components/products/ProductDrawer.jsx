@@ -4,52 +4,70 @@ import SidePanel from '../ui/SidePanel.jsx'
 import SpecTable from '../ui/SpecTable.jsx'
 import DownloadCard from '../ui/DownloadCard.jsx'
 import ReadMore from '../ui/ReadMore.jsx'
-import ResponsiveImage from '../ui/ResponsiveImage.jsx'
-import ProductGallery from './ProductGallery.jsx'
+import MediaGallery from '../ui/MediaGallery.jsx'
 import ProductTile from './ProductTile.jsx'
 import FAQAccordion from './FAQAccordion.jsx'
 import { productPath } from '../../data/products/index.js'
 import { PRODUCT_ICONS, DEFAULT_ICON } from '../../data/icons.js'
 
-/* Premium half-screen product detail panel — replaces the old dedicated
-   product page. The panel shell, focus trap and scroll lock live in
-   SidePanel; this component is only the product-shaped content inside it. */
+/* Every frame a product has, in one list for the gallery rail. `gallery` often
+   repeats `imageId`, so ids are deduped rather than shown twice. */
+function toMediaItems(product) {
+  const seen = new Set()
+  const items = []
+
+  const push = (type, publicId, label) => {
+    if (!publicId || seen.has(publicId)) return
+    seen.add(publicId)
+    items.push({ type, publicId, label })
+  }
+
+  product.gallery?.forEach((id) => push('image', id, product.name))
+  push('image', product.imageId, product.name)
+  push('image', product.galleryImage, product.name)
+  push('video', product.videoId, product.model || product.name)
+
+  return items
+}
+
+/* Full-screen product detail panel — replaces the old dedicated product page.
+   The panel shell, focus trap and scroll lock live in SidePanel; this component
+   is the product-shaped content inside it: copy on the left, a gallery rail that
+   stays in view on the right. */
 function ProductDrawer({ open, family, subcategory, product, relatedProducts = [], onClose }) {
-  // Safety checks to prevent errors when props are undefined
   if (!product || !subcategory || !family) {
     return null
   }
 
   const icon = PRODUCT_ICONS[subcategory.slug] || DEFAULT_ICON
+  const media = toMediaItems(product)
 
   return (
     <SidePanel
       open={open}
       onClose={onClose}
-      contentKey={product?.slug}
-      eyebrow={product ? `${family.name} — ${subcategory.name}` : undefined}
-      title={product?.name}
+      contentKey={product.slug}
+      title={product.name}
       footer={
-        <Button to="/contact#rfq" size="lg" className="w-full justify-center">
+        <Button to="/contact#rfq" size="lg" className="w-full justify-center sm:w-auto">
           Request a Quote
         </Button>
       }
+      fullScreenDesktop
     >
-      {product && (
-        <>
-          <ProductGallery product={product} icon={icon} />
+      <div
+        className={`grid gap-8 lg:gap-12 lg:items-start ${
+          media.length > 0 ? 'lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)]' : ''
+        }`}
+      >
+        <MediaGallery
+          items={media}
+          icon={icon}
+          label={product.model}
+          className="lg:order-2 lg:sticky lg:top-0"
+        />
 
-          {product.galleryImage && (
-            <figure>
-              <ResponsiveImage
-                publicId={product.galleryImage}
-                alt={product.name}
-                className="w-full rounded-img"
-                displayWidth={1040}
-              />
-            </figure>
-          )}
-
+        <div className="min-w-0 space-y-10 lg:order-1">
           <section>
             <h3 className="text-h5 mb-3">Overview</h3>
             <ReadMore previewLines={4}>{product.description}</ReadMore>
@@ -279,8 +297,8 @@ function ProductDrawer({ open, family, subcategory, product, relatedProducts = [
               <FAQAccordion items={subcategory.faqs} />
             </section>
           )}
-        </>
-      )}
+        </div>
+      </div>
     </SidePanel>
   )
 }

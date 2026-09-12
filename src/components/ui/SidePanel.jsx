@@ -25,7 +25,7 @@ const FOCUSABLE = 'a[href], button:not([disabled]), input, textarea, select, [ta
 
    `fullScreenDesktop` makes the modal fill the viewport on `md` and up,
    instead of the default centred box. Mobile drawer behavior stays the same. */
-function SidePanel({ open, onClose, eyebrow, title, footer, contentKey, children, fullScreenDesktop = false }) {
+function SidePanel({ open, onClose, title, footer, contentKey, children, fullScreenDesktop = false }) {
   const panelRef = useRef(null)
   const bodyRef = useRef(null)
   const closeBtnRef = useRef(null)
@@ -96,10 +96,9 @@ function SidePanel({ open, onClose, eyebrow, title, footer, contentKey, children
       >
         {title && (
           <>
-            <header className="flex items-start justify-between gap-4 px-6 md:px-8 py-6 border-b border-tobler-border shrink-0">
+            <header className="flex items-center justify-between gap-4 px-5 md:px-8 lg:px-10 py-3 md:py-4 border-b border-tobler-border shrink-0">
               <div className="min-w-0">
-                {eyebrow && <p className="label-mono text-tobler-blue mb-2 truncate">{eyebrow}</p>}
-                <h2 id="side-panel-title" className="text-h4">
+                <h2 id="side-panel-title" className="text-h5 leading-tight truncate">
                   {title}
                 </h2>
               </div>
@@ -108,17 +107,21 @@ function SidePanel({ open, onClose, eyebrow, title, footer, contentKey, children
                 type="button"
                 onClick={onClose}
                 aria-label="Close details"
-                className="shrink-0 w-10 h-10 flex items-center justify-center rounded-full border border-tobler-border text-tobler-heading hover:bg-tobler-bg-light transition-colors"
+                className="shrink-0 w-9 h-9 flex items-center justify-center rounded-full border border-tobler-border text-tobler-heading hover:bg-tobler-bg-light transition-colors"
               >
-                <X size={20} />
+                <X size={18} />
               </button>
             </header>
 
-            <div ref={bodyRef} className="flex-1 overflow-y-auto px-6 md:px-8 py-8 space-y-10">
+            <div ref={bodyRef} className="flex-1 overflow-y-auto px-5 md:px-8 lg:px-10 py-6 md:py-8">
               {children}
             </div>
 
-            {footer && <footer className="shrink-0 border-t border-tobler-border px-6 md:px-8 py-5">{footer}</footer>}
+            {footer && (
+              <footer className="shrink-0 border-t border-tobler-border px-5 md:px-8 lg:px-10 py-4 flex flex-col sm:flex-row sm:justify-end">
+                {footer}
+              </footer>
+            )}
           </>
         )}
       </div>

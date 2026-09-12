@@ -31,6 +31,11 @@ function build(kind, publicId, ...steps) {
 // here once instead of threading a flag through every component.
 const needsTrim = (publicId) => publicId.startsWith('tobler/site/screenshot-')
 
+// Gravity only means anything to the crop modes that actually discard pixels.
+// `c_limit`/`c_fit` — what the lightbox uses so a full-screen view is never
+// cropped — are rejected by Cloudinary when a `g_` is present.
+const GRAVITY_CROPS = new Set(['fill', 'lfill', 'fill_pad', 'thumb', 'crop'])
+
 // Delivery URL for one image. `c_fill` + `g_auto` is the default because every
 // image slot on this site is a fixed-aspect box, and auto-gravity keeps the
 // subject in frame when the box is a different shape than the original photo.
@@ -43,7 +48,7 @@ export function cldImage(publicId, { w, h, crop = 'fill', gravity = 'auto', trim
     'image',
     publicId,
     (trim || needsTrim(publicId)) && 'e_trim',
-    params('f_auto', 'q_auto', `c_${crop}`, w && `w_${w}`, h && `h_${h}`, crop !== 'scale' && `g_${gravity}`)
+    params('f_auto', 'q_auto', `c_${crop}`, w && `w_${w}`, h && `h_${h}`, GRAVITY_CROPS.has(crop) && `g_${gravity}`)
   )
 }
 

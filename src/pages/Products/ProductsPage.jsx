@@ -37,7 +37,7 @@ function ProductsPage() {
           <SectionTitle
             align="center"
             title="All Systems, Fully Specified"
-            description="Jump straight to a product line — each links to its full grid of models, specifications and downloads."
+            description="Jump straight to a product line, each links to its full grid of models, specifications and downloads."
           />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-14">
             {PRODUCT_SUBCATEGORIES.map((subcategory, idx) => (

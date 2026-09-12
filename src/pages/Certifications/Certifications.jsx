@@ -2,7 +2,7 @@ import SEO from '../../components/common/SEO.jsx'
 import PageHero from '../../components/layout/PageHero.jsx'
 import Container from '../../components/common/Container.jsx'
 import ResponsiveImage from '../../components/ui/ResponsiveImage.jsx'
-import { Download } from 'lucide-react'
+import { EyeIcon } from 'lucide-react'
 import { cldImage } from '../../lib/cloudinary.js'
 import { CLOUDINARY_IMAGES } from '../../data/media.js'
 import { MEDIA } from '../../data/media-map.js'
@@ -28,8 +28,8 @@ function Certifications() {
         <div className="p-6">
           <p className="text-xs font-medium text-tobler-body/60 uppercase tracking-wide mb-4">Certificate</p>
           <div className="mb-4 pb-4 border-b border-tobler-border">
-            <p className="text-xs font-medium text-tobler-body/60 uppercase tracking-wide mb-2">File Name</p>
-            <p className="text-sm font-medium text-tobler-heading break-words">{image.id}</p>
+            {/* <p className="text-xs font-medium text-tobler-body/60 uppercase tracking-wide mb-2">File Name</p>
+            <p className="text-sm font-medium text-tobler-heading break-words">{image.id}</p> */}
           </div>
 
           {/* Image Details */}
@@ -51,7 +51,7 @@ function Certifications() {
             rel="noopener noreferrer"
             className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-tobler-blue text-white rounded-card hover:bg-tobler-blue-dark transition-colors text-sm font-medium"
           >
-            <Download size={16} /> View Certificate
+            <EyeIcon size={16} /> View Certificate
           </a>
         </div>
       </div>

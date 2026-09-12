@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { MapPin, Phone, Mail, Briefcase, Linkedin, Share2, Instagram, Youtube } from 'lucide-react'
 import SEO from '../../components/common/SEO.jsx'
 import PageHero from '../../components/layout/PageHero.jsx'
@@ -16,9 +17,15 @@ const TABS = [
 ]
 
 function Contact() {
-  const [activeTab, setActiveTab] = useState(
-    window.location.hash === '#rfq' ? 'rfq' : 'contact'
-  )
+  const { hash } = useLocation()
+  const [activeTab, setActiveTab] = useState(hash === '#rfq' ? 'rfq' : 'contact')
+
+  /* Product pages and the footer link straight to /contact#rfq. On a cold load
+     the initial state above is enough, but arriving from a page that is already
+     /contact only changes the hash — this switches the tab in that case too. */
+  useEffect(() => {
+    if (hash === '#rfq') setActiveTab('rfq')
+  }, [hash])
 
   return (
     <>
@@ -33,7 +40,7 @@ function Contact() {
         breadcrumbItems={[{ label: 'Contact' }]}
       />
 
-      <section className="py-24 md:py-30">
+      <section id="rfq" className="scroll-mt-28 py-24 md:py-30">
         <Container>
           <div className="grid lg:grid-cols-[1fr_1.3fr] gap-14">
             <div className="space-y-8">

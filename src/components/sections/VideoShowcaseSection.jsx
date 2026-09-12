@@ -15,13 +15,20 @@ const VIDEOS = [
     id: MEDIA.laserWeldingVideo,
     // The one 1920x1080 source in this row — see the note above.
     fit: 'contain',
-    title: 'Laser Welding',
+    title: 'German Certified welding',
     subtitle: 'Toblers aluminium welding capabilities support the production of strong, accurate and consistent formwork assemblies. Controlled welding processes ensure reliable joints while maintaining the required geometry and dimensional accuracy of the finished components. The combination of precise cutting and high-quality welding allows individual aluminium components to be manufactured as cohesive assemblies, ready for integration into the complete formwork system.',
   },
   {
     id: MEDIA.roboticWeldingVideo,
     title: 'Robotic Welding',
     subtitle: 'Robotic welding enables precise, consistent and efficient welding of scaffolding and formwork components. By automating repetitive welding processes, it helps maintain uniform quality, improve production efficiency and reduce human error, while ensuring strong and reliable joints across every component. It also allows for better control over welding parameters and repeatability across large production volumes. Automated systems can handle complex and repetitive welds with high accuracy, supporting consistent fabrication standards. This results in reliable components that meet demanding engineering and quality requirements',
+  },
+  {
+    id: MEDIA.componentSequenceVideo,
+    title: 'Event Solution',
+    subtitle: 'Our component assembly process brings precision-manufactured parts together into complete scaffolding and formwork systems. Each assembly is quality-checked to ensure structural integrity and dimensional accuracy, guaranteeing reliable performance in demanding construction applications.',
+    // Photos key — placeholder for gallery images
+    photos: [],
   },
 ]
 

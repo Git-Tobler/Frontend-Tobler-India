@@ -45,6 +45,7 @@ const TILES = [
   { id: 14, publicId: MEDIA.panelHandover, alt: 'Two operators lifting a finished formwork panel' },
   { id: 15, publicId: MEDIA.towerAerialNight, alt: 'Lit tower under construction after dark' },
   { id: 16, publicId: MEDIA.assemblyBay, alt: 'Panels moving through the assembly bay' },
+  { id: 17, publicId: MEDIA.IMG_4031_1_woak4h, alt: 'Panels moving through the assembly bay' },
 ]
 
 function SiteMosaicSection() {

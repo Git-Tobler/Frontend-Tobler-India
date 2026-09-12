@@ -175,23 +175,7 @@ export default function Careers() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-white py-20 sm:py-28">
-        <div className="mx-auto max-w-[1400px] px-6">
-          <MediaBand imageId={MEDIA.plantLineWide} className="rounded-2xl p-12 sm:p-16 text-center text-white">
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4 text-white">Don't see your role?</h2>
-            <p className="text-lg text-white/90 mb-8">
-              Send us your resume and let us know how you'd like to contribute to Tobler India's growth.
-            </p>
-            <a
-              href="mailto:careers@tobler-in.com"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-tobler-blue font-bold rounded-lg hover:bg-tobler-bg-light transition-colors duration-300"
-            >
-              <Mail size={20} />
-              Send Your Resume
-            </a>
-          </MediaBand>
-        </div>
-      </section>
+      
     </>
   )
 }

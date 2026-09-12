@@ -23,15 +23,6 @@ import {
   QUALITY_CHECKS,
 } from '../../data/manufacturing.js'
 
-function Eyebrow({ children }) {
-  return (
-    <span className="label-mono inline-flex items-center gap-2 text-tobler-blue">
-      <span className="h-px w-6 bg-tobler-blue" aria-hidden="true" />
-      {children}
-    </span>
-  )
-}
-
 function Hero() {
   return (
     <section className="overflow-hidden bg-white pb-16 pt-16 md:pb-24 md:pt-24">
@@ -89,7 +80,7 @@ function Story() {
         <Reveal>
           Our Story
           <h2 className="mt-5 text-h2 text-tobler-heading">
-            A Swiss system, manufactured close to the site
+            Driven by Swiss Engineering Legacy
           </h2>
         </Reveal>
 
@@ -205,8 +196,8 @@ function Facility() {
           </dl>
         </Reveal>
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-          <Reveal delay={80} className="grid gap-8 sm:grid-cols-2 auto-rows-fr">
+        <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+          <Reveal delay={80} className="grid gap-4 sm:grid-cols-2 auto-rows-fr">
             {CAPABILITIES.map((capability, index) => (
               <div
                 key={capability.id}
@@ -219,14 +210,14 @@ function Facility() {
                     setActiveCapability(index)
                   }
                 }}
-                className={`flex cursor-pointer flex-col rounded-[14px] border p-10 text-left transition-all duration-500 ease-premium focus:outline-none focus-visible:ring-2 focus-visible:ring-tobler-blue ${
+                className={`flex cursor-pointer flex-col rounded-[14px] border p-6 text-left transition-all duration-500 ease-premium focus:outline-none focus-visible:ring-2 focus-visible:ring-tobler-blue ${
                   index === activeCapability
                     ? 'border-tobler-blue bg-white shadow-card'
                     : 'border-tobler-border-light bg-tobler-surface hover:shadow-soft'
                 }`}
               >
-                <h3 className="text-lg text-tobler-heading">{capability.title}</h3>
-                <ReadMore className="mt-4 text-base" previewLines={2}>
+                <h3 className="text-base text-tobler-heading">{capability.title}</h3>
+                <ReadMore className="mt-2 text-sm" previewLines={2}>
                   {capability.description}
                 </ReadMore>
               </div>
@@ -254,7 +245,7 @@ function Quality() {
           Quality Control
           <h2 className="mt-5 text-h2 text-tobler-heading">Tested before it is trusted</h2>
           <p className="mt-6 text-base leading-relaxed normal-case text-tobler-body">
-            Inspection is not a final gate here — it runs at four points, each with its own record.
+            Inspection is not a final gate here, it runs at four points, each with its own record.
             A batch that fails at any of them does not move forward.
           </p>
 
@@ -262,11 +253,12 @@ function Quality() {
               section is about testing, and the rig is the only frame in the
               library that actually shows a part being tested. */}
           <ResponsiveImage
-            publicId={MEDIA.loadTestRig}
+            publicId={'5_nvvzmz'}
             alt="A Tobler component under proof load on the test rig"
             className="mt-8 aspect-[4/3] w-full rounded-[14px]"
             displayWidth={720}
             sizes="(min-width: 1024px) 40vw, 100vw"
+
           />
         </Reveal>
 
