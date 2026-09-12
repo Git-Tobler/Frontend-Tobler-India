@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { CheckCircle2, Loader2 } from 'lucide-react'
+import { CheckCircle2, Loader2, Mail } from 'lucide-react'
 import FormField from './FormField.jsx'
 import Button from '../common/Button.jsx'
 import { sendContactMessage } from '../../lib/email.js'
 import { isValidEmail, isValidPhone } from '../../lib/helpers.js'
+import { SITE } from '../../data/site.js'
 
 const initialState = { name: '', email: '', phone: '', subject: '', message: '' }
 
@@ -33,13 +34,44 @@ function ContactForm() {
 
     setStatus('loading')
     try {
-      await sendContactMessage(values)
-      setStatus('success')
-      setValues(initialState)
+      const result = await sendContactMessage(values)
+
+      /* Two different outcomes, worded differently on purpose. A real send is
+         done and the form can reset; a mailto handoff has only opened the
+         visitor's mail app and is not sent until they press send there — so the
+         answers are deliberately KEPT in that case. If the handoff silently
+         failed (no mail client registered), clearing the form would have thrown
+         away everything they typed. */
+      if (result?.status === 'mailto') {
+        setStatus('handoff')
+      } else {
+        setStatus('success')
+        setValues(initialState)
+      }
     } catch (err) {
       console.error(err)
       setStatus('error')
     }
+  }
+
+  if (status === 'handoff') {
+    return (
+      <div className="flex flex-col items-center text-center gap-4 py-16 px-6 bg-tobler-bg-light rounded-card border border-tobler-border">
+        <Mail size={44} className="text-tobler-heading" />
+        <h3 className="text-xl font-bold text-tobler-heading">Your email app is opening</h3>
+        <p className="text-tobler-body max-w-sm">
+          We have prepared your message to{' '}
+          <a href={`mailto:${SITE.email}`} className="font-semibold underline">
+            {SITE.email}
+          </a>{' '}
+          with everything you filled in — press send there to finish. Nothing has reached us until
+          you do.
+        </p>
+        <Button variant="secondary" onClick={() => setStatus('idle')} icon={false}>
+          Back to the Form
+        </Button>
+      </div>
+    )
   }
 
   if (status === 'success') {
@@ -111,7 +143,12 @@ function ContactForm() {
 
       {status === 'error' && (
         <p className="text-sm text-tobler-error">
-          Something went wrong while sending your message. Please try again.
+          Something went wrong while sending your message. Please try again, or email us
+          directly at{' '}
+          <a href={`mailto:${SITE.email}`} className="font-semibold underline">
+            {SITE.email}
+          </a>
+          .
         </p>
       )}
 

@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { CheckCircle2, Loader2 } from 'lucide-react'
+import { CheckCircle2, Loader2, Mail } from 'lucide-react'
 import FormField from './FormField.jsx'
 import Button from '../common/Button.jsx'
 import { sendRFQRequest } from '../../lib/email.js'
 import { isValidEmail, isValidPhone } from '../../lib/helpers.js'
 import { PRODUCT_SUBCATEGORIES } from '../../data/products/index.js'
+import { SITE } from '../../data/site.js'
 
 const initialState = {
   name: '',
@@ -45,13 +46,41 @@ function RFQForm() {
 
     setStatus('loading')
     try {
-      await sendRFQRequest(values)
-      setStatus('success')
-      setValues(initialState)
+      const result = await sendRFQRequest(values)
+
+      /* See the matching note in ContactForm: a mailto handoff is not a send,
+         so the answers stay put until the visitor has actually pressed send in
+         their own mail app. An RFQ is long enough to fill in that losing it to
+         a mail client that never opened would be a real cost. */
+      if (result?.status === 'mailto') {
+        setStatus('handoff')
+      } else {
+        setStatus('success')
+        setValues(initialState)
+      }
     } catch (err) {
       console.error(err)
       setStatus('error')
     }
+  }
+
+  if (status === 'handoff') {
+    return (
+      <div className="flex flex-col items-center text-center gap-4 py-16 px-6 bg-tobler-bg-light rounded-card border border-tobler-border">
+        <Mail size={44} className="text-tobler-heading" />
+        <h3 className="text-xl font-bold text-tobler-heading">Your email app is opening</h3>
+        <p className="text-tobler-body max-w-sm">
+          We have prepared your quotation request to{' '}
+          <a href={`mailto:${SITE.email}`} className="font-semibold underline">
+            {SITE.email}
+          </a>{' '}
+          with your requirements — press send there to finish. Nothing has reached us until you do.
+        </p>
+        <Button variant="secondary" onClick={() => setStatus('idle')} icon={false}>
+          Back to the Form
+        </Button>
+      </div>
+    )
   }
 
   if (status === 'success') {
@@ -159,7 +188,12 @@ function RFQForm() {
 
       {status === 'error' && (
         <p className="text-sm text-tobler-error">
-          Something went wrong while submitting your request. Please try again.
+          Something went wrong while submitting your request. Please try again, or email your
+          requirements to{' '}
+          <a href={`mailto:${SITE.email}`} className="font-semibold underline">
+            {SITE.email}
+          </a>
+          .
         </p>
       )}
 

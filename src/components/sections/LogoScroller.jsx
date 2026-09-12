@@ -13,10 +13,8 @@ function LogoScroller() {
   const track = [...CLIENTS, ...CLIENTS]
 
   return (
-    <section className="border-b border-tobler-border-light bg-white py-12 md:py-16">
-      <p className="label-mono mb-10 text-center text-tobler-muted">
-        Trusted by leading developers and contractors
-      </p>
+    <section className="border-b border-tobler-border-light bg-white py-10 md:py-12">
+      
 
       {/* Full-bleed on purpose — the strip should run past the container edges
           so it reads as continuous rather than as a boxed row. */}
@@ -32,7 +30,7 @@ function LogoScroller() {
               aria-hidden={idx >= CLIENTS.length ? 'true' : undefined}
               loading="lazy"
               decoding="async"
-              className="h-20 w-auto max-w-[200px] shrink-0 object-contain transition-opacity duration-300 md:h-28 md:max-w-[260px]"
+              className="h-16 w-auto max-w-[180px] shrink-0 object-contain transition-opacity duration-300 md:h-20 md:max-w-[220px]"
             />
           ))}
         </div>
