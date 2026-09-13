@@ -1,37 +1,52 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { CheckCircle2 } from 'lucide-react'
 import SEO from '../../components/common/SEO.jsx'
 import Container from '../../components/common/Container.jsx'
 import { NavLink } from 'react-router-dom'
 import { SITE } from '../../data/site.js'
 import { useFooter } from '../../contexts/FooterContext.jsx'
+import { readStoredConsent, writeStoredConsent } from '../../lib/consent.js'
 
 function CookiePreferencesPage() {
   const { setShowFooter } = useFooter()
+  const [preferences, setPreferences] = useState(readStoredConsent)
+  const [savedAt, setSavedAt] = useState(0)
 
   useEffect(() => {
     setShowFooter(false)
     return () => setShowFooter(true)
   }, [setShowFooter])
+
+  /* Keyed on the save time rather than a boolean so a second change re-arms the
+     confirmation with a full window, instead of inheriting the previous
+     change's nearly expired timer and flashing past. */
+  useEffect(() => {
+    if (!savedAt) return undefined
+    const timer = setTimeout(() => setSavedAt(0), 3000)
+    return () => clearTimeout(timer)
+  }, [savedAt])
+
+  /* Every path that changes a preference goes through here, so the switches,
+     the stored record and the confirmation can never drift apart. */
+  const save = (next) => {
+    setPreferences(next)
+    writeStoredConsent(next)
+    setSavedAt(Date.now())
+  }
+
   const handleToggle = (id) => {
-    console.log('Toggle cookie preference:', id)
+    // The control is rendered disabled, but guard the handler too so no stray
+    // call can record consent for a site that would not work without it.
+    if (id === 'strictly_necessary') return
+    save({ ...preferences, [id]: !preferences[id] })
   }
 
   const handleAcceptAll = () => {
-    const prefs = {
-      strictly_necessary: true,
-      external_content: true,
-      timestamp: new Date().toISOString(),
-    }
-    localStorage.setItem('cookieConsent', JSON.stringify(prefs))
+    save({ strictly_necessary: true, external_content: true })
   }
 
   const handleRejectAll = () => {
-    const prefs = {
-      strictly_necessary: true,
-      external_content: false,
-      timestamp: new Date().toISOString(),
-    }
-    localStorage.setItem('cookieConsent', JSON.stringify(prefs))
+    save({ strictly_necessary: true, external_content: false })
   }
 
   return (
@@ -65,7 +80,8 @@ function CookiePreferencesPage() {
           <div className="max-w-2xl mx-auto">
             <div className="bg-white rounded-lg border border-tobler-border p-8 md:p-12">
               <p className="text-sm text-tobler-body mb-8">
-                Choose which cookies you allow. Strictly necessary cookies are always active.
+                Choose which cookies you allow. Strictly necessary cookies are always active. Every
+                change is saved as you make it.
               </p>
 
               {/* Cookie Options */}
@@ -84,7 +100,7 @@ function CookiePreferencesPage() {
                     <div className="flex-shrink-0">
                       <input
                         type="checkbox"
-                        checked={true}
+                        checked={preferences.strictly_necessary}
                         disabled
                         className="h-6 w-6 rounded accent-tobler-blue cursor-not-allowed"
                         aria-label="Strictly Necessary cookies"
@@ -108,12 +124,18 @@ function CookiePreferencesPage() {
                     <div className="flex-shrink-0">
                       <button
                         onClick={() => handleToggle('external_content')}
-                        className="relative h-6 w-11 rounded-full transition-colors bg-gray-300"
+                        className={`relative h-6 w-11 rounded-full transition-colors ${
+                          preferences.external_content ? 'bg-tobler-blue' : 'bg-gray-300'
+                        }`}
                         role="switch"
-                        aria-checked="false"
+                        aria-checked={preferences.external_content}
                         aria-label="External Content cookies"
                       >
-                        <span className="absolute top-0.5 left-0.5 h-5 w-5 bg-white rounded-full transition-transform" />
+                        <span
+                          className={`absolute top-0.5 left-0.5 h-5 w-5 bg-white rounded-full transition-transform ${
+                            preferences.external_content ? 'translate-x-5' : 'translate-x-0'
+                          }`}
+                        />
                       </button>
                     </div>
                   </div>
@@ -121,7 +143,18 @@ function CookiePreferencesPage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-end gap-3 mt-12 pt-8 border-t border-tobler-border">
+              <div className="flex flex-wrap items-center justify-end gap-3 mt-12 pt-8 border-t border-tobler-border">
+                {/* The live region stays mounted and empty so the confirmation is
+                    announced as a change inside it, rather than as a whole new
+                    region appearing — which screen readers routinely miss. */}
+                <p role="status" aria-live="polite" className="mr-auto text-sm font-medium text-tobler-success">
+                  {savedAt > 0 && (
+                    <span className="flex items-center gap-2 animate-fade-in">
+                      <CheckCircle2 size={16} />
+                      Preferences saved
+                    </span>
+                  )}
+                </p>
                 <button
                   onClick={handleRejectAll}
                   className="px-6 py-2.5 text-sm font-semibold text-tobler-blue border border-tobler-blue rounded-lg hover:bg-tobler-blue/5 transition-colors"

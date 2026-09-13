@@ -12,6 +12,9 @@ export function FooterProvider({ children }) {
   )
 }
 
+// The consumer hook ships alongside its provider on purpose — splitting it into
+// its own module would only move the import churn onto every consumer.
+// eslint-disable-next-line react-refresh/only-export-components
 export function useFooter() {
   return useContext(FooterContext)
 }

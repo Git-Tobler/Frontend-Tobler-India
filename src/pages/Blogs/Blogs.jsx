@@ -2,23 +2,25 @@ import SEO from '../../components/common/SEO.jsx'
 import PageHero from '../../components/layout/PageHero.jsx'
 import MediaBand from '../../components/ui/MediaBand.jsx'
 import Container from '../../components/common/Container.jsx'
-import { Calendar, User, Tag, ArrowRight, Search } from 'lucide-react'
+import { Calendar, User, ArrowRight, Search } from 'lucide-react'
 import { useState } from 'react'
 import { MEDIA } from '../../data/media-map.js'
-import { BLOG_POSTS } from '../../data/blog.js'
+import { BLOG_POSTS, isDraftPost, postExcerpt } from '../../data/blog.js'
 
 function Blogs() {
   const [selectedTag, setSelectedTag] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
 
-  const blogPosts = BLOG_POSTS
+  // Skeleton posts carry a bracket marker in every field, including the tags
+  // that feed the filter row below — dropping them here keeps '[Category]'
+  // off the badge and '[Tags to be added]' out of the chips.
+  const blogPosts = BLOG_POSTS.filter((post) => !isDraftPost(post))
 
   const allTags = [...new Set(blogPosts.flatMap(post => post.tags))]
-  const categories = [...new Set(blogPosts.map(post => post.category))]
 
   const filteredPosts = blogPosts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.excerpt.toLowerCase().includes(searchTerm.toLowerCase())
+                         postExcerpt(post).toLowerCase().includes(searchTerm.toLowerCase())
     const matchesTag = !selectedTag || post.tags.includes(selectedTag)
     return matchesSearch && matchesTag
   })
@@ -27,6 +29,8 @@ function Blogs() {
   const regularPosts = filteredPosts.filter(post => !post.featured)
 
   const BlogCard = ({ post, isFeatured = false }) => {
+    // Reads the raw excerpt on purpose: the marker is what says the article
+    // body is unwritten, and it is stripped for display just below.
     const isComplete = !post.excerpt.includes('[')
     return (
       <article className={`rounded-card border transition-all ${
@@ -59,7 +63,7 @@ function Blogs() {
         <p className={`text-sm mb-6 line-clamp-2 ${
           isComplete ? 'text-tobler-body' : 'text-tobler-body/60 italic'
         }`}>
-          {post.excerpt}
+          {postExcerpt(post)}
         </p>
 
         {/* Tags */}

@@ -3,12 +3,33 @@ import PageHero from '../../components/layout/PageHero.jsx'
 import MediaBand from '../../components/ui/MediaBand.jsx'
 import Container from '../../components/common/Container.jsx'
 import ResponsiveImage from '../../components/ui/ResponsiveImage.jsx'
-import { Calendar, MapPin, Zap, ExternalLink } from 'lucide-react'
-import { useState } from 'react'
+import Lightbox from '../../components/ui/Lightbox.jsx'
+import { Calendar, MapPin, Zap, ExternalLink, Maximize2 } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { MEDIA } from '../../data/media-map.js'
 
 function Exhibitions() {
+  /* Which gallery the viewer was opened from. An index alone is ambiguous here
+     because every event renders its own grid, and prev/next has to stay inside
+     the event being looked at instead of running on into the next one's photos. */
+  const [lightboxEventId, setLightboxEventId] = useState(null)
   const [lightboxIndex, setLightboxIndex] = useState(null)
+
+  /* Lightbox portals to <body>, so the page keeps scrolling behind it unless
+     the body is pinned. Keyed off the open/closed boolean rather than the index
+     so stepping through photos doesn't re-run the lock, and the cleanup fires on
+     unmount too — navigating away mid-view would otherwise strand an
+     unscrollable <body> on whatever page came next. */
+  const lightboxOpen = lightboxIndex !== null
+  useEffect(() => {
+    if (!lightboxOpen) return undefined
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = previousOverflow
+    }
+  }, [lightboxOpen])
 
   const exhibitions = [
     {
@@ -134,6 +155,24 @@ function Exhibitions() {
     },
   ]
 
+  /* Lightbox speaks `{ type, publicId, label }`; the gallery entries are
+     `{ id, alt }`. Reshaped at the boundary rather than in the data, because the
+     same `alt` is what the thumbnails below need as their alt text. */
+  const lightboxItems = (exhibitions.find((e) => e.id === lightboxEventId)?.images ?? []).map((img) => ({
+    type: 'image',
+    publicId: img.id,
+    label: img.alt,
+  }))
+
+  const openLightbox = (eventId, index) => {
+    setLightboxEventId(eventId)
+    setLightboxIndex(index)
+  }
+
+  const closeLightbox = () => {
+    setLightboxEventId(null)
+    setLightboxIndex(null)
+  }
 
   const ExhibitionCard = ({ exhibition }) => {
     const isComplete = exhibition.boothNumber && !exhibition.boothNumber.includes('[') && exhibition.status === 'upcoming'
@@ -305,9 +344,12 @@ function Exhibitions() {
                   <p className="text-sm text-tobler-body mb-8">{event.description}</p>
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {event.images.map((img, idx) => (
-                      <div
+                      <button
                         key={idx}
-                        className="relative overflow-hidden rounded-card border border-tobler-border shadow-soft hover:shadow-card transition-all"
+                        type="button"
+                        onClick={() => openLightbox(event.id, idx)}
+                        aria-label={`Open ${img.alt} full screen`}
+                        className="group relative w-full overflow-hidden rounded-card border border-tobler-border shadow-soft hover:shadow-card transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-tobler-blue"
                       >
                         <ResponsiveImage
                           publicId={img.id}
@@ -315,7 +357,10 @@ function Exhibitions() {
                           className="w-full h-64 object-cover"
                           displayWidth={600}
                         />
-                      </div>
+                        <span className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/45 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+                          <Maximize2 size={15} />
+                        </span>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -343,6 +388,16 @@ function Exhibitions() {
         </Container>
       </section>
 
+      {/* Mounted only while open so the viewer's focus-restore effect runs its
+          cleanup on close and hands focus back to the thumbnail that opened it. */}
+      {lightboxOpen && (
+        <Lightbox
+          items={lightboxItems}
+          index={lightboxIndex}
+          onClose={closeLightbox}
+          onIndexChange={setLightboxIndex}
+        />
+      )}
     </>
   )
 }

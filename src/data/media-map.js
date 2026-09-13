@@ -66,6 +66,35 @@ export const MEDIA = {
   laserWeldingVideo: 'Laser welding',
   roboticWeldingVideo: 'robotic_welding_g0ujsn',
 
+  // ---------------------------------------------------------------------
+  // "Tobler Journey" timeline circles — About page, #timeline.
+  //
+  // One key per milestone, keyed by the `year` string in TIMELINE
+  // (src/data/team.js). This is the swap point: change an ID here and that
+  // circle changes, with no component edit. Keys must stay in step with the
+  // years in TIMELINE — a year with no key here renders the MediaTile
+  // placeholder rather than breaking.
+  //
+  // `null` means "no suitable asset in the library yet". The reference design
+  // uses stock imagery for these (a Swiss flag, a Bulgarian cathedral, a map
+  // of Europe, a handshake, an Indian flag) and none of it exists in the
+  // Tobler Cloudinary — upload the real asset and drop its public ID in.
+  //
+  // The non-null defaults below are genuine Tobler photography chosen as the
+  // nearest match, not final art direction. Swap freely.
+  // ---------------------------------------------------------------------
+  journey: {
+    '1995': 'Martin Tobler_quccxh',           // stand-in for the Swiss flag
+    '2004': 'ChatGPT_Image_Sep_10_2026_05_37_34_PM_vhcwv8',                    // aluminium scaffolding
+    '2006': null,                                     // Bulgaria — no asset yet
+    '2011': 'Thumbnail_-_1_d0gzy0', // embossed Tobler mark
+    '2012-2021': null,                                // Europe map — no asset yet
+    '2023': 'tobler/site/site-visit-picture',         // stand-in for the handshake
+    '2024': 'tobler/site/screenshot-2025-09-13-at-4-20-24-pm',  // branded machine
+    '2025': 'factory_1_v4ki98',                       // plant exterior
+    '2026': 'tobler/site/screenshot-2025-09-13-at-4-02-51-pm',  // production floor
+  },
+
   // Exhibition and event photography — used in galleries and team showcases
   eventPhoto1: 'tobler/event/dsc-6806',
   eventPhoto2: 'tobler/event/dsc-6470',

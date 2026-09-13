@@ -1,6 +1,6 @@
 import { useInViewAnimation } from '../../hooks/useInViewAnimation.js'
 import swissEngineering from '../../assets/images/Swiss engineering 1.png'
-import indiaPresence from '../../assets/images/Indian presence.png'
+import indiaPresence from '../../assets/images/image (12).jpg'
 
 /* The two capability bands on About: Swiss engineering, then India presence.
 

@@ -1,11 +1,18 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { X } from 'lucide-react'
+import { readStoredConsent } from '../../lib/consent.js'
 
 function CookiePreferences({ isOpen, onClose, onSave }) {
-  const [preferences, setPreferences] = useState({
-    strictly_necessary: true,
-    external_content: false,
-  })
+  const [preferences, setPreferences] = useState(readStoredConsent)
+
+  /* Both the banner and the footer keep this mounted and only flip isOpen, so
+     the initial state above is read once per page load and would go stale the
+     moment consent changed anywhere else. Re-reading on each open is what stops
+     the switches showing a choice the visitor already revised — and stops Save
+     writing that stale view back over it. */
+  useEffect(() => {
+    if (isOpen) setPreferences(readStoredConsent())
+  }, [isOpen])
 
   const handleToggle = (key) => {
     if (key === 'strictly_necessary') return

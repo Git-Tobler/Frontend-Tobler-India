@@ -4,7 +4,7 @@ import MediaBand from '../../components/ui/MediaBand.jsx'
 import ResponsiveImage from '../../components/ui/ResponsiveImage.jsx'
 import VideoPanel from '../../components/ui/VideoPanel.jsx'
 import Container from '../../components/common/Container.jsx'
-import { Calendar, User, ArrowRight, Newspaper, Video, Image as ImageIcon } from 'lucide-react'
+import { Calendar, User, ArrowRight, Video } from 'lucide-react'
 import { MEDIA } from '../../data/media-map.js'
 
 /* Media Gallery tiles. Two production clips against four stills so the block

@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Mail, MapPin, Briefcase, ArrowRight } from 'lucide-react'
 import PageHero from '../../components/layout/PageHero.jsx'
-import MediaBand from '../../components/ui/MediaBand.jsx'
 import ResponsiveImage from '../../components/ui/ResponsiveImage.jsx'
 import SEO from '../../components/common/SEO.jsx'
 import { MEDIA } from '../../data/media-map.js'
@@ -32,8 +31,8 @@ export default function Careers() {
               Why Join Tobler India?
             </h2>
             <p className="text-lg text-tobler-body leading-relaxed">
-              At Tobler, we believe in the power of innovation and precision engineering. We're building the world's mosttrusted construction systems, and we need talented people like you to make it happen. Join a team that values
-              Swiss engineering excellence, continuous improvement, and making a real impact on India's infrastructure.
+              At Tobler, we believe in the power of innovation and precision engineering. We&rsquo;re building the world&rsquo;s most trusted construction systems, and we need talented people like you to make it happen. Join a team that values
+              Swiss engineering excellence, continuous improvement, and making a real impact on India&rsquo;s infrastructure.
             </p>
           </div>
         </div>
@@ -129,15 +128,15 @@ export default function Careers() {
               <div className="space-y-4 text-tobler-body">
                 <p>
                   At Tobler India, we foster a culture of innovation, accountability, and continuous improvement. Our team
-                  is driven by a shared mission to deliver engineering excellence and make a positive impact on India's
+                  is driven by a shared mission to deliver engineering excellence and make a positive impact on India&rsquo;s
                   infrastructure.
                 </p>
                 <p>
                   We believe in empowering our employees with the tools, training, and opportunities they need to succeed.
-                  Whether you're an engineer, salesperson, or operations specialist, your contribution matters.
+                  Whether you&rsquo;re an engineer, salesperson, or operations specialist, your contribution matters.
                 </p>
                 <p>
-                  We work hard, celebrate wins together, and support each other's growth. Join a team where Swiss precision
+                  We work hard, celebrate wins together, and support each other&rsquo;s growth. Join a team where Swiss precision
                   meets Indian passion.
                 </p>
               </div>

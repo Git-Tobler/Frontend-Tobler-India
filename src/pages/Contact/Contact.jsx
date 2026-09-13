@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useSyncExternalStore } from 'react'
 import { useLocation } from 'react-router-dom'
 import { MapPin, Phone, Mail, Briefcase, Linkedin, Share2, Instagram, Youtube } from 'lucide-react'
 import SEO from '../../components/common/SEO.jsx'
@@ -10,15 +10,27 @@ import RFQForm from '../../components/forms/RFQForm.jsx'
 import DownloadCard from '../../components/ui/DownloadCard.jsx'
 import { SITE } from '../../data/site.js'
 import { MEDIA } from '../../data/media-map.js'
+import {
+  getExternalContentConsent,
+  subscribeToConsent,
+  writeStoredConsent,
+} from '../../lib/consent.js'
 
 const TABS = [
   { id: 'contact', label: 'General Enquiry' },
   { id: 'rfq', label: 'Request a Quote' },
 ]
 
+const MAPS_SEARCH_URL = `https://maps.google.com/?q=${encodeURIComponent(SITE.address)}`
+
 function Contact() {
   const { hash } = useLocation()
   const [activeTab, setActiveTab] = useState(hash === '#rfq' ? 'rfq' : 'contact')
+
+  /* Read through the store rather than into state: the cookie modal is mounted
+     app-wide from the footer, so the visitor can change this answer without
+     ever leaving the page, and the map below has to follow. */
+  const mapAllowed = useSyncExternalStore(subscribeToConsent, getExternalContentConsent)
 
   /* Product pages and the footer link straight to /contact#rfq. On a cold load
      the initial state above is enough, but arriving from a page that is already
@@ -135,20 +147,61 @@ function Contact() {
         </Container>
       </section>
 
+      {/* The embed hands the visitor's IP to Google the moment it loads, which
+          is exactly what the External Content switch in the cookie preferences
+          promises not to do when it is off. Gated here rather than hidden
+          outright so refusing still leaves a working way to find the office,
+          and so granting it takes one click from where the map would be. */}
       <section className="pb-24">
         <Container>
-          <div className="rounded-card overflow-hidden border border-tobler-border h-[420px]">
-            <iframe
-              title="Office Location"
-              src={SITE.mapEmbedUrl}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen=""
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
+          {mapAllowed ? (
+            <div className="rounded-card overflow-hidden border border-tobler-border h-[420px]">
+              <iframe
+                title="Office Location"
+                src={SITE.mapEmbedUrl}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          ) : (
+            <div className="rounded-card border border-tobler-border bg-tobler-bg-light p-7 md:p-10">
+              <h3 className="text-base mb-4 flex items-center gap-2">
+                <MapPin size={18} className="text-tobler-blue" />
+                Find Us
+              </h3>
+              <p className="text-sm text-tobler-body leading-relaxed mb-6 max-w-reading">
+                {SITE.address}
+              </p>
+              <div className="flex flex-wrap items-center gap-3">
+                <Button
+                  href={MAPS_SEARCH_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="secondary"
+                  size="sm"
+                >
+                  Open in Google Maps
+                </Button>
+                <Button
+                  onClick={() => writeStoredConsent({ strictly_necessary: true, external_content: true })}
+                  variant="ghost"
+                  size="sm"
+                  icon={false}
+                >
+                  Show the map here
+                </Button>
+              </div>
+              <p className="text-xs text-tobler-muted mt-5 max-w-reading">
+                The embedded map is hosted by Google and loading it shares your IP address
+                with them. Showing it here turns on External Content in your cookie
+                preferences, which you can change again at any time.
+              </p>
+            </div>
+          )}
         </Container>
       </section>
     </>

@@ -1,0 +1,77 @@
+<!--
+  EmailJS template: GENERAL ENQUIRY
+  Paste the whole file into: EmailJS dashboard > Email Templates > (your Contact template) > Content > "Edit Content" > Code Editor
+
+  Every {{placeholder}} below is a key that api/enquiry.js sends in template_params
+  for formType "contact". Double braces are HTML-escaped by EmailJS — keep them
+  double, never triple: {{message}} is text a stranger typed into a public form.
+
+  Dashboard fields to set on this template (Settings tab):
+    Subject:   {{subject}}
+    To Email:  {{to_email}}
+    From Name: {{from_name}}
+    Reply To:  {{reply_to}}
+-->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F1F5F9;padding:24px 0;font-family:Arial,Helvetica,sans-serif;">
+  <tr>
+    <td align="center">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#FFFFFF;border-radius:8px;overflow:hidden;">
+
+        <!-- Header -->
+        <tr>
+          <td style="background:#0A2240;padding:22px 28px;">
+            <div style="color:#FFFFFF;font-size:20px;font-weight:bold;letter-spacing:0.02em;">Tobler India</div>
+            <div style="color:#F7E500;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;margin-top:4px;">{{form_type}}</div>
+          </td>
+        </tr>
+        <tr><td style="height:4px;background:#F7E500;"></td></tr>
+
+        <!-- Lead line -->
+        <tr>
+          <td style="padding:24px 28px 8px 28px;color:#14181A;font-size:16px;line-height:1.5;">
+            New enquiry from <strong>{{name}}</strong>. Reply to this email to answer them directly.
+          </td>
+        </tr>
+
+        <!-- Fields -->
+        <tr>
+          <td style="padding:8px 28px 24px 28px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;font-size:14px;color:#14181A;">
+              <tr>
+                <td style="padding:10px 0;border-bottom:1px solid #DFE5EC;width:34%;color:#6B7280;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;vertical-align:top;">Name</td>
+                <td style="padding:10px 0;border-bottom:1px solid #DFE5EC;">{{name}}</td>
+              </tr>
+              <tr>
+                <td style="padding:10px 0;border-bottom:1px solid #DFE5EC;color:#6B7280;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;vertical-align:top;">Email</td>
+                <td style="padding:10px 0;border-bottom:1px solid #DFE5EC;"><a href="mailto:{{email}}" style="color:#0A2240;">{{email}}</a></td>
+              </tr>
+              <tr>
+                <td style="padding:10px 0;border-bottom:1px solid #DFE5EC;color:#6B7280;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;vertical-align:top;">Phone</td>
+                <td style="padding:10px 0;border-bottom:1px solid #DFE5EC;">{{phone}}</td>
+              </tr>
+              <tr>
+                <td style="padding:10px 0;border-bottom:1px solid #DFE5EC;color:#6B7280;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;vertical-align:top;">Subject</td>
+                <td style="padding:10px 0;border-bottom:1px solid #DFE5EC;">{{subject}}</td>
+              </tr>
+              <tr>
+                <td style="padding:14px 0 4px 0;color:#6B7280;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;vertical-align:top;" colspan="2">Message</td>
+              </tr>
+              <tr>
+                <td colspan="2" style="padding:6px 0 0 0;line-height:1.6;white-space:pre-wrap;">{{message}}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Trace footer -->
+        <tr>
+          <td style="padding:14px 28px;background:#F8FAFC;border-top:1px solid #DFE5EC;color:#6B7280;font-size:11px;line-height:1.6;">
+            Sent from {{page_url}}<br>
+            {{submitted_at}} (UTC) &middot; Delivered to {{to_email}}
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>

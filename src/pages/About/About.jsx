@@ -1,6 +1,5 @@
 import SEO from '../../components/common/SEO.jsx'
 import LeadershipSection from '../../components/sections/LeadershipSection.jsx'
-import TimelineItem from '../../components/ui/TimelineItem.jsx'
 import StudioMarquee from '../../components/studio/StudioMarquee.jsx'
 import ValuesCarousel from '../../components/studio/ValuesCarousel.jsx'
 import PartnerSection from '../../components/studio/PartnerSection.jsx'
@@ -8,8 +7,7 @@ import AnimatedHeroGallery from '../../components/about/AnimatedHeroGallery.jsx'
 import WhoWeAre from '../../components/about/WhoWeAre.jsx'
 import OurPhilosophy from '../../components/about/OurPhilosophy.jsx'
 import EngineeringPresence from '../../components/about/EngineeringPresence.jsx'
-import { useInViewAnimation } from '../../hooks/useInViewAnimation.js'
-import { TIMELINE } from '../../data/team.js'
+import MilestoneTimeline from '../../components/about/MilestoneTimeline.jsx'
 
 /* About, rebuilt as a single studio-style landing page.
 
@@ -20,7 +18,8 @@ import { TIMELINE } from '../../data/team.js'
 
    The section ids (our-story, swiss-engineering, india-presence, philosophy,
    values, leadership, timeline, certifications) are the redirect targets for
-   the retired /about/* routes in AppRoutes.jsx. Do not rename them.
+   the retired /about/* routes in AppRoutes.jsx. Do not rename them. #timeline
+   is owned by MilestoneTimeline, which carries the id itself.
 
    The page opens on the dark brand-palette "Who We Are" band rather than the
    old centred white hero — that hero's eyebrow, headline, story copy and both
@@ -32,37 +31,6 @@ function Leadership() {
       title="The team behind the growth"
       description="Board, directors and general managers steering Tobler India's engineering, manufacturing and delivery."
     />
-  )
-}
-
-function Timeline() {
-  const [ref, inView] = useInViewAnimation()
-
-  return (
-    <section id="timeline" ref={ref} className="mx-auto max-w-2xl scroll-mt-28 px-6 py-12">
-      <h2
-        className={`text-center text-[32px] leading-[1.1] tracking-tight text-[#0D212C] md:text-[40px] lg:text-[44px] ${
-          inView ? 'animate-fade-in-up' : 'opacity-0'
-        }`}
-        style={{ animationDelay: '0.1s' }}
-      >
-        Three decades of <span className="font-mondwest">milestones</span>
-      </h2>
-
-      <div
-        className={`mt-12 ${inView ? 'animate-fade-in-up' : 'opacity-0'}`}
-        style={{ animationDelay: '0.2s' }}
-      >
-        {TIMELINE.map((item, index) => (
-          <TimelineItem
-            key={item.year}
-            item={item}
-            index={index}
-            isLast={index === TIMELINE.length - 1}
-          />
-        ))}
-      </div>
-    </section>
   )
 }
 
@@ -82,7 +50,7 @@ function About() {
       <OurPhilosophy />
       <StudioMarquee />
       <ValuesCarousel />
-      <Timeline />
+      <MilestoneTimeline />
 
       <PartnerSection />
     </div>

@@ -12,7 +12,6 @@ import FactoryPanels from '../../components/manufacturing/FactoryPanels.jsx'
 import ManufacturingGalleryCarousel from '../../components/manufacturing/ManufacturingGalleryCarousel.jsx'
 import ManufacturingVideoCarousel from '../../components/manufacturing/ManufacturingVideoCarousel.jsx'
 import MediaSequenceCarousel from '../../components/manufacturing/MediaSequenceCarousel.jsx'
-import { MEDIA } from '../../data/media-map.js'
 import {
   CAPABILITIES,
   FACILITY_STATS,
@@ -86,7 +85,7 @@ function Story() {
 
         <Reveal delay={120} className="space-y-6 text-base leading-relaxed normal-case text-tobler-body md:text-lg">
           <p>
-            Tobler began manufacturing precision scaffolding in Switzerland in 1996. The systems
+            Tobler began manufacturing precision scaffolding in Switzerland in 1995. The systems
             worked because the tolerances were unforgiving — components that interlock reliably on
             the fiftieth reuse, not just the first.
           </p>

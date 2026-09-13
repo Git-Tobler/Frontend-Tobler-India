@@ -43,7 +43,6 @@ const JOURNEY_ITEMS = [
 function JourneyGallerySlide() {
   const containerRef = useRef(null)
   const [activeIndex, setActiveIndex] = useState(0)
-  const [scrollProgress, setScrollProgress] = useState(0)
 
   useEffect(() => {
     const container = containerRef.current
@@ -52,12 +51,10 @@ function JourneyGallerySlide() {
     const handleScroll = () => {
       const rect = container.getBoundingClientRect()
       const elementTop = rect.top
-      const elementBottom = rect.bottom
       const viewportHeight = window.innerHeight
 
       // Calculate progress: 0 when element is at bottom, 1 when at top
       const progress = Math.max(0, Math.min(1, 1 - elementTop / viewportHeight))
-      setScrollProgress(progress)
 
       // Calculate active index based on scroll progress
       const newIndex = Math.min(

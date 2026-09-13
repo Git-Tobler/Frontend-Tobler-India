@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useInViewAnimation } from '../../hooks/useInViewAnimation.js'
-import { VALUES, CERTIFICATIONS } from '../../data/team.js'
+import { VALUES } from '../../data/team.js'
 
 /* Auto-advancing card rail.
 

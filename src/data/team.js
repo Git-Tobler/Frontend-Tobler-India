@@ -109,13 +109,28 @@ export const LEADERSHIP = [
   
 ]
 
+/* The company history, oldest first. Two consumers depend on that ordering
+   and on this shape: lib/answerCards.js reads TIMELINE[0] as the founding
+   entry, and data/searchIndex.js indexes every row by `year`, so years have
+   to stay unique. `year` is a display string, not a number — 2012-2021 is a
+   span rather than a point.
+
+   Founding year is 1995, matching Martin Tobler's bio above. The earlier
+   version of this list said 1996, which put the two in direct contradiction
+   on the same page. Two surfaces outside this file still spell the year out in
+   prose instead of reading it from here — the Our Story paragraph in
+   pages/Manufacturing/Manufacturing.jsx and the Our Timeline entry in
+   data/searchIndex.js — so they have to be moved with it. */
 export const TIMELINE = [
-  { year: '1996', title: 'Founded in Switzerland', description: 'Tobler begins manufacturing precision scaffolding systems in Switzerland.' },
-  { year: '2001', title: 'European Expansion', description: 'Formwork systems introduced, expanding into major European infrastructure projects.' },
-  { year: '2006', title: 'Global Certification', description: 'Tobler systems achieve EN 12810-12812 compliance across all major product lines.' },
-  { year: '2011', title: 'Entry into India', description: 'Tobler establishes its first Indian manufacturing and engineering base.' },
-  { year: '2017', title: 'Manufacturing Scale-Up', description: 'India facility expands to serve infrastructure and high-rise projects nationwide.' },
-  { year: '2026', title: 'Digital Transformation', description: 'Tobler India launches a new premium digital platform to serve customers globally.' },
+  { year: '1995', title: 'Tobler AG Founded by Mr. Martin Tobler', description: 'Foundation of Tobler AG in Switzerland.' },
+  { year: '2004', title: 'Aluminium Scaffolding', description: 'Expansion into aluminium scaffolding systems, and the Cugy branch established.' },
+  { year: '2006', title: 'International Expansion', description: 'Branch established in Bulgaria.' },
+  { year: '2011', title: 'Scaffolding & Formwork', description: 'Tobler AG expands its expertise across both divisions.' },
+  { year: '2012-2021', title: 'European Expansion', description: 'Growth across Europe with new locations, warehouses and branches.' },
+  { year: '2023', title: 'Conrad Kern Acquisition', description: 'Strengthening expertise in scaffolding and customised formwork.' },
+  { year: '2024', title: 'Tobler India', description: 'Tobler enters India, bringing Swiss expertise to the formwork industry.' },
+  { year: '2025', title: 'North India Manufacturing', description: 'New North India manufacturing plant in Punjab.' },
+  { year: '2026', title: 'South India Expansion', description: 'New manufacturing plant in South India, strengthening Tobler’s manufacturing footprint nationwide.' },
 ]
 
 /* Mirrors the six-column table on the About page's #values section — kept

@@ -14,7 +14,6 @@ import VideoPanel from '../ui/VideoPanel.jsx'
    back to a single-image display. */
 function ProductGallery({ product, icon }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const hasVideo = Boolean(product.videoId)
   const hasGallery = product.gallery && product.gallery.length > 0
   const images = hasGallery ? product.gallery : product.imageId ? [product.imageId] : []
   const currentImage = images[currentImageIndex]

@@ -76,3 +76,16 @@ export const BLOG_POSTS = [
     featured: false,
   },
 ]
+
+/* Same bracket convention as data/faqs.js's isDraftAnswer: copy still carrying
+   a `[...]` marker has not been written yet.
+
+   A post whose *title* is still a marker is an empty skeleton kept here as the
+   shape to copy for the next article — it has no title, date, category or tags
+   to show, so every consumer drops it rather than rendering a card full of
+   brackets. `[Content to be added] - ` is the weaker case: the excerpt after it
+   is real summary copy and the article body is what is missing, so the marker
+   is stripped for display and the post still lists (greyed, with no "Read
+   Article" link, which is what `isComplete` gates on the page). */
+export const isDraftPost = (post) => post.title.includes('[')
+export const postExcerpt = (post) => post.excerpt.replace('[Content to be added] - ', '')

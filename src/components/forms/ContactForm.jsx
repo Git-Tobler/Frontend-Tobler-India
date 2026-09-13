@@ -6,12 +6,19 @@ import { sendContactMessage } from '../../lib/email.js'
 import { isValidEmail, isValidPhone } from '../../lib/helpers.js'
 import { SITE } from '../../data/site.js'
 
-const initialState = { name: '', email: '', phone: '', subject: '', message: '' }
+/* company_website is the honeypot — see the hidden field in the markup below.
+   It ships in the same `values` object as everything else so it reaches the
+   server without a special case in the submit handler. */
+const initialState = { name: '', email: '', phone: '', subject: '', message: '', company_website: '' }
 
 function ContactForm() {
   const [values, setValues] = useState(initialState)
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('idle')
+  /* The server's wording when it rejected the submission for a reason the
+     visitor can act on. Empty for anything else, which falls back to the
+     generic line below. */
+  const [errorMessage, setErrorMessage] = useState('')
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -50,6 +57,7 @@ function ContactForm() {
       }
     } catch (err) {
       console.error(err)
+      setErrorMessage(err?.message || '')
       setStatus('error')
     }
   }
@@ -141,14 +149,40 @@ function ContactForm() {
         placeholder="Tell us about your project or query..."
       />
 
+
+      {/* Honeypot. Hidden from people, irresistible to the bots that fill every
+          input they find; api/enquiry.js drops any submission that arrives with
+          it set. aria-hidden + tabIndex -1 keep it away from screen readers and
+          the tab order, and autoComplete="off" stops a password manager filling
+          it on a real visitor's behalf. Positioned off-canvas rather than
+          display:none — some bots skip fields they can tell are not rendered. */}
+      <div aria-hidden="true" className="absolute left-[-9999px] top-0 h-0 w-0 overflow-hidden">
+        <label htmlFor="contact-company-website">Leave this field blank</label>
+        <input
+          id="contact-company-website"
+          type="text"
+          name="company_website"
+          value={values.company_website}
+          onChange={handleChange}
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
       {status === 'error' && (
         <p className="text-sm text-tobler-error">
-          Something went wrong while sending your message. Please try again, or email us
-          directly at{' '}
-          <a href={`mailto:${SITE.email}`} className="font-semibold underline">
-            {SITE.email}
-          </a>
-          .
+          {/* A rejection the server explained (bad address, rate limited) is
+              shown verbatim — it tells the visitor what to change. Anything
+              else gets the generic line plus a way to reach us regardless. */}
+          {errorMessage || (
+            <>
+              Something went wrong while sending your message. Please try again, or email us
+              directly at{' '}
+              <a href={`mailto:${SITE.email}`} className="font-semibold underline">
+                {SITE.email}
+              </a>
+              .
+            </>
+          )}
         </p>
       )}
 

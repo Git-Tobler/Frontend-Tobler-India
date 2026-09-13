@@ -1,48 +1,35 @@
 import { useState, useEffect } from 'react'
 import { X } from 'lucide-react'
 import CookiePreferences from './CookiePreferences.jsx'
+import { hasStoredConsent, subscribeToConsent, writeStoredConsent } from '../../lib/consent.js'
 
 function CookieConsent() {
   const [show, setShow] = useState(false)
   const [showPreferences, setShowPreferences] = useState(false)
-  const [preferences, setPreferences] = useState({
-    strictly_necessary: true,
-    external_content: false,
-  })
 
   useEffect(() => {
-    const consentGiven = localStorage.getItem('cookieConsent')
-    if (!consentGiven) {
+    if (!hasStoredConsent()) {
       setShow(true)
     }
+    /* Consent can be recorded without touching this banner — the preferences
+       page, the footer modal, or the Contact map's own "show it here" button —
+       and a banner still asking a question the visitor has just answered reads
+       as broken. */
+    return subscribeToConsent(() => setShow(!hasStoredConsent()))
   }, [])
 
   const handleAcceptAll = () => {
-    const allAccepted = {
-      strictly_necessary: true,
-      external_content: true,
-      timestamp: new Date().toISOString(),
-    }
-    localStorage.setItem('cookieConsent', JSON.stringify(allAccepted))
+    writeStoredConsent({ strictly_necessary: true, external_content: true })
     setShow(false)
   }
 
   const handleRejectAll = () => {
-    const rejected = {
-      strictly_necessary: true,
-      external_content: false,
-      timestamp: new Date().toISOString(),
-    }
-    localStorage.setItem('cookieConsent', JSON.stringify(rejected))
+    writeStoredConsent({ strictly_necessary: true, external_content: false })
     setShow(false)
   }
 
   const handleSavePreferences = (prefs) => {
-    const finalPrefs = {
-      ...prefs,
-      timestamp: new Date().toISOString(),
-    }
-    localStorage.setItem('cookieConsent', JSON.stringify(finalPrefs))
+    writeStoredConsent(prefs)
     setShow(false)
   }
 

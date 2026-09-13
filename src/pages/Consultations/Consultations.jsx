@@ -74,7 +74,7 @@ function Consultations() {
               Direct Access to Our Technical Team
             </h2>
             <p className="text-base text-tobler-body leading-relaxed mb-8">
-              Whether you're planning a complex scaffolding project, need technical guidance, or want to explore custom solutions, our team is ready to help. Schedule a consultation at a time that works for you.
+              Whether you&rsquo;re planning a complex scaffolding project, need technical guidance, or want to explore custom solutions, our team is ready to help. Schedule a consultation at a time that works for you.
             </p>
             <Button
               href={calendlyUrl}

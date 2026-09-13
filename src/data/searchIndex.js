@@ -16,8 +16,8 @@ import { PROJECTS } from './projects.js'
 import { SITE_FAQS, isDraftAnswer } from './faqs.js'
 import { LEADERSHIP, CERTIFICATIONS, TIMELINE, VALUES } from './team.js'
 import { POSITIONS } from './careers.js'
-import { BLOG_POSTS } from './blog.js'
-import { DOWNLOAD_CATEGORIES } from './downloads.js'
+import { BLOG_POSTS, isDraftPost, postExcerpt } from './blog.js'
+import { DOWNLOAD_CATEGORIES, isDraftDocument, isFilled } from './downloads.js'
 import { CAPABILITIES, QUALITY_CHECKS, PROCESS_STEPS } from './manufacturing.js'
 import { EXHIBITIONS } from './exhibitions.js'
 
@@ -49,7 +49,7 @@ const ABOUT_SECTIONS = [
   { id: 'about-philosophy', title: 'Philosophy', path: '/about#philosophy', category: 'About', description: 'Our core beliefs.', weight: 0.8 },
   { id: 'about-values', title: 'Our Values', path: '/about#values', category: 'About', description: VALUES.map((v) => v.title).join(', '), weight: 0.8 },
   { id: 'about-leadership', title: 'Leadership', path: '/about#leadership', category: 'About', description: 'Meet the board and leadership team.', weight: 1 },
-  { id: 'about-timeline', title: 'Our Timeline', path: '/about#timeline', category: 'About', description: "Tobler's journey since 1996.", weight: 0.8 },
+  { id: 'about-timeline', title: 'Our Timeline', path: '/about#timeline', category: 'About', description: "Tobler's journey since 1995.", weight: 0.8 },
   { id: 'about-certifications', title: 'Certifications', path: '/about#certifications', category: 'About', description: 'Quality & certifications overview.', weight: 0.8 },
 ]
 
@@ -207,26 +207,26 @@ const buildManufacturingEntries = () => [
 const buildDownloadEntries = () =>
   DOWNLOAD_CATEGORIES.flatMap((category) =>
     category.items
-      .filter((item) => !item.name.includes('['))
+      .filter((item) => !isDraftDocument(item))
       .map((item) => ({
         id: `download-${category.id}-${item.id}`,
         title: item.name,
         subtitle: category.title,
         path: '/download-brochures',
         category: 'Downloads',
-        description: item.description,
+        description: isFilled(item.description) ? item.description : category.description,
         weight: 1.3,
       }))
   )
 
 const buildBlogEntries = () =>
-  BLOG_POSTS.filter((post) => !post.title.includes('[')).map((post) => ({
+  BLOG_POSTS.filter((post) => !isDraftPost(post)).map((post) => ({
     id: `blog-${post.id}`,
     title: post.title,
     subtitle: post.category,
     path: '/blogs',
     category: 'Blog',
-    description: post.excerpt.replace('[Content to be added] - ', ''),
+    description: postExcerpt(post),
     keywords: (post.tags || []).join(' '),
     weight: 1,
   }))

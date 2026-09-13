@@ -1,25 +1,36 @@
 import { Link } from 'react-router-dom'
 import { BadgePlus, Factory, Globe, ShieldCheck } from 'lucide-react'
 import { useInViewAnimation } from '../../hooks/useInViewAnimation.js'
-import scaffoldNode from '../../assets/images/Swiss engineering 1.png'
-import towerAtSunset from '../../assets/images/who-we-are-2.png'
+import scaffoldNode from '../../assets/images/image (13).jpg'
 
 /* The About page opener — the dark "Who We Are" band.
 
-   It is the one section on this otherwise white studio page that runs on the
-   brand palette: the blueprint navy (#0A2240 -> #1B4E90) with the logo yellow
-   as the only accent, the same pairing PageHero and the CTA bands use.
+   The photograph is the band. It runs full bleed behind the whole section
+   rather than sitting in the two skewed slabs this used to carry, so there is
+   no flat colour field for the copy to sit on and no second image competing
+   with it. (who-we-are-2.png was the other slab and is no longer referenced
+   here; the file is still in assets if it is wanted back.)
+
+   Colour: the ground is a neutral charcoal (#15171A), not the brand navy
+   (#0A2240). Two things were making this band read blue — the flat navy field
+   itself, and the scrim, which painted the photography that same navy. The
+   charcoal is near enough to neutral that the photograph keeps its own colour,
+   and the image carries a `saturate(.6)` filter on top of that because the
+   source frame has a cold cast of its own. The logo yellow is the only
+   chromatic accent left, which is the point of doing it this way.
+
+   #15171A is repeated as a literal in the scrim classes rather than pulled
+   from a constant: Tailwind's JIT scans for complete class strings, so an
+   interpolated value would never generate. If the ground moves, move every
+   copy together or the scrims will seam against the base.
+
+   Legibility: anything sitting out on the photograph — the standards note, the
+   pillar panel — carries its own tinted, blurred backing. A border alone is
+   not enough once there is a photograph rather than a flat field behind it.
 
    The copy is the About hero's own copy — headline, the story paragraphs,
    the standards line and both calls to action — moved in here rather than
    duplicated, so the page still opens with one statement.
-
-   Geometry: the photography sits in an absolutely-positioned panel on the
-   right, skewed -10deg so every edge in the band runs on the same diagonal,
-   with the images counter-skewed back to level inside their slabs. The scrim
-   lives *inside* the skewed row so it fades along that diagonal instead of
-   cutting a hard vertical seam across the blueprint grid. Below `lg` the panel
-   is dropped for a short strip in the flow — same motif, phone height.
 
    Note the class handling: the animation classes are composed into each
    `className` by hand. Spreading a helper that returns `{ className }` after an
@@ -57,76 +68,61 @@ const PILLARS = [
   },
 ]
 
-/* One diagonal photo slab. The wrapper carries the parent's -10deg skew, the
-   inner box cancels it so the photograph itself stays upright, and the scale
-   keeps the counter-skewed frame wider than the slot it has to fill.
-
-   Each slab scrims itself rather than the row scrimming everything at once:
-   a single overlay across the row would drag the yellow dividers down to olive
-   along with the photography. `gradient` is the slab the headline column runs
-   past, `soft` is the one out at the edge. */
-const SCRIMS = {
-  gradient: 'bg-gradient-to-r from-tobler-bg-dark via-tobler-bg-dark/55 to-tobler-bg-dark/10',
-  soft: 'bg-tobler-bg-dark/25',
-}
-
-/* A plain <img> rather than ResponsiveImage: these two frames are bundled
-   assets, so there is no Cloudinary ladder or 404 fallback for that component
-   to add, and the slabs are narrow enough that the crop has to be aimed by
-   hand — `position` is what keeps the subject (the embossed Tobler node, the
-   two figures on the deck) inside a window this tall and this thin. */
-function MediaSlab({ src, position = '50% 50%', scrim = 'soft', className = '' }) {
-  return (
-    <div className={`relative overflow-hidden ${className}`}>
-      <div className="absolute inset-0 scale-125 skew-x-[10deg]">
-        <img
-          src={src}
-          alt=""
-          className="h-full w-full object-cover"
-          style={{ objectPosition: position }}
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
-      <div className={`absolute inset-0 ${SCRIMS[scrim]}`} />
-    </div>
-  )
-}
-
 function WhoWeAre() {
   const [ref, inView] = useInViewAnimation()
   const rise = inView ? 'animate-fade-in-up' : 'opacity-0'
   const at = (delay) => ({ animationDelay: `${delay}s` })
 
   return (
-    <section id="who-we-are" ref={ref} className="scroll-mt-28 bg-white pb-10 md:pb-14">
+    <section id="who-we-are" ref={ref} className="scroll-mt-28 bg-white pb-8 md:pb-10">
       {/* Square-edged band running the full width — not a rounded card floating
           on the page. The white is the strip the section leaves above and below
-          it, which is what keeps it from reading as a second full-screen hero. */}
-      <div className="relative overflow-hidden bg-tobler-bg-dark text-white">
-        {/* Diagonal photo panel — decorative, so it is hidden from assistive
-            tech and the slabs carry empty alt text. */}
+          it, which is what keeps it from reading as a second full-screen hero.
+
+          Stacking is DOM order rather than z-index: the photograph and the
+          scrims are plain `absolute` and come first, the content wrapper is
+          `relative` and comes last, so it paints over them. */}
+      <div className="relative overflow-hidden bg-[#15171A] text-white">
+        {/* Decorative, so it is hidden from assistive tech and carries empty
+            alt text. Aimed right of centre — the copy column holds the left
+            half, so the scaffolding has to sit in the half that stays open. */}
+        <img
+          src={scaffoldNode}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+          style={{ objectPosition: '68% 45%', filter: 'saturate(0.6) contrast(1.04)' }}
+          loading="lazy"
+          decoding="async"
+        />
+
+        {/* Phones: the copy runs the full width, so the whole frame is held
+            down evenly. A left-weighted gradient here would leave the last
+            lines of every paragraph sitting on bare photograph. */}
+        <div aria-hidden="true" className="absolute inset-0 bg-[#15171A]/[0.88] lg:hidden" />
+
+        {/* lg and up: solid behind the copy column, thinning across the frame
+            so the scaffolding is actually readable on the right. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 right-0 hidden w-[52%] lg:block"
-        >
-          {/* Full height, no vertical bleed: skewX shifts content sideways as a
-              function of y and never vertically, so overhanging the band only
-              pushed the two figures on the deck up past its top edge. */}
-          <div className="absolute inset-y-0 -right-[6%] left-0 flex skew-x-[-10deg] gap-3">
-            <MediaSlab
-              src={scaffoldNode}
-              position="55% 60%"
-              scrim="gradient"
-              className="flex-[3]"
-            />
-            <div className="w-4 bg-tobler-gold" />
-            <MediaSlab src={towerAtSunset} position="68% 30%" className="flex-[2]" />
-            <div className="w-1.5 bg-tobler-gold/70" />
-          </div>
-        </div>
+          className="absolute inset-0 hidden bg-gradient-to-r from-[#15171A] from-30% via-[#15171A]/80 to-[#15171A]/25 lg:block"
+        />
 
-        <div className="relative mx-auto max-w-content px-6 py-10 md:px-10 md:py-12 lg:px-12 lg:py-14">
+        {/* Vignette — keeps the band's square edges from cutting through a
+            highlight in the photograph. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-b from-[#15171A]/45 via-transparent to-[#15171A]/55"
+        />
+
+        {/* All that survives of the old skewed panel: one gold rule, on the
+            same -10deg the band used to run every edge on. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-y-0 right-[28%] hidden w-1 skew-x-[-10deg] bg-tobler-gold/70 lg:block"
+        />
+
+        <div className="relative mx-auto max-w-content px-6 py-8 md:px-10 md:py-9 lg:px-12 lg:py-11">
           <div className="lg:max-w-[52%]">
             {/* `text-white` is not inherited here — the base layer colours every
               heading with the near-black ink token. */}
@@ -134,23 +130,30 @@ function WhoWeAre() {
               site-wide `text-h1`, which is a full-bleed hero size and made the
               band taller than the viewport on its own. */}
             <h2
-              className={`mt-4 text-[32px] font-semibold uppercase leading-[0.95] tracking-tight text-white md:text-[42px] lg:text-[48px] ${rise}`}
+              className={`text-[30px] font-bold uppercase leading-[1] tracking-tight text-white md:text-[38px] lg:text-[44px] ${rise}`}
               style={at(0.1)}
             >
-              Who we
-              <span className="block text-tobler-gold">are</span>
+              Who we{' '}
+              <span className="bg-gradient-to-r from-tobler-gold to-tobler-gold/80 bg-clip-text text-transparent">
+                are
+              </span>
             </h2>
 
-            <span className={`mt-4 block h-1 w-16 bg-tobler-gold ${rise}`} style={at(0.15)} />
+            {/* Kicker sits beside the rule rather than under it — the band is
+              height-constrained, so anything that can share a line does. */}
+            <div className={`mt-3 flex items-center gap-3 ${rise}`} style={at(0.15)}>
+              <span className="block h-1 w-16 shrink-0 bg-tobler-gold" />
+              <span className="label-mono text-[10px] text-white/60">Swiss engineered</span>
+            </div>
 
             <p
-              className={`mt-6 max-w-lg text-lg leading-snug text-white md:text-xl ${rise}`}
+              className={`mt-4 max-w-xl text-lg leading-snug text-white md:text-xl ${rise}`}
               style={at(0.2)}
             >
               Build the next landmark, the precise way.
             </p>
 
-            <div className="mt-4 flex max-w-lg flex-col gap-3 text-sm leading-relaxed text-white/75">
+            <div className="mt-3.5 flex max-w-xl flex-col gap-2.5 text-sm leading-[1.55] text-white/80">
               {STORY.map((paragraph, index) => (
                 <p key={paragraph} className={rise} style={at(0.25 + index * 0.05)}>
                   {paragraph}
@@ -159,7 +162,7 @@ function WhoWeAre() {
             </div>
 
             <p
-              className={`mt-5 max-w-lg border-l-2 border-tobler-gold pl-4 text-[13px] leading-relaxed text-white ${rise}`}
+              className={`mt-4 max-w-xl rounded-r border-l-2 border-tobler-gold bg-[#15171A]/70 py-2 pl-4 pr-5 text-[13px] leading-snug text-white backdrop-blur-sm ${rise}`}
               style={at(0.4)}
             >
               {STANDARD_NOTE}
@@ -169,36 +172,58 @@ function WhoWeAre() {
                 the studio bottom bar already carries that call to action on
                 this page. */}
             <div
-              className={`mt-6 flex flex-col gap-3 sm:flex-row sm:gap-4 ${rise}`}
+              className={`mt-5 flex flex-col gap-3 sm:flex-row sm:gap-4 ${rise}`}
               style={at(0.45)}
             >
               <Link
                 to="/projects"
-                className="rounded-btn label-mono inline-flex items-center justify-center bg-tobler-gold px-6 py-3 text-tobler-heading transition-colors duration-300 hover:bg-tobler-gold-dark"
+                className="rounded-btn label-mono inline-flex items-center justify-center bg-tobler-gold px-7 py-3 text-tobler-heading shadow-raised transition-all duration-300 hover:bg-tobler-gold-dark hover:shadow-lift active:scale-[0.98]"
               >
                 View projects
               </Link>
             </div>
 
-            {/* The four pillars, split by hairline rules the way the reference
-              lays them out: two up on a phone, four across from `sm`. Held
-              narrower than the prose above so the row and its dividers stop
-              short of the diagonal photo edge, which cuts further left the
-              lower down the band it runs. */}
-            <div className="mt-8 grid grid-cols-2 gap-y-6 border-t border-white/10 pt-7 sm:grid-cols-4 lg:max-w-[520px]">
+            {/* The four pillars as one bordered block split by hairline rules,
+              not four floating cards. The rules are what make the row read as
+              a grid: every cell stretches to the tallest, so the dividers run
+              edge to edge and the three text rows share a baseline across all
+              four columns.
+
+              The icon sits *above* the title rather than beside it. Inline, it
+              took 24px of a ~103px cell and "MANUFACTURING" no longer fitted
+              on a line, so that title overflowed into the neighbouring cell.
+
+              The reveal is on the block, not the cells: `animate-fade-in-up`
+              starts at translateY(24px), which `overflow-hidden` would clip if
+              each cell animated in on its own.
+
+              Tinted and blurred because the block now sits on a photograph
+              rather than a flat field — a bare border left the copy competing
+              with the scaffolding behind it. Held narrower than the prose above
+              so it stops short of the gold diagonal. */}
+            <div
+              className={`mt-6 grid grid-cols-2 overflow-hidden rounded-lg border border-white/15 bg-[#15171A]/65 backdrop-blur-sm sm:grid-cols-4 lg:max-w-[560px] ${rise}`}
+              style={at(0.5)}
+            >
               {PILLARS.map((pillar, index) => {
                 const Icon = pillar.icon
                 return (
                   <div
                     key={pillar.title}
-                    className={`border-white/10 px-3 text-center ${
+                    className={`group border-white/15 px-3.5 py-3.5 transition-colors duration-300 hover:bg-tobler-gold/[0.08] ${
                       index % 2 === 1 ? 'border-l' : ''
-                    } ${index === 0 ? 'sm:border-l-0' : 'sm:border-l'} ${rise}`}
-                    style={at(0.5 + index * 0.05)}
+                    } ${index >= 2 ? 'border-t' : ''} sm:border-t-0 ${
+                      index === 0 ? 'sm:border-l-0' : 'sm:border-l'
+                    }`}
                   >
-                    <Icon className="mx-auto h-6 w-6 text-tobler-gold" aria-hidden="true" />
-                    <p className="label-mono mt-3 text-[0.7rem] text-white">{pillar.title}</p>
-                    <p className="mt-1.5 text-[11px] leading-relaxed text-white/60">
+                    <Icon className="h-4 w-4 text-tobler-gold" aria-hidden="true" />
+                    {/* Two lines reserved. The titles run one or two lines, and
+                      without a floor the copy under them started at a different
+                      height in every cell. */}
+                    <p className="label-mono mt-2.5 min-h-[26px] text-[0.65rem] leading-[1.25] text-white">
+                      {pillar.title}
+                    </p>
+                    <p className="mt-1.5 text-[11px] leading-snug text-white/60 transition-colors duration-300 group-hover:text-white/80">
                       {pillar.copy}
                     </p>
                   </div>
@@ -206,18 +231,9 @@ function WhoWeAre() {
               })}
             </div>
           </div>
-
-          {/* Phone/tablet stand-in for the diagonal panel. The reveal sits on the
-            outer div on purpose: `animate-fade-in-up` ends on a `transform`
-            of its own, so putting it on the skewed element cancels the skew. */}
-          <div className={`mt-8 lg:hidden ${rise}`} style={at(0.6)}>
-            <div className="flex h-32 skew-x-[-10deg] gap-3 overflow-hidden">
-              <MediaSlab src={scaffoldNode} position="55% 60%" className="flex-[3]" />
-              <div className="w-3 bg-tobler-gold" />
-              <MediaSlab src={towerAtSunset} position="68% 30%" className="flex-[2]" />
-            </div>
-          </div>
-
+          {/* The phone stand-in strip that used to sit here is gone: the
+              photograph is now the background at every width, so a second copy
+              of it in the flow was both redundant and pure added height. */}
         </div>
       </div>
     </section>

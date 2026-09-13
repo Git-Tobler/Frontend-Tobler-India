@@ -163,7 +163,7 @@ function Testimonials() {
           <MediaBand imageId={MEDIA.towerAerial} className="text-center p-12 text-white">
             <h3 className="text-2xl font-semibold mb-3 text-white">Share Your Experience</h3>
             <p className="text-white/80 mb-6 max-w-md mx-auto">
-              Have you worked with Tobler? We'd love to hear about your project and experience.
+              Have you worked with Tobler? We’d love to hear about your project and experience.
             </p>
             <a
               href="mailto:info@gezu-impex.nl?subject=Testimonial%20Submission"

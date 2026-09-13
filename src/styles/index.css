@@ -64,7 +64,7 @@ body {
 }
 
 body {
-  font-family: 'Avenir LT W01_45 Book1475508', Arial, sans-serif;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.7;
@@ -90,7 +90,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Avenir LT W01_45 Book1475508', Arial, sans-serif;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
   font-weight: 700;
   letter-spacing: -0.035em;
   line-height: 1.05;
@@ -131,7 +131,7 @@ main {
      rows, footer meta. The one "technical drawing" typographic voice used
      throughout the site alongside the display headline face. */
   .label-mono {
-    font-family: 'Avenir LT W01_45 Book1475508', Arial, sans-serif;
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.12em;
@@ -141,7 +141,7 @@ main {
   /* Large tabular-numeral figures — stat counters, timeline years, index
      numbers (01/02/03). Tabular nums keep stacked figures aligned. */
   .figure-mono {
-    font-family: 'Avenir LT W01_45 Book1475508', Arial, sans-serif;
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     font-variant-numeric: tabular-nums;
   }
 
@@ -252,25 +252,21 @@ select:focus-visible {
    STUDIO LANDING TYPE + MOTION (About page)
    ========================================================================== */
 
-/* PP Neue Montreal is hotlink-protected at the Webflow CDN (403 on this
-   origin), so the body face falls through to the site's own Inter stack.
-   Self-host the licensed .otf under /public and add the @font-face here to
-   switch it on. */
-
-/* Drop PPMondwest-Regular.woff2 into /public to enable the licensed face;
-   until then the serif fallback carries the same accent role. */
-@font-face {
-  font-family: 'PP Mondwest';
-  src: url('/PPMondwest-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-display: swap;
-}
+/* The brand face is Avenir LT 45 Book, which is licensed for the print and
+   collateral work only — it is not redistributable, so no web font file for
+   it lives in this repo and no @font-face for it can ship here. Inter stands
+   in across the whole site: same humanist-grotesque proportions, free to
+   serve, and already requested in index.html. If a licensed Avenir web kit is
+   ever added under /public, declare its @font-face here and swap the family
+   name into the three Inter stacks (body, the h1–h6 rule, .font-montreal)
+   plus `sans` and `display` in tailwind.config.js. .font-mondwest below is a
+   deliberate serif accent rather than the brand face, so it stays put. */
 
 .font-montreal {
-  font-family: 'Avenir LT W01_45 Book1475508', Arial, sans-serif;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
 }
 .font-mondwest {
-  font-family: 'Avenir LT W01_45 Book1475508', Arial, sans-serif;
+  font-family: Georgia, 'Times New Roman', serif;
 }
 
 @keyframes marquee {

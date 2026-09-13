@@ -753,7 +753,7 @@ export const PRODUCT_FAMILIES = [
         slug: 'wall-formwork',
         name: 'Manu Wall Formwork',
         summary: 'Crane-free, hand-set wall formwork panels that fit any floor plan and height without heavy lifting equipment.',
-        imageId: MEDIA.panelHandover,
+        imageId: 'ChatGPT_Image_Sep_13_2026_11_46_53_AM_uowzmb',
         faqs: [
           {
             q: 'Do Manu panels need a crane?',
@@ -775,7 +775,7 @@ export const PRODUCT_FAMILIES = [
                line below and it changes everywhere the product appears. `showcase` is
                positional: entry N pairs with feature block N. */
             media: {
-              main: 'ChatGPT_Image_Sep_12_2026_05_17_31_PM_tumvwb',
+              main: 'ChatGPT_Image_Sep_13_2026_11_46_53_AM_uowzmb',
               gallery: [MEDIA.panelStacks, MEDIA.componentDetail],
               showcase: [MEDIA.panelHandover, MEDIA.panelStacks, MEDIA.componentDetail, MEDIA.panelBench],
               video: [MEDIA.laserWeldingVideo, MEDIA.productionVideo],

@@ -1,37 +1,40 @@
-import emailjs from '@emailjs/browser'
 import { SITE } from '../data/site.js'
 
 /* Form delivery, in two tiers.
  *
- * Tier 1 — EmailJS. Relays the browser submission straight to a mailbox with no
- * backend of our own. Where it lands is set in the EmailJS dashboard, on the
- * template's "To email" field; point that at the Outlook address that should
- * receive enquiries (or leave it as {{to_email}} and set VITE_CONTACT_RECIPIENT)
- * and mail starts arriving there. `.env.example` lists the four values needed.
+ * Tier 1 — our own /api/enquiry endpoint. The browser POSTs the form to this
+ * site's own origin and a Vercel serverless function relays it to EmailJS.
  *
- * Tier 2 — mailto handoff. Until those four values exist, the forms do NOT sit
- * there broken and they do not lie about having sent: they hand the visitor a
- * pre-filled message addressed to us, which their own mail app sends. Less
- * seamless, but an enquiry that arrives beats an enquiry that doesn't, and the
- * upgrade to tier 1 is purely a matter of filling in .env — no code change.
+ * This used to call EmailJS directly from the page, which meant the service id,
+ * template id and public key were compiled into the bundle and readable by
+ * anyone who opened DevTools and submitted the form. That is not a flaw in how
+ * it was wired — it is unavoidable for any browser-side mail service, and
+ * EmailJS's own docs say the public key "is visible in browser requests". The
+ * only real fix is to stop calling them from the browser, so nothing in this
+ * file knows a credential any more. See api/enquiry.js.
  *
- * Both tiers return `{ status }` so the forms can tell the two apart and word
- * their confirmation honestly.
+ * Tier 2 — mailto handoff. If the endpoint is unreachable or unconfigured, the
+ * forms do NOT sit there broken and they do not lie about having sent: they
+ * hand the visitor a pre-filled message addressed to us, which their own mail
+ * app sends. Less seamless, but an enquiry that arrives beats one that doesn't.
+ *
+ * Both tiers return `{ status }` — 'sent' or 'mailto' — so the forms can tell
+ * them apart and word their confirmation honestly. That contract is unchanged
+ * from the EmailJS version, which is why no form component needed editing.
  */
 
-const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
-const CONTACT_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_CONTACT_TEMPLATE_ID
-const RFQ_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_RFQ_TEMPLATE_ID
-const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+const ENDPOINT = '/api/enquiry'
 
-/* The inbox enquiries land in. Overridable by env so the destination can be
- * changed at deploy time — a new sales address, a shared mailbox — without a
- * code change; falls back to the address the site already publishes. */
-const RECIPIENT = (import.meta.env.VITE_CONTACT_RECIPIENT || SITE.email || '').trim()
+/* Aborts a hung request rather than leaving the submit button spinning forever.
+ * On timeout we fall through to the mailto tier, so a slow function degrades to
+ * a working path instead of a dead form. */
+const REQUEST_TIMEOUT_MS = 15000
 
-export function isEmailConfigured() {
-  return Boolean(SERVICE_ID && CONTACT_TEMPLATE_ID && RFQ_TEMPLATE_ID && PUBLIC_KEY)
-}
+/* The address the mailto tier hands the visitor. The server has its own
+ * recipient (CONTACT_RECIPIENT, set in Vercel) for tier 1; this one only has to
+ * be right for the fallback, so it reads from the address the site publishes
+ * rather than from an env var that would have to be duplicated client-side. */
+const RECIPIENT = (SITE.email || '').trim()
 
 /* Field order and human labels for the mailto body. Kept here rather than read
  * off Object.keys so the mail reads as a written enquiry rather than a dump of
@@ -107,53 +110,93 @@ function handoffToMailClient(formData, fields, subject) {
   return { status: 'mailto', recipient: RECIPIENT }
 }
 
-/* Routing fields every EmailJS submission carries, on top of the form's values.
- *
- * `reply_to` is the one that matters day to day: without it, hitting Reply in
- * Outlook answers the EmailJS relay instead of the person who filled the form.
- * `to_email` lets the dashboard template address itself from here rather than
- * hard-coding a recipient in two places, and `subject` is what makes the two
- * form types separable by an Outlook rule once they are both arriving. */
-function envelope(formData, { subject, from }) {
-  return {
-    ...formData,
-    to_email: RECIPIENT,
-    reply_to: formData.email || '',
-    from_name: formData.name || 'Website visitor',
-    subject: formData.subject?.trim() || subject,
-    form_type: from,
-    page_url: typeof window === 'undefined' ? '' : window.location.href,
-    submitted_at: new Date().toISOString(),
+async function post(formType, formData) {
+  // AbortSignal.timeout is not in older Safari, so the controller is driven by
+  // a timer rather than assuming it exists.
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
+
+  try {
+    const response = await fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
+      body: JSON.stringify({
+        formType,
+        ...formData,
+        pageUrl: typeof window === 'undefined' ? '' : window.location.href,
+      }),
+    })
+
+    /* Classify on what actually answered, not on the status code alone.
+     *
+     * Both directions matter. A 200 is not proof of a send: if the function is
+     * missing, the SPA rewrite happily serves index.html with a 200 and the
+     * form would report success for an enquiry nobody received. And a 4xx is
+     * not proof of a rejection: a 404 from a deploy without the function, or a
+     * 403 from a proxy, is also 4xx, and treating those as "deliberately
+     * rejected" would suppress the mailto tier exactly when it is the only
+     * route left.
+     *
+     * So the body has to confirm it: our function always replies with its own
+     * JSON envelope, `{ ok: true }` or `{ error: '...' }`. Anything else did
+     * not come from us. */
+    let payload = null
+    try {
+      payload = await response.json()
+    } catch {
+      // An HTML error page or the SPA shell — not ours, and not worth parsing.
+    }
+
+    if (response.ok && payload?.ok === true) return { ok: true }
+
+    const spokeForUs = typeof payload?.error === 'string' && payload.error.length > 0
+    if (spokeForUs && response.status >= 400 && response.status < 500) {
+      // A rejection the visitor can act on: bad address, missing field, rate
+      // limited. Resending the same data through their mail client would not
+      // fix it, so it is surfaced rather than retried.
+      return { ok: false, fatal: true, message: payload.error }
+    }
+
+    // Our side is broken, or whatever answered was not us. Fall back.
+    return { ok: false, fatal: false, message: '' }
+  } finally {
+    clearTimeout(timer)
   }
 }
 
-async function deliver(formData, { templateId, fields, subject, from }) {
-  if (!isEmailConfigured()) {
-    console.warn(
-      'EmailJS is not configured — falling back to a mailto handoff. ' +
-        'Set VITE_EMAILJS_* in .env (see .env.example) to send in the background instead.'
-    )
-    return handoffToMailClient(formData, fields, formData.subject?.trim() || subject)
+async function deliver(formData, { formType, fields, subject }) {
+  const line = formData.subject?.trim() || subject
+
+  let result
+  try {
+    result = await post(formType, formData)
+  } catch {
+    // Network down, DNS failure, aborted timeout, or the endpoint missing
+    // entirely on a static preview — all of which the mailto tier can cover.
+    return handoffToMailClient(formData, fields, line)
   }
 
-  await emailjs.send(SERVICE_ID, templateId, envelope(formData, { subject, from }), PUBLIC_KEY)
-  return { status: 'sent', recipient: RECIPIENT }
+  if (result.ok) return { status: 'sent', recipient: RECIPIENT }
+
+  // A rejection the visitor can act on is worth showing them verbatim.
+  if (result.fatal) throw new Error(result.message)
+
+  return handoffToMailClient(formData, fields, line)
 }
 
 export async function sendContactMessage(formData) {
   return deliver(formData, {
-    templateId: CONTACT_TEMPLATE_ID,
+    formType: 'contact',
     fields: CONTACT_FIELDS,
     subject: 'General Enquiry from tobler-india.com',
-    from: 'General Enquiry',
   })
 }
 
 export async function sendRFQRequest(formData) {
   return deliver(formData, {
-    templateId: RFQ_TEMPLATE_ID,
+    formType: 'rfq',
     fields: RFQ_FIELDS,
     subject: 'Request a Quote from tobler-india.com',
-    from: 'Request a Quote',
   })
 }

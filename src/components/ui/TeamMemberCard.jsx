@@ -1,5 +1,4 @@
 import { User, Mail, Linkedin } from 'lucide-react'
-import ResponsiveImage from './ResponsiveImage.jsx'
 import { MEDIA_BY_ID } from '../../data/media.js'
 import { buildCloudinaryUrl } from '../../lib/cloudinary.js'
 

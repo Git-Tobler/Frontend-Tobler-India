@@ -4,3 +4,12 @@ dist
 .env.local
 *.log
 .DS_Store
+
+# Local one-off screenshot/measurement scripts and the PNGs they spit out. Run
+# by hand while eyeballing layout, never by the build. Each pattern is anchored
+# to the repo root with a leading slash so scripts/ — the real build tooling
+# package.json calls — keeps being tracked.
+/check-*.mjs
+/verify-*.mjs
+/screenshot*.mjs
+/hero-*.png

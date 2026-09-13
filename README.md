@@ -18,15 +18,23 @@ npm run preview
 
 ## Environment Variables
 
-Copy `.env.example` to `.env` and fill in your EmailJS credentials:
+Copy `.env.example` to `.env` and fill it in. `.env` is gitignored — never put
+credentials in this README or any other tracked file.
+
+EmailJS runs **server-side only** (`api/enquiry.js` on Vercel), so its variables
+carry **no `VITE_` prefix** — a `VITE_` value is compiled into the public bundle:
 
 ```
-VITE_EMAILJS_SERVICE_ID=
-VITE_EMAILJS_CONTACT_TEMPLATE_ID=
-VITE_EMAILJS_RFQ_TEMPLATE_ID=
-VITE_EMAILJS_PUBLIC_KEY=
+EMAILJS_SERVICE_ID=
+EMAILJS_CONTACT_TEMPLATE_ID=
+EMAILJS_RFQ_TEMPLATE_ID=
+EMAILJS_PUBLIC_KEY=
+EMAILJS_PRIVATE_KEY=
 ```
 
+Dashboard walkthrough, ready-to-paste templates and a verifier:
+[`docs/emailjs/README.md`](docs/emailjs/README.md). In production these live in
+Vercel → Settings → Environment Variables, not in a file.
 ## Project Structure
 
 ```

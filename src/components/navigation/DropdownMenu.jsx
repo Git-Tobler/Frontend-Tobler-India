@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import { NavLink } from 'react-router-dom'
 import { ChevronDown } from 'lucide-react'
 
-function DropdownMenu({ item, scrolled }) {
+function DropdownMenu({ item }) {
   const [open, setOpen] = useState(false)
   const timeoutRef = useRef(null)
 

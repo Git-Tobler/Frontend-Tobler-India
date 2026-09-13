@@ -100,12 +100,15 @@ export default {
          ========================================================================== */
 
       fontFamily: {
-        sans: ['Avenir LT W01_45 Book1475508', 'Arial', 'sans-serif'],
-        display: ['Avenir LT W01_45 Book1475508', 'Arial', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Arial', 'sans-serif'],
+        display: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Arial', 'sans-serif'],
         mono: [
-          'Avenir LT W01_45 Book1475508',
-          'Arial',
-          'sans-serif',
+          'JetBrains Mono',
+          'ui-monospace',
+          'SFMono-Regular',
+          'Menlo',
+          'Consolas',
+          'monospace',
         ],
       },
 

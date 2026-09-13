@@ -185,3 +185,14 @@ export const DOWNLOAD_CATEGORIES = [
     ],
   },
 ]
+
+/* Same bracket convention as data/faqs.js's isDraftAnswer: a value still
+   carrying a `[...]` marker is a field nobody has filled in yet.
+
+   Fields are checked one at a time rather than the item as a whole, because a
+   document can have a real name and a real format while its size and date are
+   still unknown. Unfilled fields are suppressed at the render site instead of
+   printed, so the greyed "Coming Soon" treatment is the entire message. An item
+   whose *name* is still a marker has nothing to list at all and is dropped. */
+export const isFilled = (value) => Boolean(value) && !value.includes('[')
+export const isDraftDocument = (item) => !isFilled(item.name)

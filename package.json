@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "postbuild": "node scripts/generate-sitemap.mjs",
+    "prebuild": "node scripts/generate-sitemap.mjs",
     "media": "node scripts/fetch-cloudinary.mjs",
     "scrape-resources": "node scripts/scrape-resources.mjs",
     "manage-cloudinary": "node scripts/manage-cloudinary.mjs",
@@ -16,7 +16,6 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
-    "@emailjs/browser": "^4.3.3",
     "framer-motion": "^12.43.0",
     "lucide-react": "^0.383.0",
     "react": "^18.3.1",

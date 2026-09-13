@@ -56,7 +56,7 @@ export const ANSWER_CARDS = [
     triggers: ['how long', 'years of experience', 'how many years', 'founded', 'history', 'since when', 'how old is tobler', 'heritage'],
     title: 'Engineering Heritage',
     lines: [
-      { label: null, value: `${statValue('Years of Engineering Heritage') || '30+'} years of engineering heritage — ${foundedEntry?.description || 'founded in Switzerland in 1996.'}` },
+      { label: null, value: `${statValue('Years of Engineering Heritage') || '30+'} years of engineering heritage — ${foundedEntry?.description || 'founded in Switzerland in 1995.'}` },
       { label: 'Projects delivered', value: statValue('Projects Delivered') },
     ],
     ctaLabel: 'Our Story',

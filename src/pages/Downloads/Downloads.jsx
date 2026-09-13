@@ -4,7 +4,7 @@ import MediaBand from '../../components/ui/MediaBand.jsx'
 import Container from '../../components/common/Container.jsx'
 import { Download, FileText, Image as ImageIcon, Archive, Clock } from 'lucide-react'
 import { MEDIA } from '../../data/media-map.js'
-import { DOWNLOAD_CATEGORIES } from '../../data/downloads.js'
+import { DOWNLOAD_CATEGORIES, isDraftDocument, isFilled } from '../../data/downloads.js'
 
 // Maps the icon keys in data/downloads.js back to lucide components — that
 // module stays free of React imports so the search index can pull it into
@@ -20,10 +20,16 @@ function Downloads() {
   const downloadCategories = DOWNLOAD_CATEGORIES.map((category) => ({
     ...category,
     icon: DOWNLOAD_ICONS[category.icon] ?? category.icon,
+    // A document with no name yet has nothing to offer a reader, not even a
+    // "Coming Soon" — it is the placeholder row itself.
+    items: category.items.filter((item) => !isDraftDocument(item)),
   }))
 
-  const DownloadItem = ({ item, category }) => {
-    const isComplete = !item.updated.includes('[')
+  const DownloadItem = ({ item }) => {
+    const isComplete = isFilled(item.updated)
+    // Format, size and date fill in at different times, so each is checked on
+    // its own and the whole strip goes when none of them is known yet.
+    const hasMeta = isFilled(item.format) || isFilled(item.size) || isFilled(item.updated)
     return (
       <div className={`p-6 rounded-card border transition-all ${
         isComplete
@@ -39,24 +45,34 @@ function Downloads() {
           )}
         </div>
 
-        <p className={`text-sm mb-4 ${isComplete ? 'text-tobler-body' : 'text-tobler-body/60 italic'}`}>
-          {item.description}
-        </p>
+        {isFilled(item.description) && (
+          <p className={`text-sm mb-4 ${isComplete ? 'text-tobler-body' : 'text-tobler-body/60 italic'}`}>
+            {item.description}
+          </p>
+        )}
 
-        <div className="flex flex-wrap gap-4 text-xs text-tobler-body/60 mb-4 pb-4 border-b border-tobler-border">
-          <div className="flex items-center gap-1">
-            <span className="font-medium">Format:</span>
-            <span>{item.format}</span>
+        {hasMeta && (
+          <div className="flex flex-wrap gap-4 text-xs text-tobler-body/60 mb-4 pb-4 border-b border-tobler-border">
+            {isFilled(item.format) && (
+              <div className="flex items-center gap-1">
+                <span className="font-medium">Format:</span>
+                <span>{item.format}</span>
+              </div>
+            )}
+            {isFilled(item.size) && (
+              <div className="flex items-center gap-1">
+                <span className="font-medium">Size:</span>
+                <span>{item.size}</span>
+              </div>
+            )}
+            {isFilled(item.updated) && (
+              <div className="flex items-center gap-1">
+                <Clock size={12} />
+                <span>{item.updated}</span>
+              </div>
+            )}
           </div>
-          <div className="flex items-center gap-1">
-            <span className="font-medium">Size:</span>
-            <span>{item.size}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Clock size={12} />
-            <span>{item.updated}</span>
-          </div>
-        </div>
+        )}
 
         {isComplete ? (
           <a
@@ -131,7 +147,7 @@ function Downloads() {
                   {/* Items Grid */}
                   <div className="grid md:grid-cols-2 gap-6 mb-12">
                     {category.items.map((item) => (
-                      <DownloadItem key={item.id} item={item} category={category} />
+                      <DownloadItem key={item.id} item={item} />
                     ))}
                   </div>
                 </div>

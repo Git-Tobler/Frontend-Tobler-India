@@ -4,10 +4,10 @@ import { Linkedin, Facebook, Instagram, Youtube, Phone, Mail, MapPin, ArrowRight
 import Container from '../common/Container.jsx'
 import CookiePreferences from '../common/CookiePreferences.jsx'
 import { FOOTER_LINKS } from '../../data/navigation.js'
-import { COUNTRY_GROUPS } from '../../data/countries.js'
 import { SITE } from '../../data/site.js'
 import { MEDIA } from '../../data/media-map.js'
 import { cldImage } from '../../lib/cloudinary.js'
+import { writeStoredConsent } from '../../lib/consent.js'
 import toblerLogo from '../../assets/brand/tobler-logo.svg'
 
 function FooterColumn({ title, links }) {
@@ -35,11 +35,7 @@ function Footer() {
   const [showPreferences, setShowPreferences] = useState(false)
 
   const handleSavePreferences = (prefs) => {
-    const finalPrefs = {
-      ...prefs,
-      timestamp: new Date().toISOString(),
-    }
-    localStorage.setItem('cookieConsent', JSON.stringify(finalPrefs))
+    writeStoredConsent(prefs)
   }
 
   return (
