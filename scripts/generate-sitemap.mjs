@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { PRODUCT_FAMILIES } from '../src/data/products/index.js'
 import { PROJECTS } from '../src/data/projects.js'
 
-const ORIGIN = 'https://www.toblerindia.com'
+const ORIGIN = 'https://www.tobler-india.com'
 
 const staticPaths = [
   '/',
