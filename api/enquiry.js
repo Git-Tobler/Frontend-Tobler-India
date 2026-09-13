@@ -13,9 +13,11 @@
  * them server-only: Vite refuses to expose anything not prefixed, so there is no
  * way for them to leak into the client bundle by accident.
  *
- * The private key requires "Allow EmailJS API for non-browser applications" to
- * be switched on under Account -> API Keys. Without it EmailJS rejects
- * server-origin calls with 403 regardless of how correct the rest of this is.
+ * The private key itself is copied from Account -> API Keys, but the setting
+ * that makes it usable is elsewhere: "Allow EmailJS API for non-browser
+ * applications" lives on Account -> Security. Without that switch EmailJS
+ * rejects server-origin calls with 403 no matter how correct the rest is, and
+ * holding the private key does not imply the switch is on.
  *
  * Runs on Vercel's Node runtime (not Edge) — `export default (req, res)`.
  */

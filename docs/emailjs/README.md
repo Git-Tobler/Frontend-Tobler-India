@@ -35,8 +35,11 @@ one; the account is what receives the enquiries.
 | Template name | `Tobler — General Enquiry` | `Tobler — Request a Quote` |
 | Paste into **Content → Edit Content → Code Editor** | `contact-template.html` | `rfq-template.html` |
 
-Then on the **Settings** tab of *both* templates, set these four fields
-**exactly** — they are placeholders, not literal text:
+Then on the **Content** tab of *both* templates, set these four fields
+**exactly** — they are placeholders, not literal text. Subject is the box above
+the editor; To Email, From Name and Reply To sit beside it. (The **Settings**
+tab holds only Name and Template ID — that is where step 3's ID comes from, and
+EmailJS does not substitute variables there at all.)
 
 | Field | Value | Why |
 |---|---|---|
@@ -49,9 +52,8 @@ Save each and copy its **Template ID** (`template_xyz789`).
 
 ## 4. Keys → `EMAILJS_PUBLIC_KEY`, `EMAILJS_PRIVATE_KEY`
 
-**Account → General** → copy the **Public Key**.
-
-**Account → API Keys** → copy the **Private Key**.
+**Account → API Keys** → copy the **Public Key** and the **Private Key**.
+(Some dashboard versions show the Public Key on **Account → General** instead.)
 
 **Account → Security** → switch **ON** *"Allow EmailJS API for non-browser
 applications"*. EmailJS's own 403 message points here:

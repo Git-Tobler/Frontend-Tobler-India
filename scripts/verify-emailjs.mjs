@@ -52,8 +52,8 @@ const REQUIRED = [
   ['EMAILJS_SERVICE_ID', 'Email Services'],
   ['EMAILJS_CONTACT_TEMPLATE_ID', 'Email Templates (the Contact one)'],
   ['EMAILJS_RFQ_TEMPLATE_ID', 'Email Templates (the RFQ one)'],
-  ['EMAILJS_PUBLIC_KEY', 'Account > General > Public Key'],
-  ['EMAILJS_PRIVATE_KEY', 'Account > API Keys (needs the non-browser toggle ON)'],
+  ['EMAILJS_PUBLIC_KEY', 'Account > API Keys (or Account > General on older dashboards)'],
+  ['EMAILJS_PRIVATE_KEY', 'Account > API Keys (and switch ON the toggle on Account > Security)'],
 ]
 
 console.log('\n=== 1. Configuration ===\n')
